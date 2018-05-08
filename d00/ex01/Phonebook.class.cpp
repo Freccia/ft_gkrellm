@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/08 10:31:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/08 12:43:05 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/08 13:15:37 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,21 @@ void	Phonebook::SEARCH(){
 		if (len == 9)
 			std::cout << ".|";
 		else
-			std::cout << std::string(9 - len, ' ') << "|";
+			std::cout << std::string(10 - len, ' ') << "|";
 
 		len = std::min(9, static_cast<int>(contacts[i].last_name.size()));
 		std::cout.write(contacts[i].last_name.c_str(), len);
 		if (len == 9)
 			std::cout << ".|";
 		else
-			std::cout << std::string(9 - len, ' ') << "|";
+			std::cout << std::string(10 - len, ' ') << "|";
 
 		len = std::min(9, static_cast<int>(contacts[i].nickname.size()));
 		std::cout.write(contacts[i].nickname.c_str(), len);
 		if (len == 9)
 			std::cout << ".|";
 		else
-			std::cout << std::string(9 - len, ' ') << "|";
+			std::cout << std::string(10 - len, ' ') << "|";
 
 		std::cout << std::endl;
 	}
@@ -153,40 +153,40 @@ void	Phonebook::test(void)
 {
 	if(this->ncont > 4)
 		return;
-	contacts[this->ncont].first_name = "LOOL";
-	contacts[this->ncont].last_name = "OLO";
-	contacts[this->ncont].nickname = "lolol";
-	contacts[this->ncont].login = "lol";
-	contacts[this->ncont].postal = "1516171819";
-	contacts[this->ncont].email = "lol@lol.lol";
-	contacts[this->ncont].phone = "1019101";
-	contacts[this->ncont].birthday = "10/10/101";
-	contacts[this->ncont].meal = "loL";
-	contacts[this->ncont].underwear = "lOL";
-	contacts[this->ncont].secret = "lolololololololololololololololol";
+	contacts[this->ncont].first_name = "Lady";
+	contacts[this->ncont].last_name = "Oscar";
+	contacts[this->ncont].nickname = "Mom";
+	contacts[this->ncont].login = "ldoscar";
+	contacts[this->ncont].postal = "78";
+	contacts[this->ncont].email = "oscarlady@mail.com";
+	contacts[this->ncont].phone = "04 55 66 883";
+	contacts[this->ncont].birthday = "04/1972";
+	contacts[this->ncont].meal = "rose";
+	contacts[this->ncont].underwear = "white";
+	contacts[this->ncont].secret = "I like gurlz";
 	this->ncont++;
 	contacts[this->ncont].first_name = "Sudo";
 	contacts[this->ncont].last_name = "Saudo";
-	contacts[this->ncont].nickname = "sudo";
+	contacts[this->ncont].nickname = "Weed Dealer";
 	contacts[this->ncont].login = "sudo";
-	contacts[this->ncont].postal = "root";
-	contacts[this->ncont].email = "sudo@root.local";
-	contacts[this->ncont].phone = "0";
-	contacts[this->ncont].birthday = "1974";
-	contacts[this->ncont].meal = "sandwitch";
-	contacts[this->ncont].underwear = "red";
-	contacts[this->ncont].secret = "all yours";
+	contacts[this->ncont].postal = "93";
+	contacts[this->ncont].email = "sudo@93.fr";
+	contacts[this->ncont].phone = "07 55 66 88 00";
+	contacts[this->ncont].birthday = "420";
+	contacts[this->ncont].meal = "pizza";
+	contacts[this->ncont].underwear = "green";
+	contacts[this->ncont].secret = "I sell drugs";
 	this->ncont++;
-	contacts[this->ncont].first_name = "aaaaaa";
-	contacts[this->ncont].last_name = "eeee";
-	contacts[this->ncont].nickname = "iiiiii";
-	contacts[this->ncont].login = "oooooooo";
-	contacts[this->ncont].postal = "uuuuuu";
-	contacts[this->ncont].email = "kkkkk";
-	contacts[this->ncont].phone = "jjjjjj";
-	contacts[this->ncont].birthday = "llllll";
-	contacts[this->ncont].meal = "mmmmmm";
-	contacts[this->ncont].underwear = "uuuuuu";
-	contacts[this->ncont].secret = "wwwwwwww";
+	contacts[this->ncont].first_name = "Paulette";
+	contacts[this->ncont].last_name = "Lafont";
+	contacts[this->ncont].nickname = "Mamie";
+	contacts[this->ncont].login = "mamiepaulette";
+	contacts[this->ncont].postal = "4040";
+	contacts[this->ncont].email = "mamiepaulette@home.tk";
+	contacts[this->ncont].phone = "09 88 22 33 45";
+	contacts[this->ncont].birthday = "1/1/1900";
+	contacts[this->ncont].meal = "cookies";
+	contacts[this->ncont].underwear = "shuld not ask";
+	contacts[this->ncont].secret = "My cookies's recipe";
 	this->ncont++;
 }
