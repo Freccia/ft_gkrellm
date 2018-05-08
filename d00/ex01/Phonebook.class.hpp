@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/08 10:21:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/08 12:37:42 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/08 16:29:46 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,17 @@ class	Contact {
 public:
 	Contact(void);
 	~Contact(void);
-	void printme(void);
+	void	printme(void);
+	void	clear_eof(void);
+	void	ADD(void);
+	std::string getFirstname(void);
+	std::string getLastname(void);
+	std::string getNickname(void);
+	void	test1(void);
+	void	test2(void);
+	void	test3(void);
+
+private:
 	std::string first_name;
 	std::string last_name;
 	std::string nickname;
@@ -41,8 +51,8 @@ public:
 	Phonebook(void);
 	~Phonebook(void);
 	Contact contacts[8];
-	int		ncont;
 	void	clear_eof(void);
+	int		ncont;
 	void	SEARCH(void);
 	int		ADD(void);
 	int		SELECT(int index);
