@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/08 10:21:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/08 16:29:46 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/09 11:35:10 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ class Phonebook {
 public:
 	Phonebook(void);
 	~Phonebook(void);
-	Contact contacts[8];
 	void	clear_eof(void);
 	int		ncont;
 	void	SEARCH(void);
 	int		ADD(void);
 	int		SELECT(int index);
 	void	test(void);
+private:
+	Contact contacts[8];
 };
 
 #endif
