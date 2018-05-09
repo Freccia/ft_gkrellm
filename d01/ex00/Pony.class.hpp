@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 11:30:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/09 12:05:11 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/09 12:46:35 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ public:
 	Pony(std::string name, size_t strenght, int stamina, float speed);
 	~Pony();
 private:
-	std::string		name;
-	size_t			strenght;
-	int				stamina;
-	float			speed;
+	std::string		_name;
+	size_t			_strenght;
+	int				_stamina;
+	float			_speed;
 };
 
 void	ponyOnTheHeap(std::string name, size_t strenght,
