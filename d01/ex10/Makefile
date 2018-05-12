@@ -6,13 +6,13 @@
 #    By: lfabbro <>                                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/07 15:13:37 by lfabbro           #+#    #+#              #
-#    Updated: 2018/05/12 12:17:43 by lfabbro          ###   ########.fr        #
+#    Updated: 2018/05/12 14:33:29 by lfabbro          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME		= cat
 
-SRC_NAME	= main.cpp Cat.cpp
+SRC_NAME	= main.cpp
 
 LIB_NAME	= #-lft
 
