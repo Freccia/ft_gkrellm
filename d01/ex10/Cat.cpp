@@ -6,15 +6,14 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 11:26:09 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/12 13:26:21 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/12 14:10:23 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Cat.hpp"
 
-Cat::Cat(std::string inFileName, std::string outFileName):
-_inFileName(inFileName),
-_outFileName(outFileName) {
+Cat::Cat(std::string inFileName):
+_inFileName(inFileName) {
 	if (_inFileName.empty() == false) {
 		_inFile.open(_inFileName.c_str(), std::ifstream::in);
 		if (!_inFile) {
@@ -26,51 +25,42 @@ _outFileName(outFileName) {
 	else {
 		_fdIn = &std::cin;
 	}
-	if (_outFileName.empty() == false) {
-		_outFile.open(_outFileName.c_str(), std::ifstream::out);
-		if (!_outFile) {
-			std::cout << "Unable to open file" << std::endl;
-			exit(1);
-		}
-		_fdOut = &_outFile;
-	}
-	else {
-		_fdOut = &std::cout;
-	}
 	return;
 }
 
 Cat::~Cat() {
 	if (_inFileName.empty() == false)
 		_inFile.close();
-	if (_outFileName.empty() == false)
-		_outFile.close();
 	return;
 }
 
-int				Cat::eofBit(void) {
-	return _fdIn->eof();
+void			Cat::close(void) {
+	if (_inFileName.empty() == false)
+		_inFile.close();
 }
 
-void			Cat::writeLine(void) {
-	std::cout << "WRITE\n";
-	*_fdOut << _line;
-	_line = "";
-}
-
-void			Cat::write(std::string str) {
-	*_fdOut << str;
-}
-
-std::string		Cat::read(void) {
-	long			size = 16;
-	char			buf[size];
-
-	std::cout << "READ\n";
-	while (_fdIn->getline(buf, size)) {
-		_line.append(buf);
+int				Cat::setFile(std::string name) {
+	_inFileName = name;
+	if (_inFileName.empty() == false) {
+		_inFile.open(_inFileName.c_str(), std::ifstream::in);
+		if (!_inFile) {
+			std::cout << "Unable to open file" << std::endl;
+			exit(1);
+		}
+		_fdIn = &_inFile;
 	}
-	_line.append(buf);
-	std::cout << "ENDREAD\n";
-	return _line;
+	return 0;
+}
+
+void			Cat::write(void) {
+	if (_line.empty() == false)
+		std::cout << _line;
+}
+
+bool			Cat::read(void) {
+	std::getline(*_fdIn, _line);
+	if (_fdIn->eof())
+		return false;
+	_line.append("\n");
+	return true;
 }

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 11:10:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/12 12:33:20 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/12 14:08:54 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,22 @@ void	usage(std::string name)
 
 int		main(int ac, char **av)
 {
-	std::string		inFileName;
-	std::string		outFileName;
+	Cat				cat("");
+	bool			ret = true;
 
-	if (ac < 3) {
-		inFileName = "";
-		outFileName = "";
+	if (ac > 1) {
+		for (int i=1; i < ac; i++) {
+			cat.setFile(av[i]);
+			do {
+				cat.write();
+			} while (cat.read());
+			cat.close();
+		}
 	}
-	else if (ac == 3) {
-		inFileName = av[1];
-		outFileName = av[2];
-	}
-
-	Cat		cat(inFileName, outFileName);
-
-	while (cat.eofBit() == 0) {
-		cat.read();
-		cat.writeLine();
-	}
+	else
+		while (ret) {
+			cat.read();
+			cat.write();
+		}
 	return 0;
 }

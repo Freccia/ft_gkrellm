@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 11:15:59 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/12 12:04:00 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/12 14:04:43 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 # define CAT_HPP
 
 #include <iostream>
+#include <streambuf>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 class Cat {
 public:
-	Cat(std::string inFileName, std::string outFileName);
+	Cat(std::string inFileName);
 	~Cat();
-	void			write(std::string str);
-	void			writeLine(void);
-	std::string		read(void);
-	int				eofBit(void);
+	void			write(void);
+	bool			read(void);
+	void			close(void);
+	int				setFile(std::string name);
 
 private:
 	std::string		_inFileName;
-	std::string		_outFileName;
 	std::ifstream	_inFile;
-	std::ofstream	_outFile;
 	std::istream*	_fdIn;
-	std::ostream*	_fdOut;
 	std::string		_line;
 };
 
