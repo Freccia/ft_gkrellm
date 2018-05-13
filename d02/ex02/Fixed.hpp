@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 15:32:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 14:22:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/13 15:49:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,20 @@ public:
 	Fixed				operator / (Fixed const &) const;
 
 	/*		Increment/Decrement Pre/Post operators	*/
-	Fixed				&operator ++ () const;
-	Fixed				operator ++ (int) const;
-	Fixed				&operator -- () const;
-	Fixed				operator -- (int) const;
-};
+	Fixed				&operator ++ ();
+	Fixed				operator ++ (int);
+	Fixed				&operator -- ();
+	Fixed				operator -- (int);
 
-Fixed				&min(Fixed &, Fixed &);
-Fixed const			&min(Fixed const &, Fixed const &);
-Fixed				&max(Fixed &, Fixed &);
-Fixed const			&max(Fixed const &, Fixed const &);
+	/*		Non-member functions	*/
+	static Fixed				&min(Fixed &, Fixed &);
+	static Fixed const			&min(Fixed const &, Fixed const &);
+	static Fixed				&max(Fixed &, Fixed &);
+	static Fixed const			&max(Fixed const &, Fixed const &);
+
+	/*		Exceptions*/
+	struct _division_by_zero : std::exception {};
+};
 
 std::ostream		&operator << (std::ostream &, Fixed const &);
 

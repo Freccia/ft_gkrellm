@@ -1,25 +1,14 @@
-/*
- ************************************************************************** */
-/*
-                                                                            */
-/*
-                                                        :::      ::::::::   */
-/*
-   Fixed.cpp                                          :+:      :+:    :+:   */
-/*
-                                                    +:+ +:+         +:+     */
-/*
-   By: lfabbro <>                                 +#+  +:+       +#+        */
-/*
-                                                +#+#+#+#+#+   +#+           */
-/*
-   Created: 2018/05/13 14:29:55 by lfabbro           #+#    #+#             */
-/*
-   Updated: 2018/05/13 14:30:02 by lfabbro          ###   ########.fr       */
-/*
-                                                                            */
-/*
- ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfabbro <>                                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/13 14:34:34 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/13 15:48:56 by lfabbro          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Fixed.hpp"
 
@@ -28,33 +17,34 @@
 */
 
 Fixed::Fixed(void): _value(0) {
-	std::cout << "Default constructor called" << std::endl;
+	//std::cout << "Default constructor called" << std::endl;
 	return;
 }
 
 Fixed::Fixed(Fixed const &Cc) {
-	std::cout << "Copy constructor called" << std::endl;
+	//std::cout << "Copy constructor called" << std::endl;
 	*this = Cc;
 	return;
 }
 
 Fixed::Fixed(int const n) {
-	std::cout << "Int constructor called" << std::endl;
+	//std::cout << "Int constructor called" << std::endl;
 	_value = n << _bits;
 	return;
 }
 
 Fixed::Fixed(float const f) {
-	std::cout << "Float constructor called" << std::endl;
+	//std::cout << "Float constructor called" << std::endl;
 	_value = roundf(f * (1 << _bits));
 	//_value = floor(f * (1 << _bits));
 	return;
 }
 
 Fixed::~Fixed() {
-	std::cout << "Destructor called" << std::endl;
+	//std::cout << "Destructor called" << std::endl;
 	return;
 }
+
 
 /*
 **		Member functions
@@ -84,49 +74,70 @@ float			Fixed::toFloat(void) const {
 */
 
 Fixed			&Fixed::operator = (Fixed const &Cc) {
-	std::cout << "Assignation operator called" << std::endl;
+	//std::cout << "Assignation operator called" << std::endl;
 	if (this != &Cc)
 		_value = Cc.getRawBits();
 	return *this;
 }
 
+
 /*
 **		Comparison operators
 */
 
-bool				operator == (Fixed const &) const{
-	return _value == 
+bool				Fixed::operator == (Fixed const &rop) const {
+	return this->_value == rop.getRawBits();
 }
 
-bool				operator != (Fixed const &) const{
+bool				Fixed::operator != (Fixed const &rop) const {
+	return this->_value != rop.getRawBits();
 }
 
-bool				operator >= (Fixed const &) const{
+bool				Fixed::operator >= (Fixed const &rop) const {
+	return this->_value >= rop.getRawBits();
 }
 
-bool				operator <= (Fixed const &) const{
+bool				Fixed::operator <= (Fixed const &rop) const {
+	return this->_value <= rop.getRawBits();
 }
 
-bool				operator > (Fixed const &) const{
+bool				Fixed::operator > (Fixed const &rop) const {
+	return this->_value > rop.getRawBits();
 }
 
-bool				operator < (Fixed const &) const{
+bool				Fixed::operator < (Fixed const &rop) const {
+	return this->_value < rop.getRawBits();
 }
+
 
 /*
 **		Arithmetic operators	
 */
 
-Fixed				operator + (Fixed const &) const{
+Fixed				Fixed::operator + (Fixed const &rop) const {
+	Fixed res;
+	res._value = this->_value + rop.getRawBits();
+	return res;
 }
 
-Fixed				operator - (Fixed const &) const{
+Fixed				Fixed::operator - (Fixed const &rop) const {
+	Fixed res;
+	res._value = this->_value - rop.getRawBits();
+	return res;
 }
 
-Fixed				operator * (Fixed const &) const{
+Fixed				Fixed::operator * (Fixed const &rop) const {
+	Fixed res;
+	res.setRawBits(this->_value * rop.getRawBits() >> this->_bits);
+	return res;
 }
 
-Fixed				operator / (Fixed const &) const{
+Fixed				Fixed::operator / (Fixed const &rop) const {
+	Fixed res;
+	if (rop.getRawBits() == 0)
+		throw _division_by_zero();
+	res.setRawBits((this->_value << this->_bits) / rop.getRawBits());
+	return res;
 }
 
 
@@ -134,16 +145,26 @@ Fixed				operator / (Fixed const &) const{
 **		Increment/Decrement Pre/Post operators
 */
 
-Fixed				&operator ++ () const{
+Fixed				&Fixed::operator ++ () {
+	this->_value += 1;
+	return *this;
 }
 
-Fixed				operator ++ (int) const{
+Fixed				Fixed::operator ++ (int) {
+	Fixed res(*this);
+	operator++();
+	return res;
 }
 
-Fixed				&operator -- () const{
+Fixed				&Fixed::operator -- () {
+	this->_value -= 1;
+	return *this;
 }
 
-Fixed				operator -- (int) const{
+Fixed				Fixed::operator -- (int) {
+	Fixed res(*this);
+	operator--();
+	return res;
 }
 
 
@@ -151,16 +172,28 @@ Fixed				operator -- (int) const{
 **		Non-member functions
 */
 
-Fixed				&min(Fixed &, Fixed &){
+Fixed				&Fixed::min(Fixed &a, Fixed &b){
+	if (a.getRawBits() > b.getRawBits())
+		return b;
+	return a;
 }
 
-Fixed const			&min(Fixed const &, Fixed const &){
+Fixed const			&Fixed::min(Fixed const &a, Fixed const &b) {
+	if (a.getRawBits() > b.getRawBits())
+		return b;
+	return a;
 }
 
-Fixed				&max(Fixed &, Fixed &){
+Fixed				&Fixed::max(Fixed &a, Fixed &b){
+	if (a.getRawBits() < b.getRawBits())
+		return b;
+	return a;
 }
 
-Fixed const			&max(Fixed const &, Fixed const &){
+Fixed const			&Fixed::max(Fixed const &a, Fixed const &b) {
+	if (a.getRawBits() < b.getRawBits())
+		return b;
+	return a;
 }
 
 
