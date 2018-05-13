@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lfabbro <>                                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/05/07 15:13:37 by lfabbro           #+#    #+#              #
-#    Updated: 2018/05/13 00:40:52 by lfabbro          ###   ########.fr        #
+#    Created: 2018/05/12 15:19:14 by lfabbro           #+#    #+#              #
+#    Updated: 2018/05/13 12:18:00 by lfabbro          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -27,7 +27,7 @@ LIB 		= $(addprefix -L, $(LIB_PATH))
 INC 		= $(addprefix -I ,$(INC_PATH))
 
 CPP			= clang++
-CPPFLAGS	= -Wall -Wextra -Werror
+CPPFLAGS	= -Wall -Wextra -Werror #-std=c++11
 
 RED			= \033[31;44m
 GREEN		= \033[32;44m

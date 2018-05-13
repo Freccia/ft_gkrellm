@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/13 00:15:26 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 00:16:36 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/05/12 15:54:31 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/13 12:18:18 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "Fixed.hpp"
 
-int main( void ) {
+int		main( void ) {
 	Fixed a;
 	Fixed b( a );
 	Fixed c;

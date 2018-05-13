@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/13 00:16:42 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 00:44:14 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/05/12 15:32:22 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/13 12:17:27 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 
 class Fixed {
 
+private:
+	int					_value;
+	static int const	_bits = 8;
+
 public:
 	Fixed();
 	Fixed(Fixed const &);
@@ -25,11 +29,6 @@ public:
 	int					getRawBits(void) const;
 	void				setRawits(int const);
 	Fixed				&operator = (Fixed const &);
-
-private:
-	int					_value;
-	static int const	_bits;
-
 };
 
 std::ostream		&operator << (std::ostream &, Fixed const &);

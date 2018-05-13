@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 00:21:49 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 01:08:37 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/13 13:29:53 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ Fixed::Fixed(int const n) {
 
 Fixed::Fixed(float const f) {
 	std::cout << "Float constructor called" << std::endl;
-	_value = f;
+	_value = roundf(f * (1 << _bits));
+	//_value = floor(f * (1 << _bits));
 	return;
 }
 
-Fixed::~Fixed(void) {
+Fixed::~Fixed() {
+	std::cout << "Destructor called" << std::endl;
 	return;
 }
 
@@ -43,7 +45,7 @@ int				Fixed::getRawBits(void) const {
 	return _value;
 }
 
-void			Fixed::setRawits(int raw) {
+void			Fixed::setRawBits(int const raw) {
 	_value = raw;
 	return;
 }
@@ -54,7 +56,7 @@ int				Fixed::toInt(void) const {
 
 float			Fixed::toFloat(void) const {
 	float	f = _value;
-	return f;
+	return f / (1 << _bits);
 }
 
 Fixed			&Fixed::operator = (Fixed const &Cc) {
@@ -65,6 +67,6 @@ Fixed			&Fixed::operator = (Fixed const &Cc) {
 }
 
 std::ostream	&operator << (std::ostream &out, Fixed const &f) {
-	out << f.getRawBits();
+	out << f.toFloat();
 	return out;
 }
