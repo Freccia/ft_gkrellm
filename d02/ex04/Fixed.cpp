@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 14:34:34 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 15:48:56 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/14 14:16:41 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,18 @@ Fixed			&Fixed::operator = (Fixed const &Cc) {
 	return *this;
 }
 
+Fixed			&Fixed::operator = (int n) {
+	//std::cout << "Assignation operator called" << std::endl;
+	_value = n << _bits;
+	return *this;
+}
+
+Fixed			&Fixed::operator = (float f) {
+	//std::cout << "Assignation operator called" << std::endl;
+	_value = roundf(f * (1 << _bits));
+	return *this;
+}
+
 
 /*
 **		Comparison operators
@@ -137,6 +149,12 @@ Fixed				Fixed::operator / (Fixed const &rop) const {
 	if (rop.getRawBits() == 0)
 		throw _division_by_zero();
 	res.setRawBits((this->_value << this->_bits) / rop.getRawBits());
+	return res;
+}
+
+Fixed				Fixed::operator - () const {
+	Fixed res;
+	res._value = -this->_value;
 	return res;
 }
 

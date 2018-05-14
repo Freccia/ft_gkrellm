@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 15:32:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 15:49:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/14 14:15:59 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ public:
 	void				setRawBits(int const);
 	int					toInt(void) const;
 	float				toFloat(void) const;
+
+	/*		Assignation operators	*/
 	Fixed				&operator = (Fixed const &);
+	Fixed				&operator = (int);
+	Fixed				&operator = (float);
 
 	/*		Comparison operators	*/
 	bool				operator == (Fixed const &) const;
@@ -48,6 +52,7 @@ public:
 	Fixed				operator - (Fixed const &) const;
 	Fixed				operator * (Fixed const &) const;
 	Fixed				operator / (Fixed const &) const;
+	Fixed				operator - () const;
 
 	/*		Increment/Decrement Pre/Post operators	*/
 	Fixed				&operator ++ ();

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:26:06 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 15:56:51 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/14 11:50:06 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int		main( void ) {
 	Fixed a (15.3f);
 	Fixed b ( Fixed( 5.05f ) / Fixed( 2 ) );
-	Fixed c (5.5f);
+	Fixed c (-5.5f);
 	Fixed d (0);
 
 /*		Arithmetic Operations */
