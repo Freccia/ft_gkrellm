@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FragTrap.hpp                                       :+:      :+:    :+:   */
+/*   ScavTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 15:13:46 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/17 11:59:34 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/17 11:59:03 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRAGTRAP_H
-# define FRAGTRAP_H
+#ifndef SCAVTRAP_H
+# define SCAVTRAP_H
 
 #include <cstdlib>
 #include <iostream>
@@ -19,17 +19,17 @@
 
 #include "ClapTrap.hpp"
 
-class FragTrap : public ClapTrap {
+class ScavTrap : public ClapTrap {
 public:
-	FragTrap();
-	FragTrap(std::string);
-	FragTrap(FragTrap const &);
-	~FragTrap();
+	ScavTrap();
+	ScavTrap(std::string);
+	ScavTrap(ScavTrap const &);
+	~ScavTrap();
 
 	/*	Operators	*/
-	FragTrap	&operator = (FragTrap const &);
+	ScavTrap		&operator = (ScavTrap const &);
 
-	void		vaulthunter_dot_exe(std::string const & target);
+	void		challengeNewcomer(std::string const &);
 
 };
 
