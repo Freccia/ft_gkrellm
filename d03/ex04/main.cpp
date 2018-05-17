@@ -6,13 +6,14 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 17:08:23 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/17 15:14:55 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/17 17:06:38 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FragTrap.hpp"
 #include "ScavTrap.hpp"
 #include "NinjaTrap.hpp"
+#include "SuperTrap.hpp"
 
 void	test_fragTrap(void) {
 	FragTrap	ft;
@@ -83,6 +84,33 @@ void	test_ninjaTrap(void) {
 	}
 }
 
+void	test_superTrap(void) {
+	SuperTrap	ft;
+	SuperTrap	ct("Gundam");
+	SuperTrap	Cct(ft);
+	SuperTrap	eq;
+
+	ClapTrap	Clap_test;
+	ScavTrap	Scav_test;
+
+	eq = ct;
+
+	ft.meleeAttack("Tatoori");
+	ct.rangedAttack("OldBoy");
+	Cct.ninjaShoebox(Clap_test);
+	eq.ninjaShoebox(Scav_test);
+	Cct.vaulthunter_dot_exe("Enemy one");
+	eq.vaulthunter_dot_exe("Enemy two");
+
+	for (int i=0; i < 5; i++) {
+		ft.takeDamage(25);
+	}
+
+	for (int i=0; i < 2; i++) {
+		ft.beRepaired(50);
+	}
+}
+
 int		main(void) {
 	std::cout << "---- FragTrap ---------------------------------" << std::endl;
 	test_fragTrap();
@@ -92,6 +120,9 @@ int		main(void) {
 	std::cout << "---- end --------------------------------------" << std::endl;
 	std::cout << "---- NinjaTrap ---------------------------------" << std::endl;
 	test_ninjaTrap();
+	std::cout << "---- end --------------------------------------" << std::endl;
+	std::cout << "---- SuperTrap ---------------------------------" << std::endl;
+	test_superTrap();
 	std::cout << "---- end --------------------------------------" << std::endl;
 
 	return 0;

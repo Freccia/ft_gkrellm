@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 15:20:32 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/17 15:42:00 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/17 17:32:17 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ public:
 
 	/*	Operators	*/
 	SuperTrap		&operator = (SuperTrap const &);
+
+	using FragTrap::_hitPoints;
+	using FragTrap::rangedAttack;
+	using NinjaTrap::meleeAttack;
 
 };
 
