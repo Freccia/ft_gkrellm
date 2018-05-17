@@ -1,125 +1,86 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FragTrap.cpp                                       :+:      :+:    :+:   */
+/*   ScavTrap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 15:14:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/14 17:29:41 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/17 14:41:41 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FragTrap.hpp"
+#include "ScavTrap.hpp"
 
-FragTrap::FragTrap():
-_name("TUX"),
-_level(1),
-_hitPoints(100),
-_maxHitPoints(100),
-_energyPoints(100),
-_maxEnergyPoints(100),
-_meleeAttackDamage(30),
-_rangedAttackDamage(20),
-_armorReduction(5) {
-	std::cout << "A nasty FR4G-TP named " << _name
-	<< " is being created !" << std::endl;
+/*		Constructors - Desctructors		*/
+
+ScavTrap::ScavTrap() :
+	ClapTrap("R0M", 1, 100, 100, 50, 50, 20, 15, 3)
+{
+	std::cout << "A misterious SC4V-TP named " << _name
+	<< " appeared !" << std::endl;
 	return;
 }
 
-FragTrap::FragTrap(std::string name):
-_name(name),
-_level(1),
-_hitPoints(100),
-_maxHitPoints(100),
-_energyPoints(100),
-_maxEnergyPoints(100),
-_meleeAttackDamage(30),
-_rangedAttackDamage(20),
-_armorReduction(5) {
-	std::cout << "A nasty FR4G-TP named " << _name
-	<< " is being created !" << std::endl;
+ScavTrap::ScavTrap(std::string name) :
+	ClapTrap(name, 1, 100, 100, 50, 50, 20, 15, 3)
+{
+	std::cout << "A misterious SC4V-TP named " << _name
+	<< " appeared !" << std::endl;
 	return;
 }
 
-FragTrap::FragTrap(FragTrap const &Cc) {
-	*this = Cc;
-	std::cout << "A nasty FR4G-TP named " << _name
+ScavTrap::ScavTrap(ScavTrap const &Cc) :
+	ClapTrap(Cc)
+{
+	//*this = Cc;
+	std::cout << "A misterious SC4V-TP named " << _name
 	<< " is being cloned !" << std::endl;
 	return;
 }
 
-FragTrap::~FragTrap() {
-	std::cout << "The nasty FR4G-TP named " << _name
+ScavTrap::~ScavTrap() {
+	std::cout << "A misterious SC4V-TP named " << _name
 	<< " is destructed !" << std::endl;
 	return;
 }
 
-FragTrap &FragTrap::operator=(FragTrap const &Cc) {
-	_name = Cc._name;
-	_level = Cc._level;
-	_hitPoints = Cc._hitPoints;
-	_maxHitPoints = Cc._maxHitPoints;
-	_energyPoints = Cc._energyPoints;
-	_maxEnergyPoints = Cc._maxEnergyPoints;
-	_meleeAttackDamage = Cc._meleeAttackDamage;
-	_rangedAttackDamage = Cc._rangedAttackDamage;
-	_armorReduction = Cc._armorReduction;
+ScavTrap &ScavTrap::operator=(ScavTrap const &Cc) {
+	ClapTrap::operator = (Cc);
 	return *this;
 }
 
-void		FragTrap::rangedAttack(std::string const & target) {
-	std::cout << "FR4G-TP " << _name << " attacks "
-	<< target << " at range, causing " << _rangedAttackDamage
-	<< " points of damage !" << std::endl;
-	return;
-}
 
-void		FragTrap::meleeAttack(std::string const & target) {
-	std::cout << "FR4G-TP " << _name << " attacks "
-	<< target << ", causing " << _meleeAttackDamage
-	<< " points of damage !" << std::endl;
-	return;
-}
+/*		Member Functions		*/
 
-void		FragTrap::takeDamage(unsigned int amount) {
-	if (_hitPoints == 0) {
-		std::cout << "FR4G-TP " << _name << " is alredy dead !" << std::endl;
-		return;
-	}
-	std::cout << "FR4G-TP " << _name << " takes " << amount
-	<< " points of damage !" << std::endl;
-	_hitPoints -= amount;
-	if (_hitPoints < 0) {
-		std::cout << "FR4G-TP " << _name << " died !" << std::endl;
-		_hitPoints = 0;
-	}
-	return;
-}
-
-void		FragTrap::beRepaired(unsigned int amount) {
-	std::cout << "FR4G-TP " << _name << " is repaired of "  << amount
-	<< " points !" << std::endl;
-	_hitPoints += amount;
-	if (_hitPoints > _maxHitPoints) {
-		std::cout << "FR4G-TP " << _name
-		<< " is completely repaired !" << std::endl;
-		_hitPoints = _maxHitPoints;
-	}
-	return;
-}
-
-void		FragTrap::vaulthunter_dot_exe(std::string const & target) {
+void		ScavTrap::challengeNewcomer(std::string const & target) {
+/*
 	if (_energyPoints < 25) {
-		std::cout << "FR4G-TP " << _name
+		std::cout << "SC4V-TP " << _name
 		<< " has not enough energy, the attack failed !" << std::endl;
 		return;
 	}
-	std::string		attacks[] = {
-		"vomit bolt", "kitty", "roulette wheel", "gas fart", "towel"};
+	*/
+	std::string		riddles[] = {
+		"I travel all over the world, but always stay in my corner. What am I?",
+		"Which is the most curious letter?",
+		"A kind of tree can you carry in your hand?",
+		"I can fly, I can crawl, I have hands but no wings or legs. What am I?",
+		"What is easy to get into, but hard to get out of?"};
+	std::string		answers[] = {
+		"A stamp",
+		"Y?",
+		"A palm",
+		"Time",
+		"Trouble"};
 	std::srand(std::time(0));
-	std::cout << "FR4G-TP " << _name << " attacks " << target << " with a "
-	<< attacks[std::rand() % 5] << std::endl;
+	int				n = std::rand() % 5;
+	std::cout << "SC4V-TP " << _name << ": " << riddles[n] << std::endl;
+	std::cin.ignore();
+	std::cout << target << ": " << answers[n] << std::endl;
+	std::cout << std::endl;
+	/*
 	_energyPoints -= 25;
+	*/
 	return;
 }
