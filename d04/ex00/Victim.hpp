@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:40:13 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 14:27:27 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:19:30 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ public:
 	Victim(std::string name);
 	~Victim(void);
 	std::string		introduce(void) const;
+	virtual void	getPolymorphed(void) const;
 
 protected:
 	Victim(void); // default constructor

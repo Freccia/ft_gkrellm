@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:42:01 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 14:35:05 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:18:20 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Peon::Peon(void)
 	return;
 }
 
-Peon::Peon(std::string name) : _name(name)
+Peon::Peon(std::string name) : Victim(name), _name(name)
 {
 	std::cout << "Zog zog." << std::endl;
 	return;
@@ -33,6 +33,13 @@ Peon::~Peon(void)
 
 
 /*		Member functions	*/
+
+void			Peon::getPolymorphed(void) const
+{
+	std::cout << _name << " has been turned into a pink pony !"
+		<< std::endl;
+	return;
+}
 
 
 /*		Operators	*/

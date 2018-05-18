@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:40:13 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 14:35:03 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:19:16 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 #include <iostream>
 #include "Victim.hpp"
 
-class Peon : public Victim {
+class Peon : virtual public Victim {
 public:
 	Peon(std::string name);
 	~Peon(void);
+	virtual void	getPolymorphed(void) const;
 
 private:
 	Peon(void); // default constructor

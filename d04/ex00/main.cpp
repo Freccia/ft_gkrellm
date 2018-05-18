@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Sorcerer.hpp                                       :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/18 13:40:13 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 18:09:54 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/05/18 17:55:06 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/18 17:57:23 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SORCERER_HPP
-# define SORCERER_HPP
-
-#include <iostream>
+#include "Sorcerer.hpp"
 #include "Victim.hpp"
+#include "Peon.hpp"
 
-class Sorcerer {
-public:
-	Sorcerer(std::string name, std::string title);
-	~Sorcerer(void);
-	std::string		introduce(void) const;
-	void			polymorph(Victim const &) const;
+int main() {
+	Sorcerer robert("Robert", "the Magnificent");
+	Victim jim("Jimmy");
+	Peon joe("Joe");
 
-private:
-	Sorcerer(void); // default constructor
-	std::string		_name;
-	std::string		_title;
-};
-
-std::ostream		&operator << (std::ostream &, Sorcerer const &);
-
-#endif
+	std::cout << robert << jim << joe;
+	robert.polymorph(jim);
+	robert.polymorph(joe);
+	return 0;
+}

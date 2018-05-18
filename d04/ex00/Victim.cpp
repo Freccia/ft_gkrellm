@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:42:01 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 14:20:50 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:13:28 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ std::string		Victim::introduce(void) const
 	phrase.append(_name);
 	phrase.append(" and I like otters !\n");
 	return phrase;
+}
+
+void			Victim::getPolymorphed(void) const
+{
+	std::cout << _name << " has been turned into a cute little sheep !"
+		<< std::endl;
+	return;
 }
 
 

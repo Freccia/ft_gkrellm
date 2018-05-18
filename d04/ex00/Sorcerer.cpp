@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/18 13:42:01 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 14:21:19 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 18:11:32 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,16 @@ std::string		Sorcerer::introduce(void) const
 	return phrase;
 }
 
+void			Sorcerer::polymorph(Victim const & victim) const
+{
+	victim.getPolymorphed();
+	return;
+}
+
 
 /*		Operators	*/
 
-std::ostream	&operator << (std::ostream &out, Sorcerer const &S) {
+std::ostream	&operator << (std::ostream &out, Sorcerer const & S) {
 	out << S.introduce();
 	return out;
 }
