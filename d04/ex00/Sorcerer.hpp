@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Fixed.hpp                                          :+:      :+:    :+:   */
+/*   Sorcerer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/12 15:32:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/18 13:57:01 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/05/18 13:40:13 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/18 14:22:11 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FIXED_HPP
-# define FIXED_HPP
+#ifndef SORCERER_HPP
+# define SORCERER_HPP
 
 #include <iostream>
-#include <sstream>
+#include "Victim.hpp"
 
-class Fixed {
+class Sorcerer {
+public:
+	Sorcerer(std::string name, std::string title);
+	~Sorcerer(void);
+	std::string		introduce(void) const;
+	void			polymorph(Victim const &);
 
 private:
-	int					_value;
-	static int const	_bits = 8;
-
-public:
-	Fixed();
-	Fixed(Fixed const &);
-	~Fixed();
-	int					getRawBits(void) const;
-	void				setRawBits(int const);
-	Fixed				&operator = (Fixed const &);
+	Sorcerer(void); // default constructor
+	std::string		_name;
+	std::string		_title;
 };
 
-std::ostream		&operator << (std::ostream &, Fixed const &);
+std::ostream		&operator << (std::ostream &, Sorcerer const &);
 
 #endif

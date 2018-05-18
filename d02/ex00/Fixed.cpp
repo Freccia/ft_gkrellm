@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 16:06:54 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/13 12:15:25 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/18 13:57:15 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int				Fixed::getRawBits(void) const {
 	return _value;
 }
 
-void			Fixed::setRawits(int raw) {
+void			Fixed::setRawBits(int raw) {
 	_value = raw;
 	return;
 }
