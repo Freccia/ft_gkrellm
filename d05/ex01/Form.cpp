@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 13:07:39 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 13:39:58 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/25 18:27:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,14 @@ int					Form::getGradeToExec(void) const {
 }
 
 bool				Form::beSigned(Bureaucrat b) {
-	if (b.getGrade() > this->_minGradeToSign)
-		throw Form::GradeTooLowException();
+	if (b.getGrade() > this->_minGradeToSign) {
+		std::cout << b.getName() << " cannot sign " << this->_name
+			<< ", minimum grade to sign <" << this->getGradeToExec()
+			<< std::endl;
+		return false;
+	}
 	this->_signed = true;
+	std::cout << b.getName() << " signs " << this->_name << std::endl;
 	return true;
 }
 
@@ -79,6 +84,6 @@ std::ostream		&operator << (std::ostream &out, Form const &Cc) {
 	out << "<" << Cc.getName() << ">, signed <" << Cc.getSigned()
 		<< ">, minimum grade to sign <" << Cc.getGradeToSign()
 		<< ">, minimum grade to execute <" << Cc.getGradeToExec()
-		<< ">" << std::endl;
+		<< ">" ; //<< std::endl;
 	return out;
 }
