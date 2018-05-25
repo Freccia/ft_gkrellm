@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 09:48:31 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 11:22:20 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/25 12:45:45 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ private:
 
 public:
 	Bureaucrat(void);
-	Bureaucrat(int grade);
+	Bureaucrat(std::string name, int grade);
 	Bureaucrat(Bureaucrat const &);
 	~Bureaucrat(void);
 
