@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 10:04:54 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 10:26:18 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/25 11:22:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ Bureaucrat::Bureaucrat(void): _name("Frank"), _grade(150) {
 Bureaucrat::Bureaucrat(int grade): _grade(grade) {
 	if (_grade > MAX_GRADE)
 		throw Bureaucrat::GradeTooHighException();
+		//throw GradeTooHighException();
 	if (_grade < MIN_GRADE)
 		throw Bureaucrat::GradeTooLowException();
+		//throw GradeTooLowException();
 	return;
 }
 
@@ -47,12 +49,13 @@ void					Bureaucrat::increaseGrade(void) {
 	_grade--;
 	if (_grade < MAX_GRADE)
 		throw Bureaucrat::GradeTooHighException();
+		//throw GradeTooHighException();
 }
 
 void					Bureaucrat::decreaseGrade(void) {
 	_grade++;
 	if (_grade > MIN_GRADE)
-		throw Bureaucrat::GradeTooLowException();
+		throw GradeTooLowException();
 }
 
 /*		Operators				*/

@@ -6,11 +6,11 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 10:20:43 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 10:24:59 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/25 11:25:23 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Bureaucrat.cpp"
+#include "Bureaucrat.hpp"
 
 int			main(void)
 {
