@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 15:50:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 16:22:20 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 16:39:32 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void OfficeBlock::setIntern(Intern &intern) {
 	this->_intern = &intern;
 }
 
-void OfficeBlock::setSigning(Bureaucrat &signing) {
+void OfficeBlock::setSigner(Bureaucrat &signing) {
 	this->_signing = &signing;
 }
 

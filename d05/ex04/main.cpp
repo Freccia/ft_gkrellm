@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 10:20:43 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 16:33:08 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 16:39:40 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ int main() {
 	}
 
 	std::cout << "-------------------------------------" << std::endl;
-	block.setSigning(Francois);
+	block.setSigner(Francois);
 	try {
 		block.doBureaucracy("shrubberry creation", "free");
 	} catch (std::exception &e) {

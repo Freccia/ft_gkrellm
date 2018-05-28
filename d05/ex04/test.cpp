@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 15:54:04 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 15:56:26 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 16:41:18 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ int main() {
 	ob.setSigner(bob);
 	ob.setExecutor(hermes);
 
-	try {
+	try
+	{
 		ob.doBureaucracy("mutant pig termination", "Pigley");
 	}
-	catch (Some::SpecificException & e)
+	catch (std::exception & e)
 	{
-		/* specific known error happens, say something */
-	}
-	catch (std::exception & e) {
+		std::cout << e.what() << std::endl;
 		/* oh god, unknown error, what to do ?! */
 	}
 }
