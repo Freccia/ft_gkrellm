@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 13:00:44 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 13:39:36 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 15:00:39 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <iostream>
 #include "Bureaucrat.hpp"
+
+class Bureaucrat;
 
 class Form {
 private:
