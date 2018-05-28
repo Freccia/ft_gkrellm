@@ -6,18 +6,21 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 09:48:31 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 12:45:45 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 15:08:51 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUREAUCRAT_HPP
-# define BUREAUCRAT_HPP
+#define BUREAUCRAT_HPP
 
 #include <iostream>
 #include <exception>
+#include "Form.hpp"
 
 # define MIN_GRADE	150
 # define MAX_GRADE	1
+
+class Form;
 
 class Bureaucrat {
 private:
@@ -36,6 +39,9 @@ public:
 	int					getGrade(void) const;
 	void				increaseGrade(void);
 	void				decreaseGrade(void);
+	bool				signForm(Form &form);
+
+	bool				executeForm(Form const & form);
 
 
 	struct GradeTooHighException : public std::exception {

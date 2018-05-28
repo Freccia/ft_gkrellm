@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 10:04:54 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/25 12:56:50 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 15:09:45 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,27 @@ void					Bureaucrat::decreaseGrade(void) {
 	_grade++;
 	if (_grade > MIN_GRADE)
 		throw GradeTooLowException();
+}
+
+bool					Bureaucrat::signForm(Form &form) {
+	if (form.beSigned(*this) == false) {
+		std::cout << this->_name << " cannot sign " << form.getName()
+			<< std::endl;
+		return false;
+	}
+	std::cout << this->_name << " signed " << form.getName()
+		<< std::endl;
+	return true;
+}
+
+bool					Bureaucrat::executeForm(Form const &form) {
+	if (form.execute(*this) == true) {
+		std::cout << this->_name << " cannot execute " << form.getName()
+			<< std::endl;
+		return false;
+	}
+	std::cout << this->_name << " executes " << form.getName() << std::endl;
+	return true;
 }
 
 /*		Operators				*/

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 13:51:54 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 13:56:30 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 14:45:55 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <iostream>
 #include "Form.hpp"
-#include <fstream>
 
 class RobotomyRequestForm : public Form {
 private:
@@ -24,11 +23,11 @@ private:
 public:
 	RobotomyRequestForm(std::string target);
 	RobotomyRequestForm(RobotomyRequestForm const &Cc);
-	~RobotomyRequestForm(void);
+	virtual ~RobotomyRequestForm(void);
 
 	RobotomyRequestForm		&operator = (RobotomyRequestForm const &Cc);
 
-	virtual bool			execute(Bureaucrat const &) const = 0;
+	virtual bool			execute(Bureaucrat const &) const;
 };
 
 #endif

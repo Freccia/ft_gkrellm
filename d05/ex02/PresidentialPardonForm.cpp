@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RobotomyRequestForm.cpp                            :+:      :+:    :+:   */
+/*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/28 13:54:30 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 14:34:53 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/05/28 14:32:27 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/05/28 14:34:51 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
-RobotomyRequestForm::RobotomyRequestForm(void) {
+PresidentialPardonForm::PresidentialPardonForm(void) {
 	return;
 }
 
-RobotomyRequestForm::RobotomyRequestForm(std::string target) :
-	Form("RobotomyRequestForm", 0, 72, 45)
+PresidentialPardonForm::PresidentialPardonForm(std::string target) :
+	Form("PresidentialPardonForm", 0, 72, 45)
 {
 	setTarget(target);
 	return;
 }
 
-RobotomyRequestForm::~RobotomyRequestForm(void) {
+PresidentialPardonForm::~PresidentialPardonForm(void) {
 	return;
 }
 
-RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const &Cc):
+PresidentialPardonForm::PresidentialPardonForm(PresidentialPardonForm const &Cc):
 	Form(Cc)
 {
 	this->setTarget(Cc.getTarget());
 	return;
 }
 
-bool			RobotomyRequestForm::execute(Bureaucrat const &executor) const {
+bool		PresidentialPardonForm::execute(Bureaucrat const &executor) const {
 	if (this->getSigned() == false) {
 		std::cout << "Cannot execute: This form is not signed." << std::endl;
 		return false;
@@ -42,9 +42,7 @@ bool			RobotomyRequestForm::execute(Bureaucrat const &executor) const {
 	if (executor.getGrade() > this->getGradeToExec()) {
 		throw Form::GradeTooLowException();
 	}
-	std::cout << "BzzzTrrshhCshhhh Bzzz Bzzz Vrrrreeee" << std::endl;
 	std::cout << this->getTarget()
-		<< " has successfully robotomized 50%% of his time,"
-		<< " sadly the rest of the time he's still a slow human. " << std::endl;
+		<< " has been pardoned by Zafod Beeblebrox" << std::endl;
 	return true;
 }
