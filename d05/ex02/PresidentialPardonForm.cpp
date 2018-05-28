@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 14:32:27 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 14:34:51 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 15:23:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ PresidentialPardonForm::PresidentialPardonForm(PresidentialPardonForm const &Cc)
 {
 	this->setTarget(Cc.getTarget());
 	return;
+}
+
+PresidentialPardonForm &PresidentialPardonForm::
+		operator = (PresidentialPardonForm const &rfs)
+{
+	(void)rfs;
+	return *this;
 }
 
 bool		PresidentialPardonForm::execute(Bureaucrat const &executor) const {

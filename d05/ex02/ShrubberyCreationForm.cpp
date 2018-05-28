@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 13:15:37 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 14:34:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 15:24:25 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ ShrubberyCreationForm::ShrubberyCreationForm(ShrubberyCreationForm const &Cc):
 {
 	this->setTarget(Cc.getTarget());
 	return;
+}
+
+ShrubberyCreationForm &ShrubberyCreationForm::
+	operator = (ShrubberyCreationForm const &rfs)
+{
+	(void)rfs;
+	return *this;
 }
 
 bool			ShrubberyCreationForm::execute(Bureaucrat const &executor) const {
