@@ -6,13 +6,13 @@
 #    By: lfabbro <>                                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/13 12:26:19 by lfabbro           #+#    #+#              #
-#    Updated: 2018/05/30 15:21:04 by lfabbro          ###   ########.fr        #
+#    Updated: 2018/05/30 17:30:25 by lfabbro          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 NAME		= ft_retro
 
-SRC_NAME	= ft_retro.cpp
+SRC_NAME	= ft_retro.cpp Player.cpp
 
 LIB_NAME	= -lncurses #-lft
 
