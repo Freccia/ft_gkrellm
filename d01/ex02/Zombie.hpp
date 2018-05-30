@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 12:42:31 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/09 15:14:20 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/29 11:10:51 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ public:
 	Zombie();
 	~Zombie();
 	void			announce();
-	std::string		getName(void);
-	void			setName(std::string name);
-	std::string		getType(void);
-	void			setType(std::string type);
+	std::string		getZombieName(void);
+	void			setZombieName(std::string name);
+	std::string		getZombieType(void);
+	void			setZombieType(std::string type);
 private:
 	std::string		_type;
 	std::string		_name;

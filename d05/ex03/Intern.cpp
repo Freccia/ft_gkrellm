@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/28 15:29:15 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 15:45:27 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 16:30:51 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@ Intern		&Intern::operator = (Intern const &Cc) {
 
 Form*		Intern::makeForm(std::string name, std::string target) {
 	if (name == "presidential pardon") {
-		std::cout << "Intern creates " << name << std::endl;
+		std::cout << "Intern creates " << name << ": " << target << std::endl;
 		return new PresidentialPardonForm(target);
 	}
 	else if (name == "robotomy request") {
-		std::cout << "Intern creates " << name << std::endl;
+		std::cout << "Intern creates " << name  << ": " << target<< std::endl;
 		return new RobotomyRequestForm(target);
 	}
 	else if (name == "shrubbery creation") {
-		std::cout << "Intern creates " << name << std::endl;
+		std::cout << "Intern creates " << name << ": " << target << std::endl;
 		return new ShrubberyCreationForm(target);
 	}
-	std::cout << "Cannot create unknown Form " << name << std::endl;
+	std::cout << "Cannot create unknown Form " << name<< ": " << target << std::endl;
 	return NULL;
 }

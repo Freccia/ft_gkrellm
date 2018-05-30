@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/13 15:26:06 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/14 11:50:06 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/30 13:13:46 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ int		main( void ) {
 				Fixed::min( a, c ) << std::endl;
 
 /*		Exceptions */
-	std::cout << b / d << std::endl;
+	try {
+		std::cout << b / d << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "Exception: Division by zero" << std::endl;
+	}
 
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 12:43:12 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/09 13:08:21 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/29 11:11:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ZOMBIEEVENT_HPP
 
 #include <iostream>
+#include "Zombie.hpp"
 
 class ZombieEvent {
 public:

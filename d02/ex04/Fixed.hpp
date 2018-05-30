@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 15:32:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/14 14:15:59 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/30 13:21:30 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ public:
 	static Fixed const			&max(Fixed const &, Fixed const &);
 
 	/*		Exceptions*/
-	struct _division_by_zero : std::exception {};
+	struct _division_by_zero : public std::exception {
+		const char * what() const throw () {
+			return "Division by zero exception.";
+		}
+	};
 };
 
 std::ostream		&operator << (std::ostream &, Fixed const &);

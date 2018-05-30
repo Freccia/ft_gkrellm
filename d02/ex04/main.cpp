@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/12 15:54:31 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/14 14:58:18 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/30 13:21:48 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,13 @@ Fixed		calculate()
 		if (c == '*')
 			result = result * factor();
 		else if (c == '/')
-			result = result / factor();
+		{
+			try { result = result / factor(); }
+			catch (std::exception &e) {
+				std::cerr << e.what() << " Abort." << std::endl;
+				exit(1);
+			}
+		}
 	}
 	return result;
 }

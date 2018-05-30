@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 12:43:49 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/09 15:34:33 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/29 11:11:52 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ Zombie*			ZombieEvent::newZombie(std::string name){
 	Zombie*		z;
 
 	z = new Zombie();
-	z->setName(name);
-	z->setType(this->_zombieType);
+	z->setZombieName(name);
+	z->setZombieType(this->_zombieType);
 	return z;
 }
 
@@ -48,9 +48,9 @@ Zombie*			ZombieEvent::randomChump(void){
 	//int				random_type = rand() % types_size;
 
 	zombie = new Zombie();
-	zombie->setName(names[random_name]);
-	zombie->setType(this->_zombieType);
-	//zombie->setType(types[random_type]);
+	zombie->setZombieName(names[random_name]);
+	zombie->setZombieType(this->_zombieType);
+	//zombie->setZombieType(types[random_type]);
 	zombie->announce();
 	return zombie;
 }

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/09 12:43:55 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/09 15:30:36 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/29 11:10:58 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ Zombie::~Zombie(void){
 	return;
 }
 
-std::string		Zombie::getName(void){
+std::string		Zombie::getZombieName(void){
 	return this->_name;
 }
 
-std::string		Zombie::getType(void){
+std::string		Zombie::getZombieType(void){
 	return this->_type;
 }
 
-void			Zombie::setName(std::string _name){
+void			Zombie::setZombieName(std::string _name){
 	this->_name = _name;
 }
 
-void			Zombie::setType(std::string _type){
+void			Zombie::setZombieType(std::string _type){
 	this->_type = _type;
 }
 

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 10:04:54 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/05/28 15:09:45 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/05/28 16:36:34 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool					Bureaucrat::signForm(Form &form) {
 }
 
 bool					Bureaucrat::executeForm(Form const &form) {
-	if (form.execute(*this) == true) {
+	if (form.execute(*this) == false) {
 		std::cout << this->_name << " cannot execute " << form.getName()
 			<< std::endl;
 		return false;
