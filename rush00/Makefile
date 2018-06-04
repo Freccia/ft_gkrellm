@@ -1,56 +1,35 @@
-#******************************************************************************#
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lfabbro <>                                 +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/05/13 12:26:19 by lfabbro           #+#    #+#              #
-#    Updated: 2018/05/30 17:30:25 by lfabbro          ###   ########.fr        #
-#                                                                              #
-#******************************************************************************#
+NAME = ft_retro
 
-NAME		= ft_retro
+FLAGS = -Wall -Wextra -Werror -std=c++98 #-D_XOPEN_SOURCE_EXTENDED
+CC = clang++
 
-SRC_NAME	= ft_retro.cpp Player.cpp
+C_FILES = ft_retro.cpp GameMaster.cpp GameEntity.cpp Player.cpp NastyFive.cpp
 
-LIB_NAME	= -lncurses #-lft
+NCURSES = -lncurses
 
-SRC_PATH	= #./srcs/
-OBJ_PATH	= ./objs/
-LIB_PATH	=
-INC_PATH	=
+O_FILES = $(C_FILES:%.cpp=%.o)
 
-SRC			= $(addprefix $(SRC_PATH),$(SRC_NAME))
-OBJ			= $(SRC:.cpp=.o)
-LIB 		= $(addprefix -L, $(LIB_PATH))
-INC 		= $(addprefix -I ,$(INC_PATH))
+################################################################################
+#################################### RULES #####################################
+################################################################################
 
-CPP			= clang++
-CPPFLAGS	= -Wall -Wextra -Werror #-std=c++11
+all : $(NAME)
 
-RED			= \033[31;44m
-GREEN		= \033[32;44m
-ENDC		= \033[0m
+$(NAME) : $(O_FILES)
+	@$(CC) $(FLAGS) $(O_FILES) -o $@ $(NCURSES)
+	@echo "\033[1;31m-- EXEC ------------------------\033[0m"
+	@printf  "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-.PHONY: all clean fclean re
+%.o: %.cpp
+	@$(CC) $(FLAGS) -o $@ -c $< $(NCURSE)
+	@printf  "%-45s\033[1;32m%s\033[0m\n" "Make $@" "OK"
 
-all: $(NAME)
+clean :
+	@rm -rf $(O_FILES)
 
-$(NAME): #$(OBJ)
-	$(CPP) $(CPPFLAGS) $(INC) $(SRC) -o $(NAME) $(LIB_NAME) #$(LIB)
-	@printf "$(GREEN) Make $(NAME) $(ENDC)\n"
+fclean : clean
+	@rm -rf $(NAME)
 
-%.o: %.c
-	$(CPP) $(CPPFLAGS) -o $@ -c $< $(INC)
+re : fclean all
 
-clean:
-	@printf "$(RED) Removing $(NAME) objects $(ENDC)\n"
-	@rm -rfv $(OBJ) $(OBJ_PATH)
-
-fclean: clean
-	@printf "$(RED) Removing $(NAME) executables $(ENDC)\n"
-	@rm -fv $(NAME)
-
-re: fclean
-	@make all
+.PHONY : clean all fclean re
