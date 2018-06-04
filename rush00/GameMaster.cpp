@@ -6,11 +6,6 @@
 #include <ctime>
 #include <unistd.h>
 
-#include <curses.h>
-#include <ncurses.h>
-#include <locale.h>
-#include <wchar.h>
-
 GameMaster::GameMaster(void) :
 _ch(0),
 _nEntities(0),
@@ -165,7 +160,6 @@ void		GameMaster::displayBanner(void) {
 	msg.append(std::to_string(this->_superFancyPoints));
 	mvprintw(WINBOXY - 2, WINBOXX, msg.c_str());
 	mvprintw(WINBOXY - 3, WINBOXX, "        ");
-	addstr("\u2764\u2764\u2764\u2764\u2764");
 }
 
 void		GameMaster::refreshWindow(void) {
