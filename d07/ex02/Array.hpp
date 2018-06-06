@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 13:53:14 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/06 14:43:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/06 14:51:27 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ private:
 public:
 	Array(): _arr(NULL), _size(0) {};
 	Array(unsigned int size): _size(size) {
-			this->_arr = (size != 0) ? new T(size) : NULL;
+			this->_arr = (size != 0) ? new T[size] : NULL;
 	};
 	Array(Array const &Cc) {
 		this->_size = Cc._size;
-		this->_arr = new T(Cc._size);
+		this->_arr = new T[Cc._size];
 		for (unsigned int i=0; i < Cc._size; i++) {
 			this->_arr[i] = Cc._arr[i];
 		}
 	}
-	~Array() { delete[] this->_arr; };
+	~Array(){};
 
 	/* MEMBER FUNCTIONS */
 	unsigned int		size(void) { return this->_size; };
@@ -49,11 +49,13 @@ public:
 
 	/* OPERATORS */
 	Array	&operator = (Array const &Cc) {
+		delete[] this->_arr;
 		this->_size = Cc._size;
 		this->_arr = new T(Cc._size);
 		for (unsigned int i=0; i < Cc._size; i++) {
 			this->_arr[i] = Cc._arr[i];
 		}
+		return *this;
 	}
 
 	T		&operator [] (unsigned int k) throw (std::exception) {

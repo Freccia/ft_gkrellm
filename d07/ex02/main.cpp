@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 14:10:51 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/06 14:44:38 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/06 14:54:54 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,27 @@ int		main(void)
 	for (size_t i=0; i < size; i++) {
 		lol[i] = (i + 1) * 10;
 	}
-	for (size_t i=size/3; i < size; i++) {
+	for (size_t i=size/2; i < size; i++) {
 		std::cout << i << ":    " << lol[i] << std::endl;
+	}
+
+	std::cout << "-----------------------------------------------" << std::endl;
+	std::cout << "Cloning array..." << std::endl;
+	Array<int>	lul(lol);
+
+	for (size_t i=0; i < size; i++) {
+		if (lul[i] != lol[i])
+			std::cout << i << ": differs " << lol[i] << " - " << lul[i] << std::endl;
+	}
+
+	std::cout << "-----------------------------------------------" << std::endl;
+	std::cout << "Copying array..." << std::endl;
+	Array<int>	lel(0);
+
+	lel = lol;
+	for (size_t i=0; i < size; i++) {
+		if (lel[i] != lol[i])
+			std::cout << i << ": differs " << lol[i] << " - " << lel[i] << std::endl;
 	}
 
 	std::cout << "-----------------------------------------------" << std::endl;
