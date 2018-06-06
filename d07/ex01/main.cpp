@@ -23,8 +23,8 @@ int		main( void )
 	std::string arr[4] = {"Blue", "Red", "Orange", "Yellow"};
 	size_t	size = 4;
 
-	::iter(arr, size, &test_templ);
-	::iter(arr, size, &test_str);
+	::iter_ter(arr, size, &test_templ);
+	::iter_ter(arr, size, &test_str);
 	::iter_bis(arr, size, &test_biz);
 	std::cout << "arr: " << arr << std::endl;
 	return 0;
