@@ -2,6 +2,26 @@
 #include "templates.cpp"
 #include <iostream>
 
+class Awesome {
+public:
+	Awesome( int n ) : _n( n ) {}
+
+	int		get() const { return _n; };
+
+	bool operator==( Awesome const & rhs ) { return (this->_n == rhs._n); }
+	bool operator!=( Awesome const & rhs ) { return (this->_n != rhs._n); }
+	bool operator>( Awesome const & rhs ) { return (this->_n > rhs._n); }
+	bool operator<( Awesome const & rhs ) { return (this->_n < rhs._n); }
+	bool operator>=( Awesome const & rhs ) { return (this->_n >= rhs._n); }
+	bool operator<=( Awesome const & rhs ) { return (this->_n <= rhs._n); }
+
+private:
+	int _n;
+};
+
+std::ostream & operator<<( std::ostream & o, Awesome const & rhs ) { o << rhs.get(); return o; }
+
+
 int main( void )
 {
 	int a = 2;
@@ -32,6 +52,17 @@ int main( void )
 	std::cout << "x = " << x << ", y = " << y << std::endl;
 	std::cout << "min( x, y ) = " << ::min( x, y ) << std::endl;
 	std::cout << "max( x, y ) = " << ::max( x, y ) << std::endl;
+
+	std::cout << std::endl;
+
+	Awesome j(10);
+	Awesome k(42);
+
+	::swap( x, y );
+	std::cout << "j = " << j << ", k = " << k << std::endl;
+	std::cout << "min( j, k ) = " << ::min( j, k ) << std::endl;
+	std::cout << "max( j, k ) = " << ::max( j, k ) << std::endl;
+
 
 /*
 	std::cout << std::endl;
