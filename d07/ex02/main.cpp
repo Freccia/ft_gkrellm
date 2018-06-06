@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/06 14:10:51 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/06 14:54:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/06 15:18:01 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ int		main(void)
 	std::cout << "Creating an empty array" << std::endl;
 	Array<int>	hey(0);
 	std::cout << "Accessing arr[1]: " << std::endl;
-	try { if (hey[0] == 0) std::cout << "No exception" << std::endl; }
-	catch (std::exception &e)
+
+	try { if (lol[300] == 0) std::cout << "No exception" << std::endl; }
+	catch (Array<int>::OperatorOutOfRange &e)
 		{ std::cout << e.what() << std::endl; };
 
 	/*
-
 	std::cout << "-----------------------------------------------" << std::endl;
 	try { if (lol[300] == 0) std::cout << "No exception" << std::endl; }
 	catch (std::exception &e)
