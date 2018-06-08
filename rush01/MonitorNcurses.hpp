@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:43:18 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:26:40 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 18:03:25 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ private:
 	int			_winY;
 	int			_totX;
 	int			_totY;
+	int			_nextY;
 	int			_ch;
 	clock_t		_beginTime;
 	clock_t		_lastDisplay;

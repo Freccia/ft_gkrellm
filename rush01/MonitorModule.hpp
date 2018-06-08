@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:16:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:50:11 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 17:55:57 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ public:
 	void					refresh(void);
 	/*				*/
 	virtual void			display(void);
+	//virtual void			update(void);
 };
 
 #endif

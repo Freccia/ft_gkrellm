@@ -6,17 +6,18 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:51:44 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 18:32:52 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MonitorNcurses.hpp"
 #include "OSModule.hpp"
+#include "DateModule.hpp"
 #include <iostream>
 #include <signal.h>
 
 MonitorNcurses::MonitorNcurses(void) :
-_winX(COLS), _winY(LINES),
+_winX(COLS), _winY(LINES), _nextY(0),
 _ch(0), _beginTime(clock()), _lastDisplay(0)
 {
 	initscr();
@@ -40,6 +41,7 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	this->_modules.push_back(mod1);
 	this->_totX = 0;
 	this->_totY = 3;
+	this->_nextY = mod1->getSize()[Y] + mod1->getPos()[Y];
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
 };
@@ -58,6 +60,7 @@ void		MonitorNcurses::resizeHandler(int sig) {
 }
 
 void		MonitorNcurses::addModule(std::string type) {
+	MonitorModule		*mod = NULL;
 	MonitorModule		*last = this->_modules.back();
 	std::vector<int>	lpos = last->getPos();
 	std::vector<int>	lsiz = last->getSize();
@@ -65,21 +68,34 @@ void		MonitorNcurses::addModule(std::string type) {
 	pos[Y] = (lpos[Y]);
 	pos[X] = (lpos[X] + lsiz[X]);
 
+	/* align */
 	if (this->_totX + pos[X] >= WCOLS - 1) {
-		pos[Y] += lsiz[Y];
 		pos[X] = 0;
-		this->_totX = 0;
+		if (this->_nextY > pos[Y])
+			pos[Y] = this->_nextY;
+		else
+			pos[Y] += lsiz[Y];
 		this->_totY += pos[Y];
+		this->_totX = 0;
 	}
 	if (this->_totY + pos[Y] >= WLINES - 1) {
 		return;
 	}
 
+	/* choose module type */
 	if (type == "standard") {
-		MonitorModule *mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
-		this->_modules.push_back(mod);
-		this->_totX += pos[X];
+		mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
+	} else if (type == "os") {
+		mod = new OSModule(pos[X], pos[Y]);
+	} else if (type == "date") {
+		mod = new DateModule(pos[X], pos[Y]);
 	}
+
+	/* update */
+	if (this->_nextY < mod->getSize()[Y])
+		this->_nextY = mod->getSize()[Y] + mod->getPos()[Y];
+	this->_modules.push_back(mod);
+	this->_totX += pos[X];
 }
 
 void		MonitorNcurses::getKey(void) {
@@ -91,6 +107,9 @@ void		MonitorNcurses::getKey(void) {
 		this->_modules[0]->deleteMe();
 		wclear(this->_win);
 		clear();
+	}
+	else if (this->_ch == 'd') {
+		this->addModule("date");
 	}
 	else if (this->_ch == '+') {
 		this->addModule("standard");
@@ -113,6 +132,8 @@ void		MonitorNcurses::getKey(void) {
 	str.append(std::to_string(this->_totX));
 	str.append(" tot Y: ");
 	str.append(std::to_string(this->_totY));
+	str.append(" next Y: ");
+	str.append(std::to_string(this->_nextY));
 	mvprintw(0, 0 , str.c_str());
 }
 
