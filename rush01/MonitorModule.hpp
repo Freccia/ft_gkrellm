@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:16:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 13:31:39 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 16:21:01 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,29 @@
 #define X 0
 #define Y 1
 
+#define STDMONITOR_X 20
+#define STDMONITOR_Y 10
+
 class MonitorModule: public IMonitorModule {
 private:
 	MonitorModule(void);
 
 	/*				*/
 	std::vector<int>	_size;
+	std::vector<int>	_pos;
 	clock_t				_lastDisplay;
+	WINDOW				*_subWin;
 
 public:
-	MonitorModule(int x, int y);
-	MonitorModule(WINDOW *father, int x, int y);
+	MonitorModule(int width, int height, int x, int y);
+	//MonitorModule(WINDOW *father, int width, int height, int x, int y);
 	MonitorModule(MonitorModule const &Cc);
 	virtual ~MonitorModule(void);
 	MonitorModule &operator=(MonitorModule const &Cc);
 
 	/*				*/
-	WINDOW					*subWin;
-
-	/*				*/
 	std::vector<int>		getSize(void);
+	std::vector<int>		getPos(void);
 	void					deleteMe(void);
 	void					writeMe(int x, int y, std::string str);
 	void					refresh(void);

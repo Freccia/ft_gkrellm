@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 13:33:23 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 16:28:57 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ MonitorNcurses::MonitorNcurses(void) :
 _winX(COLS), _winY(LINES),
 _ch(0), _beginTime(clock()), _lastDisplay(0)
 {
-	this->_win = initscr();
+	initscr();
 	if (LINES < MINWIN_Y || COLS < MINWIN_X)
 	{
 		endwin();
@@ -33,13 +33,12 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 
 	setlocale(LC_ALL,"");
 
-	//this->_win = subwin(stdscr, this->_winY, this->_winX, WINBOX_Y, WINBOX_X);
-	box(_win, '|', '-');
+	this->_win = stdscr;
 
-	MonitorModule mod1(this->_win, 20, 10);
+	MonitorModule *mod1 = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, 0, 3);
 	this->_modules.push_back(mod1);
-
-	this->_modules[0].writeMe(5, 5, "HOLA");
+	this->_totX = 0;
+	this->_totY = 3;
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
 };
@@ -57,23 +56,63 @@ void		MonitorNcurses::resizeHandler(int sig) {
 	}
 }
 
+void		MonitorNcurses::addModule(std::string type) {
+	MonitorModule		*last = this->_modules.back();
+	std::vector<int>	lpos = last->getPos();
+	std::vector<int>	lsiz = last->getSize();
+	std::vector<int>	pos(2);
+	pos[Y] = (lpos[Y]);
+	pos[X] = (lpos[X] + lsiz[X]);
+
+	if (this->_totX + pos[X] >= WCOLS - 1) {
+		pos[Y] += lsiz[Y];
+		pos[X] = 0;
+		this->_totX = 0;
+		this->_totY += pos[Y];
+	}
+	if (this->_totY + pos[Y] >= WLINES - 1) {
+		return;
+	}
+
+	if (type == "standard") {
+		MonitorModule *mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
+		this->_modules.push_back(mod);
+		this->_totX += pos[X];
+	}
+}
+
 void		MonitorNcurses::getKey(void) {
 	this->_ch = getch();
 	if (this->_ch == 't') {
-		mvwprintw(this->_modules[0].subWin, 9, 9, "TTTT");
-		mvprintw(11, 5, "Hello I'm Mr T");
-		this->_modules[0].writeMe(3, 3, "LOL");
+		this->_modules[0]->writeMe(3, 3, "LOL");
 	}
 	else if (this->_ch == 'c') {
-		this->_modules[0].deleteMe();
+		this->_modules[0]->deleteMe();
 		wclear(this->_win);
+		clear();
 	}
-	else if (this->_ch == 'W' || this->_ch == 'w') {
+	else if (this->_ch == '+') {
+		this->addModule("standard");
+	}
+	if (this->_ch == 'W' || this->_ch == 'w') {
 		int c = getchar();
 		if ((c >= '0' && c <= '9') &&
 			(c - '0' >= 0 && c - '0' < static_cast<int>(this->_modules.size())))
-			this->_modules[c - '0'].deleteMe();
+			this->_modules[c - '0']->deleteMe();
 	}
+	std::string str = "LINES: ";
+	str.append(std::to_string(WLINES));
+	str.append(" Y: ");
+	str.append(std::to_string(getmaxx(stdscr)));
+	str.append(" COLS: ");
+	str.append(std::to_string(WCOLS));
+	str.append(" X: ");
+	str.append(std::to_string(getmaxy(stdscr)));
+	str.append(" tot X: ");
+	str.append(std::to_string(this->_totX));
+	str.append(" tot Y: ");
+	str.append(std::to_string(this->_totY));
+	mvprintw(0, 0 , str.c_str());
 }
 
 int			MonitorNcurses::getCharacter(void) {
@@ -82,16 +121,16 @@ int			MonitorNcurses::getCharacter(void) {
 
 void		MonitorNcurses::_displayModule(size_t n) {
 	if (n < this->_modules.size())
-		this->_modules[n].refresh();
+		this->_modules[n]->refresh();
 }
 
 void		MonitorNcurses::refreshWindow(void) {
+	if (clock() - this->_lastDisplay < 10000)
+		return;
 	this->_lastDisplay = clock();
-	box(_win, '|', '-');
-	wrefresh(stdscr);
 	wrefresh(this->_win);
 	for (size_t i=0; i < this->_modules.size(); i++) {
-		this->_modules[i].refresh();
+		this->_modules[i]->refresh();
 	}
 }
 
