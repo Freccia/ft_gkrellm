@@ -6,13 +6,14 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:32:52 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 18:52:28 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MonitorNcurses.hpp"
 #include "OSModule.hpp"
 #include "DateModule.hpp"
+#include "HostModule.hpp"
 #include <iostream>
 #include <signal.h>
 
@@ -85,6 +86,8 @@ void		MonitorNcurses::addModule(std::string type) {
 	/* choose module type */
 	if (type == "standard") {
 		mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
+	} else if (type == "host") {
+		mod = new HostModule(pos[X], pos[Y]);
 	} else if (type == "os") {
 		mod = new OSModule(pos[X], pos[Y]);
 	} else if (type == "date") {
@@ -100,26 +103,31 @@ void		MonitorNcurses::addModule(std::string type) {
 
 void		MonitorNcurses::getKey(void) {
 	this->_ch = getch();
+
 	if (this->_ch == 't') {
 		this->_modules[0]->writeMe(3, 3, "LOL");
-	}
-	else if (this->_ch == 'c') {
+	} else if (this->_ch == 'c') {
 		this->_modules[0]->deleteMe();
 		wclear(this->_win);
 		clear();
-	}
-	else if (this->_ch == 'd') {
+	} else if (this->_ch == 'h') {
+		this->addModule("host");
+	} else if (this->_ch == 'o') {
+		this->addModule("os");
+	} else if (this->_ch == 'd') {
 		this->addModule("date");
-	}
-	else if (this->_ch == '+') {
+	} else if (this->_ch == '+') {
 		this->addModule("standard");
 	}
+
 	if (this->_ch == 'W' || this->_ch == 'w') {
 		int c = getchar();
 		if ((c >= '0' && c <= '9') &&
 			(c - '0' >= 0 && c - '0' < static_cast<int>(this->_modules.size())))
 			this->_modules[c - '0']->deleteMe();
 	}
+
+	/* DEBUG */
 	std::string str = "LINES: ";
 	str.append(std::to_string(WLINES));
 	str.append(" Y: ");
@@ -136,6 +144,7 @@ void		MonitorNcurses::getKey(void) {
 	str.append(std::to_string(this->_nextY));
 	mvprintw(0, 0 , str.c_str());
 }
+
 
 int			MonitorNcurses::getCharacter(void) {
 	return this->_ch;

@@ -2,6 +2,7 @@
 *.d
 .DS_Store
 tmp*
+ft_gkrellm
 
 # Compiled Object files
 *.slo

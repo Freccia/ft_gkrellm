@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:32:15 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 17:40:39 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 18:53:30 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "MonitorModule.hpp"
 
 #define OSMOD_X 62
-#define OSMOD_Y 10
+#define OSMOD_Y 7
 
 #define MAXHOSTNAME 256
 
@@ -27,8 +27,6 @@ private:
 	OSModule(OSModule const &Cc);
 	OSModule &operator=(OSModule const &Cc);
 	/**/
-	std::string		_hostname;
-	std::string		_username;
 	std::string		_sysname;
 	std::string		_nodename;
 	std::string		_release;
