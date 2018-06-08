@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:21:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:02:40 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 16:50:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,8 @@ _lastDisplay(clock())
 	this->_pos[X] = x;
 	this->_pos[Y] = y;
 	this->_subWin = newwin(height, width, y, x);
-	box(this->_subWin, '+', '+');
+	box(this->_subWin, '|', '-');
 };
-
-/*
-MonitorModule::MonitorModule(WINDOW *father, int width, int height, int x, int y):
-_size(2),
-_lastDisplay(clock())
-{
-	this->_size[WIDTH] = width;
-	this->_size[HEIGHT] = height;
-	this->_subWin = subwin(father, this->_size[HEIGHT], this->_size[WIDTH], y, x);
-	box(this->_subWin, '+', '+');
-};
-*/
 
 MonitorModule::MonitorModule(MonitorModule const &Cc) {
 	*this = Cc;
@@ -82,3 +70,6 @@ void			MonitorModule::writeMe(int x, int y, std::string str) {
 void			MonitorModule::refresh(void) {
 	wrefresh(this->_subWin);
 }
+
+void			MonitorModule::display(void) {
+};

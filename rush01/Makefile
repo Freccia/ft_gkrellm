@@ -3,7 +3,7 @@ NAME = ft_gkrellm
 FLAGS = -Wall -Wextra -Werror -std=c++98 #-D_XOPEN_SOURCE_EXTENDED
 CC = clang++
 
-C_FILES = main.cpp MonitorNcurses.cpp MonitorModule.cpp
+C_FILES = main.cpp MonitorNcurses.cpp MonitorModule.cpp OSModule.cpp
 
 NCURSES = -lncurses
 

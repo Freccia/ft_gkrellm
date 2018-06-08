@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:16:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:21:01 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 16:50:11 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #define STDMONITOR_Y 10
 
 class MonitorModule: public IMonitorModule {
-private:
+protected:
 	MonitorModule(void);
 
 	/*				*/
@@ -36,7 +36,6 @@ private:
 
 public:
 	MonitorModule(int width, int height, int x, int y);
-	//MonitorModule(WINDOW *father, int width, int height, int x, int y);
 	MonitorModule(MonitorModule const &Cc);
 	virtual ~MonitorModule(void);
 	MonitorModule &operator=(MonitorModule const &Cc);
@@ -47,6 +46,8 @@ public:
 	void					deleteMe(void);
 	void					writeMe(int x, int y, std::string str);
 	void					refresh(void);
+	/*				*/
+	virtual void			display(void);
 };
 
 #endif

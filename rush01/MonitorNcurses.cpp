@@ -6,11 +6,12 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:28:57 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 16:51:44 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MonitorNcurses.hpp"
+#include "OSModule.hpp"
 #include <iostream>
 #include <signal.h>
 
@@ -35,7 +36,7 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 
 	this->_win = stdscr;
 
-	MonitorModule *mod1 = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, 0, 3);
+	MonitorModule *mod1 = new OSModule(0, 3);
 	this->_modules.push_back(mod1);
 	this->_totX = 0;
 	this->_totY = 3;
@@ -120,8 +121,9 @@ int			MonitorNcurses::getCharacter(void) {
 }
 
 void		MonitorNcurses::_displayModule(size_t n) {
-	if (n < this->_modules.size())
-		this->_modules[n]->refresh();
+	if (n < this->_modules.size()) {
+		this->_modules[n]->display();
+	}
 }
 
 void		MonitorNcurses::refreshWindow(void) {
@@ -130,6 +132,7 @@ void		MonitorNcurses::refreshWindow(void) {
 	this->_lastDisplay = clock();
 	wrefresh(this->_win);
 	for (size_t i=0; i < this->_modules.size(); i++) {
+		this->_modules[i]->display();
 		this->_modules[i]->refresh();
 	}
 }
