@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:21:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 16:50:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 19:10:55 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 MonitorModule::MonitorModule(void):
 _size(2, 0), // w=0 h=0
 _pos(2, 0), // x=0 y=0
-_lastDisplay(0)
-{
+_lastDisplay(0) {
 };
 
 MonitorModule::MonitorModule(int width, int height, int x, int y):

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:52:28 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/08 19:13:19 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void		MonitorNcurses::addModule(std::string type) {
 	pos[Y] = (lpos[Y]);
 	pos[X] = (lpos[X] + lsiz[X]);
 
-	/* align */
-	if (this->_totX + pos[X] >= WCOLS - 1) {
+	if (this->_totX + pos[X] >= WCOLS - 1) { /* go to next line */
 		pos[X] = 0;
 		if (this->_nextY > pos[Y])
 			pos[Y] = this->_nextY;
@@ -95,7 +94,7 @@ void		MonitorNcurses::addModule(std::string type) {
 	}
 
 	/* update */
-	if (this->_nextY < mod->getSize()[Y])
+	if (this->_nextY < mod->getSize()[Y] + mod->getPos()[Y])
 		this->_nextY = mod->getSize()[Y] + mod->getPos()[Y];
 	this->_modules.push_back(mod);
 	this->_totX += pos[X];
