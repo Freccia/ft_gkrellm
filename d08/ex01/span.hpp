@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/07 15:11:00 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/07 16:42:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/07 16:52:13 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <vector>
 #include <exception>
 
-class intContainer {
+class Span {
 private:
-	intContainer(void);
+	Span(void);
 
 	unsigned int		_N;
 	unsigned int		_amount;
@@ -26,10 +26,10 @@ private:
 
 
 public:
-	intContainer(int N);
-	intContainer(intContainer const &Cc);
-	~intContainer(void);
-	intContainer	&operator = (intContainer const &Cc);
+	Span(int N);
+	Span(Span const &Cc);
+	~Span(void);
+	Span	&operator = (Span const &Cc);
 
 	void			addNumber(int n);
 	void			addRange(int start, int end);

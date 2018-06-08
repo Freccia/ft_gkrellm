@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.hpp                                 :+:      :+:    :+:   */
+/*   IMonitorModule.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/23 17:34:36 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/07 23:55:27 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/06/07 23:42:57 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/06/08 00:03:17 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IMATERIA_SOURCE_HPP
-# define IMATERIA_SOURCE_HPP
+#ifndef IMonitorModule_hpp
+#define IMonitorModule_hpp
 
-#include <string>
-#include "AMateria.hpp"
+#include <vector>
+#include <iostream>
 
-class IMateriaSource
-{
+template <typename T> // usually std::vector<int>
+class IMonitorModule {
+private:
 public:
-	virtual ~IMateriaSource() {}
-	virtual void learnMateria(AMateria*) = 0;
-	virtual AMateria* createMateria(std::string const & type) = 0;
+	virtual ~IMonitorModule(void) {};
+	virtual T getSize(void) = 0;
 };
 
 #endif

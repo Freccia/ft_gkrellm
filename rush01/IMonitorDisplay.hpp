@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMateriaSource.hpp                                 :+:      :+:    :+:   */
+/*   IMonitorDisplay.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/23 17:34:36 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/07 23:55:27 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/06/08 00:15:15 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/06/08 00:16:59 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IMATERIA_SOURCE_HPP
-# define IMATERIA_SOURCE_HPP
+#ifndef IMonitorDisplay_hpp
+#define IMonitorDisplay_hpp
 
-#include <string>
-#include "AMateria.hpp"
-
-class IMateriaSource
-{
+//template <typename T> // usually std::vector<int>
+class IMonitorDisplay {
+private:
 public:
-	virtual ~IMateriaSource() {}
-	virtual void learnMateria(AMateria*) = 0;
-	virtual AMateria* createMateria(std::string const & type) = 0;
+	virtual ~IMonitorDisplay(void) {};
+	virtual void display(void);
 };
 
 #endif
