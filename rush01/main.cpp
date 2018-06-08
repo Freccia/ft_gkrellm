@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IMonitorModule.hpp                                 :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/07 23:42:57 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 11:33:45 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/06/08 10:40:42 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/06/08 11:10:02 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IMonitorModule_hpp
-#define IMonitorModule_hpp
+#include <iostream>
+#include "MonitorNcurses.hpp"
 
-class IMonitorModule {
-private:
-public:
-	virtual ~IMonitorModule(void) {};
-};
-
-#endif
+int		main(int ac, char **av) {
+	(void)av;
+	if (ac > 1) { // ncurses
+		MonitorNcurses mon;
+		
+		while (42) {
+			mon.getKey();
+			if (mon.getCharacter() == 'q' || mon.getCharacter() == 'Q')
+				break;
+			mon.refreshWindow();
+		}
+	}
+	else {
+		return 0; // graphical
+	}
+	return 0;
+}
