@@ -49,7 +49,7 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	/* initialize */
 	this->_totX = 0;
 	this->_totY = 3;
-	this->_nextY = mod1->getSize()[Y] + mod1->getPos()[Y];
+	this->_nextY = mod1->getSize()[C_Y] + mod1->getPos()[C_Y];
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
 };
@@ -75,42 +75,42 @@ void		MonitorNcurses::addModule(std::string type) {
 	std::vector<int>	lpos = last->getPos();
 	std::vector<int>	lsiz = last->getSize();
 	std::vector<int>	pos(2);
-	pos[Y] = (lpos[Y]);
-	pos[X] = (lpos[X] + lsiz[X]);
+	pos[C_Y] = (lpos[C_Y]);
+	pos[C_X] = (lpos[C_X] + lsiz[C_X]);
 
-	if (this->_totX + pos[X] >= WCOLS - 1) { /* go to next line */
-		pos[X] = 0;
-		if (this->_nextY > pos[Y])
-			pos[Y] = this->_nextY;
+	if (this->_totX + pos[C_X] >= WCOLS - 1) { /* go to next line */
+		pos[C_X] = 0;
+		if (this->_nextY > pos[C_Y])
+			pos[C_Y] = this->_nextY;
 		else
-			pos[Y] += lsiz[Y];
-		this->_totY += pos[Y];
+			pos[C_Y] += lsiz[C_Y];
+		this->_totY += pos[C_Y];
 		this->_totX = 0;
 	}
-	if (this->_totY + pos[Y] >= WLINES - 1) {
+	if (this->_totY + pos[C_Y] >= WLINES - 1) {
 		return;
 	}
 
 	/* choose module type */
 	if (type == "standard") {
-		mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
+		mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[C_X], pos[C_Y]);
 	} else if (type == "host") {
-		mod = new HostModule(pos[X], pos[Y]);
+		mod = new HostModule(pos[C_X], pos[C_Y]);
 	} else if (type == "sys") {
-		mod = new SysModule(pos[X], pos[Y]);
+		mod = new SysModule(pos[C_X], pos[C_Y]);
 	} else if (type == "ram") {
-		mod = new RamModule(pos[X], pos[Y]);
+		mod = new RamModule(pos[C_X], pos[C_Y]);
 	} else if (type == "os") {
-		mod = new OSModule(pos[X], pos[Y]);
+		mod = new OSModule(pos[C_X], pos[C_Y]);
 	} else if (type == "date") {
-		mod = new DateModule(pos[X], pos[Y]);
+		mod = new DateModule(pos[C_X], pos[C_Y]);
 	}
 
 	/* update */
-	if (this->_nextY < mod->getSize()[Y] + mod->getPos()[Y])
-		this->_nextY = mod->getSize()[Y] + mod->getPos()[Y];
+	if (this->_nextY < mod->getSize()[C_Y] + mod->getPos()[C_Y])
+		this->_nextY = mod->getSize()[C_Y] + mod->getPos()[C_Y];
 	this->_modules.push_back(mod);
-	this->_totX += pos[X];
+	this->_totX += pos[C_X];
 }
 
 /* get key and do action (add/delete module) */

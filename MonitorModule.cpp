@@ -24,10 +24,10 @@ _size(2),
 _pos(2),
 _lastDisplay(clock())
 {
-	this->_size[X] = width;
-	this->_size[Y] = height;
-	this->_pos[X] = x;
-	this->_pos[Y] = y;
+	this->_size[C_X] = width;
+	this->_size[C_Y] = height;
+	this->_pos[C_X] = x;
+	this->_pos[C_Y] = y;
 	this->_subWin = newwin(height, width, y, x);
 	box(this->_subWin, '|', '-');
 };
@@ -41,10 +41,10 @@ MonitorModule::~MonitorModule(void) {
 
 MonitorModule	&MonitorModule::operator=(MonitorModule const &Cc) {
 	if (this->_size.empty() == false) {
-		this->_size[X] = Cc._size[X];
-		this->_size[Y] = Cc._size[Y];
-		this->_pos[X] = Cc._pos[X];
-		this->_pos[Y] = Cc._pos[Y];
+		this->_size[C_X] = Cc._size[C_X];
+		this->_size[C_Y] = Cc._size[C_Y];
+		this->_pos[C_X] = Cc._pos[C_X];
+		this->_pos[C_Y] = Cc._pos[C_Y];
 	}
 	return *this;
 }

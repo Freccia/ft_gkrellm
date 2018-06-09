@@ -12,21 +12,33 @@
 
 #include <iostream>
 #include "MonitorNcurses.hpp"
+#include <QApplication>
+#include <QPushButton>
+#include "MainWindow.hpp"
 
-int		main(int ac, char **av) {
+int main(int ac, char **av)
+{
 	(void)av;
-	if (ac > 1) { // ncurses
+	if (ac > 1)
+	{ // ncurses
 		MonitorNcurses mon;
-		
-		while (42) {
+
+		while (42)
+		{
 			mon.getKey();
 			if (mon.getCharacter() == 'q' || mon.getCharacter() == 'Q')
 				break;
 			mon.refreshWindow();
 		}
 	}
-	else {
-		return 0; // graphical
+	else
+	{
+		QApplication app(ac, av);
+
+        MainWindow test;
+
+        test.show();
+		return app.exec();
 	}
 	return 0;
 }

@@ -18,8 +18,8 @@
 #include <vector>
 #include <iostream>
 
-#define X 0
-#define Y 1
+#define C_X 0
+#define C_Y 1
 
 #define STDMONITOR_X 20
 #define STDMONITOR_Y 10
