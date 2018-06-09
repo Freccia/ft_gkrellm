@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 11:03:26 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/09 14:43:26 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "DateModule.hpp"
 #include "HostModule.hpp"
 #include "SysModule.hpp"
+#include "NetIfModule.hpp"
 #include "RamModule.hpp"
 #include <iostream>
 #include <signal.h>
@@ -100,6 +101,8 @@ void		MonitorNcurses::addModule(std::string type) {
 		mod = new SysModule(pos[X], pos[Y]);
 	} else if (type == "ram") {
 		mod = new RamModule(pos[X], pos[Y]);
+	} else if (type == "net") {
+		mod = new NetIfModule(pos[X], pos[Y]);
 	} else if (type == "os") {
 		mod = new OSModule(pos[X], pos[Y]);
 	} else if (type == "date") {
@@ -131,6 +134,8 @@ void		MonitorNcurses::getKey(void) {
 		this->addModule("ram");
 	} else if (this->_ch == 's') {
 		this->addModule("sys");
+	} else if (this->_ch == 'n') {
+		this->addModule("net");
 	} else if (this->_ch == 'd') {
 		this->addModule("date");
 	} else if (this->_ch == '+') {
@@ -158,6 +163,8 @@ void		MonitorNcurses::getKey(void) {
 	str.append(" tot Y: ");
 	str.append(std::to_string(this->_totY));
 	str.append(" next Y: ");
+	str.append(std::to_string(this->_nextY));
+	str.append("        h:host  o:os  r:ram  s:sys  n:net  d:date  +:void");
 	str.append(std::to_string(this->_nextY));
 	mvprintw(0, 0 , str.c_str());
 }

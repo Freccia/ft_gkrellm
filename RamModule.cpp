@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 12:35:22 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/09 15:21:32 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ void		RamModule::_updateRamUsage(void) {
 	double inactive = vmstat.inactive_count;//  / total;
 	double free = vmstat.free_count ;// / total;
 
+	// TODO CHANGE ME
 	snprintf(memLabel, sizeof(memLabel), "Total: % 3.1f ", total);
 
 	this->_ramUsage = memLabel;
 
+	// TODO CHANGE ME
 	snprintf(memLabel, sizeof(memLabel), "Wired: % 3.1f  Active: % 3.1f  Inactive: % 3.1f  Free: % 3.1f", wired, active, inactive, free);
 
 	this->_ramUsageBis = memLabel;

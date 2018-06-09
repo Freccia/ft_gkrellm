@@ -1,0 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   NetIfModule.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfabbro <>                                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/06/09 14:10:04 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/06/09 15:50:13 by lfabbro          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "NetIfModule.hpp"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if_dl.h>
+#include <ifaddrs.h>
+
+#define BUFF 256
+
+/* to convert a number to hex (string) */
+template <typename I>
+std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1);
+
+//template< typename T >
+std::string nToHex( unsigned char i );
+
+
+NetIfModule::NetIfModule(int posx, int posy):
+	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy)
+{
+}
+
+NetIfModule::~NetIfModule(void) {
+}
+
+void		NetIfModule::_update(void) {
+	struct ifaddrs		*ptr;
+	int					i = 0;
+	char				buf[BUFF];
+	unsigned char		*tmp;
+
+	if (getifaddrs(&ptr) != 0)
+		return;
+	while (ptr != NULL && i < IFAMAX) {
+		if ((ptr->ifa_addr)->sa_family == AF_LINK)
+		{
+			this->_interface[i] = ptr->ifa_name;
+
+			this->_interface[i] += "	ether: ";
+			if (ptr->ifa_addr)
+			{
+				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
+				sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x",
+						*tmp, *(tmp+1), *(tmp+2), *(tmp+3), *(tmp+4), *(tmp+5));
+						/*
+				for (int k=0; k < 6; k++) {
+					//this->_interface[i] += n2hexstr(*(tmp + k));
+					this->_interface[i] += nToHex(*(tmp + k));
+				}
+				*/
+				this->_interface[i] += buf;
+			}
+
+			this->_interface[i] += " mask: ";
+			if (ptr->ifa_netmask)
+			{
+				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_netmask);
+				sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x",
+						*tmp, *(tmp+1), *(tmp+2), *(tmp+3), *(tmp+4), *(tmp+5));
+				/*
+				for (int k=0; k < 6; k++) {
+					//this->_interface[i] += n2hexstr(*(tmp + k));
+					this->_interface[i] += nToHex(*(tmp + k));
+				}
+				*/
+				this->_interface[i] += buf;
+			}
+
+			this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
+			i++;
+		}
+		ptr = ptr->ifa_next;
+	}
+}
+
+void		NetIfModule::display(void) {
+	this->_update();
+	for (int i=0; i < IFAMAX; i++) {
+		mvwprintw(this->_subWin, i + 1, 1, this->_interface[i].c_str());
+	}
+};
