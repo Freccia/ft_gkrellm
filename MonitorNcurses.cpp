@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 19:19:01 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/09 10:14:24 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "OSModule.hpp"
 #include "DateModule.hpp"
 #include "HostModule.hpp"
+#include "SysModule.hpp"
 #include <iostream>
 #include <signal.h>
 
@@ -94,6 +95,8 @@ void		MonitorNcurses::addModule(std::string type) {
 		mod = new MonitorModule(STDMONITOR_X, STDMONITOR_Y, pos[X], pos[Y]);
 	} else if (type == "host") {
 		mod = new HostModule(pos[X], pos[Y]);
+	} else if (type == "sys") {
+		mod = new SysModule(pos[X], pos[Y]);
 	} else if (type == "os") {
 		mod = new OSModule(pos[X], pos[Y]);
 	} else if (type == "date") {
@@ -121,6 +124,8 @@ void		MonitorNcurses::getKey(void) {
 		this->addModule("host");
 	} else if (this->_ch == 'o') {
 		this->addModule("os");
+	} else if (this->_ch == 's') {
+		this->addModule("sys");
 	} else if (this->_ch == 'd') {
 		this->addModule("date");
 	} else if (this->_ch == '+') {
