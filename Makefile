@@ -52,22 +52,26 @@ OBJECTS_DIR   = ./
 
 SOURCES       = DateModule.cpp \
 		HostModule.cpp \
-		main.cpp \
+		MainWindow.cpp \
 		MonitorModule.cpp \
 		MonitorNcurses.cpp \
+		NetIfModule.cpp \
 		OSModule.cpp \
 		RamModule.cpp \
 		SysModule.cpp \
-		MainWindow.cpp 
+		main.cpp \
+		tools.cpp 
 OBJECTS       = DateModule.o \
 		HostModule.o \
-		main.o \
+		MainWindow.o \
 		MonitorModule.o \
 		MonitorNcurses.o \
+		NetIfModule.o \
 		OSModule.o \
 		RamModule.o \
 		SysModule.o \
-		MainWindow.o
+		main.o \
+		tools.o
 DIST          = /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/spec_pre.prf \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/qdevice.pri \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/device_config.prf \
@@ -243,13 +247,15 @@ DIST          = /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features
 		SysModule.hpp \
 		MainWindow.hpp DateModule.cpp \
 		HostModule.cpp \
-		main.cpp \
+		MainWindow.cpp \
 		MonitorModule.cpp \
 		MonitorNcurses.cpp \
+		NetIfModule.cpp \
 		OSModule.cpp \
 		RamModule.cpp \
 		SysModule.cpp \
-		MainWindow.cpp
+		main.cpp \
+		tools.cpp
 QMAKE_TARGET  = ft_gkrellm
 DESTDIR       = 
 TARGET        = ft_gkrellm.app/Contents/MacOS/ft_gkrellm
@@ -635,7 +641,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents DateModule.hpp HostModule.hpp IMonitorDisplay.hpp IMonitorModule.hpp MonitorModule.hpp MonitorNcurses.hpp OSModule.hpp RamModule.hpp SysModule.hpp MainWindow.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents DateModule.cpp HostModule.cpp main.cpp MonitorModule.cpp MonitorNcurses.cpp OSModule.cpp RamModule.cpp SysModule.cpp MainWindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DateModule.cpp HostModule.cpp MainWindow.cpp MonitorModule.cpp MonitorNcurses.cpp NetIfModule.cpp OSModule.cpp RamModule.cpp SysModule.cpp main.cpp tools.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -705,16 +711,14 @@ HostModule.o: HostModule.cpp HostModule.hpp \
 		ncurses.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o HostModule.o HostModule.cpp
 
-main.o: main.cpp MonitorNcurses.hpp \
-		IMonitorDisplay.hpp \
-		MonitorModule.hpp \
-		IMonitorModule.hpp \
-		ncurses.h \
+MainWindow.o: MainWindow.cpp MainWindow.hpp \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o MainWindow.cpp
 
 MonitorModule.o: MonitorModule.cpp MonitorModule.hpp \
 		IMonitorModule.hpp \
@@ -730,8 +734,15 @@ MonitorNcurses.o: MonitorNcurses.cpp MonitorNcurses.hpp \
 		DateModule.hpp \
 		HostModule.hpp \
 		SysModule.hpp \
+		NetIfModule.hpp \
 		RamModule.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MonitorNcurses.o MonitorNcurses.cpp
+
+NetIfModule.o: NetIfModule.cpp NetIfModule.hpp \
+		MonitorModule.hpp \
+		IMonitorModule.hpp \
+		ncurses.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetIfModule.o NetIfModule.cpp
 
 OSModule.o: OSModule.cpp OSModule.hpp \
 		MonitorModule.hpp \
@@ -751,14 +762,24 @@ SysModule.o: SysModule.cpp SysModule.hpp \
 		ncurses.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SysModule.o SysModule.cpp
 
-MainWindow.o: MainWindow.cpp MainWindow.hpp \
+main.o: main.cpp MonitorNcurses.hpp \
+		IMonitorDisplay.hpp \
+		MonitorModule.hpp \
+		IMonitorModule.hpp \
+		ncurses.h \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		MainWindow.hpp \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o MainWindow.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+tools.o: tools.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tools.o tools.cpp
 
 ####### Install
 
