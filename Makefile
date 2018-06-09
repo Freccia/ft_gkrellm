@@ -4,7 +4,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++98 #-D_XOPEN_SOURCE_EXTENDED
 CC = clang++
 
 C_FILES = main.cpp MonitorNcurses.cpp MonitorModule.cpp OSModule.cpp \
-		  DateModule.cpp HostModule.cpp SysModule.cpp
+		  DateModule.cpp HostModule.cpp SysModule.cpp RamModule.cpp
 
 NCURSES = -lncurses
 
