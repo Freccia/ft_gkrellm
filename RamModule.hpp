@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 11:32:14 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/09 12:30:15 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 #include "MonitorModule.hpp"
 
-#define RAMMOD_X 60
-#define RAMMOD_Y 4
+#define RAMMOD_X 84
+#define RAMMOD_Y 7
 
 class RamModule: public MonitorModule {
 private:
@@ -27,6 +27,12 @@ private:
 	/**/
 	std::string		_ramSize;
 	std::string		_ramSwap;
+	std::string		_ramUsage;
+	std::string		_ramUsageBis;
+
+	/**/
+	void		_update(void);
+	void		_updateRamUsage(void);
 
 public:
 	RamModule(int posx, int posy);
@@ -34,7 +40,6 @@ public:
 
 	/**/
 	void		display(void);
-	void		update(void);
 };
 
 #endif
