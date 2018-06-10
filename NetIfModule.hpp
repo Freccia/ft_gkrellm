@@ -47,11 +47,12 @@ private:
 public:
 	NetIfModule(int posx, int posy);
     NetIfModule(QFrame *);
-	~NetIfModule(void);
+    virtual ~NetIfModule(void);
 
 	/**/
 	void		display(void);
      void displayQT(void);
+     void displayChart(void);
 };
 
 #endif
