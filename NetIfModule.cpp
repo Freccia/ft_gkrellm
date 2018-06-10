@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/09 14:10:04 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 15:50:13 by lfabbro          ###   ########.fr       */
+/*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
+/*   Updated: 2018/06/10 12:11:43 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 #define BUFF 256
 
 /* to convert a number to hex (string) */
-template <typename I>
-std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1);
+std::string c2hex(unsigned char c);
 
 //template< typename T >
 std::string nToHex( unsigned char i );
@@ -74,30 +73,19 @@ void		NetIfModule::_update(void) {
 				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
 				sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x",
 						*tmp, *(tmp+1), *(tmp+2), *(tmp+3), *(tmp+4), *(tmp+5));
-						/*
-				for (int k=0; k < 6; k++) {
-					//this->_interface[i] += n2hexstr(*(tmp + k));
-					this->_interface[i] += nToHex(*(tmp + k));
-				}
-				*/
 				this->_interface[i] += buf;
 			}
 
 			this->_interface[i] += " mask: ";
-			if (ptr->ifa_netmask)
+			if (ptr->ifa_addr)
 			{
-				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_netmask);
-				sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x",
-						*tmp, *(tmp+1), *(tmp+2), *(tmp+3), *(tmp+4), *(tmp+5));
-				/*
+				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
 				for (int k=0; k < 6; k++) {
-					//this->_interface[i] += n2hexstr(*(tmp + k));
-					this->_interface[i] += nToHex(*(tmp + k));
+					if (k > 0)
+						this->_interface[i] += ":";
+					this->_interface[i] += c2hex(*(tmp + k));
 				}
-				*/
-				this->_interface[i] += buf;
 			}
-
 			this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
 			i++;
 		}

@@ -31,7 +31,7 @@ NetIfModule.hpp \
            MainWindow.hpp \
 MonitorQT.hpp
 
-FORMS += mainwindow.ui
+NOPE_FORMS += mainwindow.ui
 
 QT += widgets
 QT += core

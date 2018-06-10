@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 14:08:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 15:11:56 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 11:39:47 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "MonitorModule.hpp"
 #include <QFrame>
 
-#define NETIFMOD_X 45
+#define NETIFMOD_X 85
 #define NETIFMOD_Y 23
 
 #define IFAMAX 20
