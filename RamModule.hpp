@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 19:56:00 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:38:59 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <QFrame>
 
 #define RAMMOD_X 100
-#define RAMMOD_Y 7
+#define RAMMOD_Y 9
 
 //#define PAGESIZE getpagesize()
 #define PAGESIZE 4096.0
@@ -32,32 +32,35 @@ private:
 	/* RAM */
 	uint64_t			_physicalMem;
 	/**/
-	uint64_t		_total;
-	uint64_t		_wired;
-	uint64_t		_active;
-	uint64_t		_inactive;
-	uint64_t		_free;
+	double		_total;
+	double		_wired;
+	double		_active;
+	double		_inactive;
+	double		_free;
 	/**/
-	uint64_t		_used;
-	uint64_t		_virtual;
-	uint64_t		_app;
-	uint64_t		_compressed;
+	double		_used;
+	double		_virtual;
+	double		_app;
+	double		_compressed;
 	/* SWAP */
-	uint64_t		_xsu_total;
-	uint64_t		_xsu_avail;
-	uint64_t		_xsu_used;
-	uint64_t		_xsu_encrypted;
+	double		_xsu_total;
+	double		_xsu_avail;
+	double		_xsu_used;
+	double		_xsu_encrypted;
 	/**/
 	std::string		_ramSize;
 	std::string		_ramSwap;
 	std::string		_ramUsage;
 	std::string		_ramUsageBis;
 	std::string		_ramUsageTer;
+	std::string		_progressRAM;
+	std::string		_progressSWAP;
 
 	/* MEMBERS FUNCTIONS */
 	void		_updateRamUsage(void);
 	void		_updateRamUsageBis(void);
 	void		_updateRamUsageTer(void);
+	std::string	_progressBar(double percent);
 
 public:
 	RamModule(int posx, int posy);

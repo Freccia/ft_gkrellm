@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:01:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:40:27 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,12 @@ void		RamModule::_updateRamUsageBis(void)
 		return;
 	}
 
-	this->_total = ((vmstat.wire_count + vmstat.active_count +
-				vmstat.inactive_count + vmstat.free_count) * PAGESIZE) / MEGABYTES;
-	this->_wired = (vmstat.wire_count * PAGESIZE) / MEGABYTES;
-	this->_active = (vmstat.active_count * PAGESIZE) / MEGABYTES;
-	this->_inactive = (vmstat.inactive_count * PAGESIZE) / MEGABYTES;
-	this->_free = (vmstat.free_count * PAGESIZE) / MEGABYTES;
+	this->_total = (vmstat.wire_count + vmstat.active_count +
+				vmstat.inactive_count + vmstat.free_count) * PAGESIZE / MEGABYTES;
+	this->_wired = vmstat.wire_count * PAGESIZE / MEGABYTES;
+	this->_active = vmstat.active_count * PAGESIZE / MEGABYTES;
+	this->_inactive = vmstat.inactive_count * PAGESIZE / MEGABYTES;
+	this->_free = (vmstat.free_count) * PAGESIZE / MEGABYTES;
 }
 
 
@@ -144,6 +144,22 @@ void		RamModule::_updateRamUsage(void)
 	this->_xsu_used = ramSwap.xsu_used / MEGABYTES;
 	this->_xsu_encrypted = ramSwap.xsu_encrypted;
 }
+
+std::string		RamModule::_progressBar(double percent) {
+	std::string		loadbar = "[ ";
+	double			tmp = percent;
+	uint64_t		i = 50;
+	while (i--) {
+		if (--tmp > 0)
+			loadbar += "|";
+		else
+			loadbar += " ";
+	}
+	loadbar += " ]";
+	loadbar += std::to_string(percent);
+	return loadbar;
+}
+
 
 void		RamModule::display(void) {
 	this->_updateRamUsage();
@@ -171,35 +187,41 @@ void		RamModule::display(void) {
 	this->_ramUsageBis += " MB";
 	this->_ramUsageBis = this->_ramUsageBis.substr(0, RAMMOD_X - 2);
 
+	this->_progressRAM = this->_progressBar((_wired + _active + _inactive) / _total * 100);
+
 	this->_ramUsageTer = "In use: ";
-	this->_ramUsageTer += std::to_string(this->_used);
+	this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_used));
 	this->_ramUsageTer += " MB  Virtual: ";
-	this->_ramUsageTer += std::to_string(this->_virtual);
+	this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_virtual));
 	this->_ramUsageTer += " MB  App: ";
-	this->_ramUsageTer += std::to_string(static_cast<unsigned long long>(this->_app));
+	this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_app));
 	this->_ramUsageTer += " MB  Compressed: ";
-	this->_ramUsageTer += std::to_string(this->_compressed);
+	this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_compressed));
 	this->_ramUsageTer += " MB";
 	this->_ramUsageTer = this->_ramUsageTer.substr(0, RAMMOD_X - 2);
 
 	this->_ramSwap =  "SWAP:  ";
 	this->_ramSwap += "Total: ";
-	this->_ramSwap += std::to_string(this->_xsu_total);
+	this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_total));
 	this->_ramSwap += " MB Avail: ";
-	this->_ramSwap += std::to_string(this->_xsu_avail);
+	this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_avail));
 	this->_ramSwap += " MB Used: ";
-	this->_ramSwap += std::to_string(this->_xsu_used);
+	this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_used));
 	this->_ramSwap += " MB";
 	if (this->_xsu_encrypted)
 		this->_ramSwap += " (encrypted)";
 	this->_ramSwap = this->_ramSwap.substr(0, RAMMOD_X - 2);
 
-	mvwprintw(this->_subWin, 1, 1, this->_ramSize.c_str());
-	mvwprintw(this->_subWin, 2, 1, this->_ramUsage.c_str());
-	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
-	mvwprintw(this->_subWin, 4, 1, this->_ramUsageTer.c_str());
-	mvwprintw(this->_subWin, 5, 1, this->_ramSwap.c_str());
-	
+	this->_progressSWAP = this->_progressBar(_xsu_used / _xsu_total * 100);
+
+	int i = 0;
+	mvwprintw(this->_subWin, ++i, 1, this->_ramSize.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_ramUsage.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_ramUsageBis.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_progressRAM.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_ramUsageTer.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_ramSwap.c_str());
+	mvwprintw(this->_subWin, ++i, 1, this->_progressSWAP.c_str());
 }
 
 void RamModule::displayQT()
