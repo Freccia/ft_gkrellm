@@ -9,17 +9,24 @@
 #include <signal.h>
 #include <QApplication>
 #include <QtWidgets>
+#include <QMainWindow>
 #include <QGraphicsView>
 #include <QLCDNumber>
 #include <QSlider>
 #include <QProgressBar>
 #include <QTimer>
 #include <QGridLayout>
+#include <QPushButton>
+#include <QToolBar>
+#include <QAction>
+#include "QFrameModule.hpp"
+#include <QIcon>
 
 
-MonitorQT::MonitorQT(void) : QWidget(), _timer(new QTimer(this)), _layout(new QGridLayout(this))
+MonitorQT::MonitorQT(void) : QMainWindow(), _timer(new QTimer(this)), _layout(new QGridLayout(this))
 {
     QObject::connect(_timer, SIGNAL(timeout(void)), this, SLOT(refreshModules()));
+    QWidget *w = new QWidget(this);
     _timer->start(250);
     _addRamModule();
     _addOsModule();
@@ -27,8 +34,10 @@ MonitorQT::MonitorQT(void) : QWidget(), _timer(new QTimer(this)), _layout(new QG
     _addNetIfModule();
     _addDateModule();
     _addHostfModule();
-    this->setLayout(_layout);
+    w->setLayout(_layout);
+    this->setCentralWidget(w);
     this->_layout->setSizeConstraint(QLayout::SetDefaultConstraint);
+    _setToolBar();
 };
 
 MonitorQT::~MonitorQT(void)
@@ -37,6 +46,37 @@ MonitorQT::~MonitorQT(void)
 };
 
 
+void MonitorQT::_setToolBar()
+{
+    QAction *aOs = new QAction("Os", this);
+    QAction *aNetIf = new QAction("Network", this);
+    QAction *aHost = new QAction("Host", this);
+    QAction *aDate = new QAction("Date", this);
+    QAction *aCpu = new QAction("CPU", this);
+    QAction *aRam = new QAction("RAM", this);
+    QToolBar * tb = addToolBar("Toolbar");
+
+    aOs->setIcon(QIcon("images/os_module.png"));
+    aNetIf->setIcon(QIcon("images/netIf_module.png"));
+    aHost->setIcon(QIcon("images/host_module.png"));
+    aDate->setIcon(QIcon("images/date_module.png"));
+    aCpu->setIcon(QIcon("images/cpu_module.png"));
+    aRam->setIcon(QIcon("images/ram_module.png"));
+    tb->addAction(aOs);
+    tb->addAction(aNetIf);
+    tb->addAction(aHost);
+    tb->addAction(aDate);
+    tb->addAction(aCpu);
+    tb->addAction(aRam);
+    _frames[1]->ShowHidden();
+    QObject::connect(aOs, SIGNAL(triggered(void)), _frames[1], SLOT(ShowHidden(void)));
+    QObject::connect(aNetIf, SIGNAL(triggered(void)), _frames[3], SLOT(ShowHidden(void)));
+    QObject::connect(aHost, SIGNAL(triggered(void)), _frames[5], SLOT(ShowHidden(void)));
+    QObject::connect(aDate, SIGNAL(triggered(void)), _frames[4], SLOT(ShowHidden(void)));
+    QObject::connect(aCpu, SIGNAL(triggered(void)), _frames[2], SLOT(ShowHidden(void)));
+    QObject::connect(aRam, SIGNAL(triggered(void)), _frames[0], SLOT(ShowHidden(void)));
+}
+
 /* refresh and display all modules */
 void		MonitorQT::refreshModules(void) {
     for (size_t i=0; i < this->_modules.size(); i++) {
@@ -44,16 +84,16 @@ void		MonitorQT::refreshModules(void) {
     }
 }
 
-QFrame *MonitorQT::_frameBoxedFactory() const
+QFrameModule *MonitorQT::_frameBoxedFactory() const
 {
-    QFrame *frame = new QFrame();
-    frame->setFrameShape(QFrame::Box);
+    QFrameModule *frame = new QFrameModule();
+    frame->setFrameShape(QFrameModule::Box);
     return frame;
 }
 
 void MonitorQT::_addRamModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 1, 0);
     RamModule *ram = new RamModule(frame);
     _modules.push_back(ram);
@@ -62,7 +102,7 @@ void MonitorQT::_addRamModule()
 
 void MonitorQT::_addOsModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 2, 0);
     OSModule *os = new OSModule(frame);
     _modules.push_back(os);
@@ -70,7 +110,7 @@ void MonitorQT::_addOsModule()
 }
 void MonitorQT::_addSysModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 3, 0);
     SysModule *sys = new SysModule(frame);
     _modules.push_back(sys);
@@ -78,7 +118,7 @@ void MonitorQT::_addSysModule()
 }
 void MonitorQT::_addNetIfModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 2, 1, 2, 1);
     NetIfModule *net = new NetIfModule(frame);
     _modules.push_back(net);
@@ -86,7 +126,7 @@ void MonitorQT::_addNetIfModule()
 }
 void MonitorQT::_addDateModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 1, 1, 1, 1);
     DateModule *date = new DateModule(frame);
     _modules.push_back(date);
@@ -94,7 +134,7 @@ void MonitorQT::_addDateModule()
 }
 void MonitorQT::_addHostfModule()
 {
-    QFrame *frame = _frameBoxedFactory();
+    QFrameModule *frame = _frameBoxedFactory();
     _layout->addWidget(frame, 0, 0, 1, 2);
     HostModule *host = new HostModule(frame);
     _modules.push_back(host);

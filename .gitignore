@@ -35,3 +35,4 @@ ft_gkrellm
 *.app
 
 .vscode
+Makefile
