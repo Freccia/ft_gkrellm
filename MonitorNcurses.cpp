@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 14:43:26 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 14:44:50 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,21 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	/* this->window is by default standard screen */
 	this->_win = stdscr;
 
-	/* generate one OSModule by default */
-	MonitorModule *mod1 = new OSModule(0, 3);
-	this->_modules.push_back(mod1);
-
 	/* initialize */
 	this->_totX = 0;
 	this->_totY = 3;
+
+	/* generate one OSModule by default */
+	MonitorModule *mod1 = new OSModule(0, 3);
+	this->_modules.push_back(mod1);
 	this->_nextY = mod1->getSize()[C_Y] + mod1->getPos()[C_Y];
+
+	this->addModule("host");
+	this->addModule("sys");
+	this->addModule("date");
+	this->addModule("net");
+	this->addModule("ram");
+	//this->addModule("os");
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
 };

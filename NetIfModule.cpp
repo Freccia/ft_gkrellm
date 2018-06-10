@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 12:23:29 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 15:02:16 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ NetIfModule::~NetIfModule(void) {
 void		NetIfModule::_update(void) {
 	struct ifaddrs		*ptr;
 	int					i = 0;
-	char				buf[BUFF];
+	//char				buf[BUFF];
 	unsigned char		*tmp;
 
 	if (getifaddrs(&ptr) != 0)
@@ -71,23 +71,14 @@ void		NetIfModule::_update(void) {
 			if (ptr->ifa_addr)
 			{
 				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
-				sprintf(buf, "%02x:%02x:%02x:%02x:%02x:%02x",
-						*tmp, *(tmp+1), *(tmp+2), *(tmp+3), *(tmp+4), *(tmp+5));
-				this->_interface[i] += buf;
-			}
-
-			// TODO: WTF ?????
-			this->_interface[i] += " mask: ";
-			if (ptr->ifa_addr)
-			{
-				tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
 				for (int k=0; k < 6; k++) {
 					if (k > 0)
 						this->_interface[i] += ":";
 					this->_interface[i] += c2hex(*(tmp + k));
+					//this->_interface[i] += *(tmp + k) % 10 + '0';
 				}
 			}
-			this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
+			//this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
 			i++;
 		}
 		ptr = ptr->ifa_next;
