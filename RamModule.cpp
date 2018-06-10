@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:44:35 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:38:14 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 #define BUFF 256
 
-RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0)
+RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "  RAM  ")
 {
     _frame = fr;
     int64_t			ramSize;
@@ -61,7 +61,7 @@ RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0)
 }
 
 RamModule::RamModule(int posx, int posy):
-	MonitorModule(RAMMOD_X, RAMMOD_Y, posx, posy)
+	MonitorModule(RAMMOD_X, RAMMOD_Y, posx, posy, "  RAM  ")
 {
 	int64_t			ramSize;
 	size_t			sizeBrand = sizeof(ramSize);
@@ -107,10 +107,12 @@ void		RamModule::_updateRamUsageTer(void)
 			vmstat.compressor_page_count
 			);
 
-	 this->_used = (this->_physicalMem - (vmstat.free_count * PAGESIZE)) / MEGABYTES;
-	 this->_virtual = (this->_physicalMem - (vmstat.compressor_page_count * PAGESIZE)) / MEGABYTES;
-	 this->_app = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
-	 this->_compressed = (vmstat.compressions * PAGESIZE) / MEGABYTES;
+	this->_virtual = (this->_physicalMem - (vmstat.compressor_page_count * PAGESIZE)) / MEGABYTES;
+	this->_app = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
+	this->_compressed = (vmstat.compressor_page_count * PAGESIZE) / MEGABYTES;
+	//this->_used = (this->_physicalMem - (vmstat.free_count * PAGESIZE)) / MEGABYTES;
+
+	this->_used = this->_app + this->_wired + this->_compressed;
 }
 
 void		RamModule::_updateRamUsageBis(void)
@@ -214,13 +216,16 @@ void		RamModule::display(void) {
 
 	this->_progressSWAP = this->_progressBar(_xsu_used / _xsu_total * 100);
 
+	box(this->_subWin, '|', '-');
 	int x = 2;
-	int y = 0;
+	int y = -1;
+	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramSize.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramUsageBis.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_progressRAM.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramUsageTer.c_str());
+	++y;
 	mvwprintw(this->_subWin, ++y, x, this->_ramSwap.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_progressSWAP.c_str());
 }

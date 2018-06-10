@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:34:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:48:00 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:33:10 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 #include <QFrame>
 
 OSModule::OSModule(int posx, int posy):
-	MonitorModule(OSMOD_X, OSMOD_Y, posx, posy)
+	MonitorModule(OSMOD_X, OSMOD_Y, posx, posy, "  OS Info  ")
 {
     _init();
 }
 
-OSModule::OSModule(QFrame *fr)
+OSModule::OSModule(QFrame *fr):
+    MonitorModule(OSMOD_X, OSMOD_Y, 0, 0, "  OS Info  ")
 {
     _init();
     _frame = fr;
@@ -78,8 +79,10 @@ void OSModule::_init()
 }
 
 void		OSModule::display(void) {
-	int		x = 2;
-	int		y = 0;
+	int x = 2;
+	int y = -1;
+	box(this->_subWin, '|', '-');
+	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_sysname.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_nodename.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_release.c_str());

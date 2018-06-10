@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 18:46:32 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:47:01 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:29:14 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 
 HostModule::HostModule(QFrame *fr):
-    MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0)
+    MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0, "  Host  ")
 {
     _init();
     _frame = fr;
@@ -36,7 +36,7 @@ HostModule::HostModule(QFrame *fr):
     _frame->setLayout(layout);
 }
 HostModule::HostModule(int posx, int posy):
-	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy)
+	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy, "  Host  ")
 {
     _init();
 };
@@ -59,8 +59,12 @@ HostModule::~HostModule(void) {
 };
 
 void		HostModule::display(void) {
-	mvwprintw(this->_subWin, 1, 2, this->_hostname.c_str());
-	mvwprintw(this->_subWin, 2, 2, this->_username.c_str());
+	int x = 2;
+	int y = -1;
+	box(this->_subWin, '|', '-');
+	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_hostname.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_username.c_str());
 };
 
 void		HostModule::displayQT(void) {

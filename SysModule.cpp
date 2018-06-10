@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 09:57:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:03:34 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:32:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 
 SysModule::SysModule(QFrame *fr):
-    MonitorModule(SYSMOD_X, SYSMOD_Y, 0, 0)
+    MonitorModule(SYSMOD_X, SYSMOD_Y, 0, 0, "  System Info  ")
 {
     _init();
     _frame = fr;
@@ -51,7 +51,7 @@ SysModule::SysModule(QFrame *fr):
 };
 
 SysModule::SysModule(int posx, int posy):
-	MonitorModule(SYSMOD_X, SYSMOD_Y, posx, posy)
+	MonitorModule(SYSMOD_X, SYSMOD_Y, posx, posy, "  System Info  ")
 {
     _init();
 };
@@ -137,8 +137,12 @@ void		SysModule::_updateCPULoad(void) {
 
 void		SysModule::display(void) {
 	this->_updateCPULoad();
-	int		x = 2;
-	int		y = 0;
+
+	int x = 2;
+	int y = -1;
+	box(this->_subWin, '|', '-');
+	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+
 	mvwprintw(this->_subWin, ++y, x, this->_cpubrand.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_cpuvendor.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_cpucores.c_str());

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:16:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 17:55:57 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:16:51 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ protected:
     MonitorModule(void);
 
     /*				*/
+	std::string			_name;
     std::vector<int>	_size;
     std::vector<int>	_pos;
     std::vector<QLabel *> _labels;
@@ -41,6 +42,7 @@ protected:
 
 public:
     MonitorModule(int width, int height, int x, int y);
+    MonitorModule(int width, int height, int x, int y, std::string name);
     MonitorModule(MonitorModule const &Cc);
     virtual ~MonitorModule(void);
     MonitorModule &operator=(MonitorModule const &Cc);

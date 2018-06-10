@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:45:46 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:27:24 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,9 @@
 /* to convert a number to hex (string) */
 std::string c2hex(unsigned char c);
 
-//template< typename T >
-std::string nToHex( unsigned char i );
-
 
 NetIfModule::NetIfModule(QFrame *fr) :
-    MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0)
+    MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0, "  Net Interfaces  ")
 {
     _frame = fr;
     int i = IFAMAX;
@@ -53,7 +50,7 @@ NetIfModule::NetIfModule(QFrame *fr) :
 
 
 NetIfModule::NetIfModule(int posx, int posy):
-	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy)
+	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy, "  Net Interfaces  ")
 {
 }
 
@@ -161,8 +158,12 @@ void		NetIfModule::display(void)
 {
 	this->_update();
 
+	box(this->_subWin, '|', '-');
+	int x = 2;
+	int y = -1;
+	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+
 	std::string		tmp;
-	int				x = 2;
 	for (int i=0; i < IFAMAX; i++) {
 		tmp = this->_interface[i].name;
 		if (this->_interface[i].ether.empty() == false) {
@@ -177,13 +178,14 @@ void		NetIfModule::display(void)
 			tmp += "    ipv6: ";
 			tmp += this->_interface[i].ipv6;
 		}
-		mvwprintw(this->_subWin, i + 1, x, tmp.c_str());
+		mvwprintw(this->_subWin, ++y, x, tmp.c_str());
 	}
+	++y;
 	tmp = "totBytesIn: ";
 	tmp += std::to_string(this->_totBytesIn);
 	tmp += "  totBytesOut: ";
 	tmp += std::to_string(this->_totBytesOut);
-	mvwprintw(this->_subWin, 13, x, tmp.c_str());
+	mvwprintw(this->_subWin, ++y, x, tmp.c_str());
 }
 
 void NetIfModule::displayQT(void)

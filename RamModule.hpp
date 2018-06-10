@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:57:52 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:16:58 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <QFrame>
 
 #define RAMMOD_X 80
-#define RAMMOD_Y 9
+#define RAMMOD_Y 10
 
 //#define PAGESIZE getpagesize()
 #define PAGESIZE 4096.0
@@ -30,7 +30,7 @@ private:
 	RamModule(RamModule const &Cc);
 	RamModule &operator=(RamModule const &Cc);
 	/* RAM */
-	uint64_t			_physicalMem;
+	uint64_t	_physicalMem;
 	/**/
 	double		_total;
 	double		_wired;
