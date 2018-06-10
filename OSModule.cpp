@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:34:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:33:10 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 23:44:21 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void OSModule::_init()
         this->_version = this->_version.substr(0, OSMOD_X - 2);
         this->_machine = this->_machine.substr(0, OSMOD_X - 2);
     }
+	delete name;
 }
 
 void		OSModule::display(void) {
