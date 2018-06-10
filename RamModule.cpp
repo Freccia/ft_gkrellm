@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:45:33 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:53:22 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 #include <mach/task.h>
 #include <QBoxLayout>
 #include <QRect>
+
+#include <tgmath.h>
 
 
 #define BUFF 256

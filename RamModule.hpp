@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:44:03 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:53:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ private:
 	double		_xsu_used;
 	double		_xsu_encrypted;
 	/**/
+	int64_t			_phisicalMem;
 	std::string		_ramSize;
 	std::string		_ramSwap;
 	std::string		_ramUsage;
