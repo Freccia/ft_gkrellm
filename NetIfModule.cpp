@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 15:02:16 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 15:04:34 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,16 @@ NetIfModule::NetIfModule(QFrame *fr) :
     _frame->setLayout(layout);
 }
 
+
 NetIfModule::NetIfModule(int posx, int posy):
 	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy)
 {
 }
 
+
 NetIfModule::~NetIfModule(void) {
 }
+
 
 void		NetIfModule::_update(void) {
 	struct ifaddrs		*ptr;
@@ -75,15 +78,15 @@ void		NetIfModule::_update(void) {
 					if (k > 0)
 						this->_interface[i] += ":";
 					this->_interface[i] += c2hex(*(tmp + k));
-					//this->_interface[i] += *(tmp + k) % 10 + '0';
 				}
 			}
-			//this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
+			this->_interface[i] = this->_interface[i].substr(0, NETIFMOD_X - 2);
 			i++;
 		}
 		ptr = ptr->ifa_next;
 	}
 }
+
 
 void		NetIfModule::display(void) {
 	this->_update();
