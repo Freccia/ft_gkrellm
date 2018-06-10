@@ -23,6 +23,12 @@
 #include <mach/task.h>
 #include <QBoxLayout>
 #include <QRect>
+#include <QLayout>
+#include <QFrame>
+#include <QLabel>
+#include <QChart>
+#include <QLineSeries>
+#include <QChartView>
 
 
 #define BUFF 256
@@ -32,6 +38,7 @@ RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "  RA
     _frame = fr;
     int64_t			ramSize;
     size_t			sizeBrand = sizeof(ramSize);
+    _chart = NULL;
 
     sysctlbyname("hw.memsize", &ramSize, &sizeBrand, NULL, 0);
 
@@ -284,4 +291,42 @@ void RamModule::displayQT()
     _labels[1]->setText(this->_ramUsage.c_str());
     _labels[2]->setText(this->_ramUsageBis.c_str());
     _labels[3]->setText(this->_ramSwap.c_str());
+}
+
+void RamModule::displayChart(void)
+{
+    if (!_chart)
+    {
+        QLayout * layout =  _frame->layout();
+        _chart = new QChart();
+        _chart->setTitle("Ram Usage");
+        _axisX = new QValueAxis;
+        _axisY = new QValueAxis;
+        QChartView *chartView = new QChartView(_chart);
+        chartView->setGeometry(20, 300, 600, 600);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        layout->addWidget(chartView);
+    } else
+    {
+        _chart->removeAllSeries();
+    }
+    if (_percents.size() > 30)
+        _percents.pop_front();
+    this->_percents.push_back(_used / _total * 100);
+    QtCharts::QLineSeries *l1 = new QtCharts::QLineSeries();
+    l1->setName("Ram");
+    int j;
+    if ((j = _percents.size()) > 1)
+    {
+
+        int i = 0;
+        j--;
+        while (i++ < j)
+            l1->append(i, _percents[i]);
+    }
+    _chart->addSeries(l1);
+    _chart->createDefaultAxes();
+    _chart->axisX()->setTitleText("Seconds");
+    _chart->axisY()->setTitleText("Ram % usage");
+    return;
 }

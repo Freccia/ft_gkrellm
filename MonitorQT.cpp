@@ -91,6 +91,7 @@ void		MonitorQT::refreshModules(void) {
 
 void		MonitorQT::refreshCharts(void) {
     _modules[3]->displayChart();
+    _modules[0]->displayChart();
 }
 
 QFrameModule *MonitorQT::_frameBoxedFactory() const
