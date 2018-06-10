@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:58:21 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 23:40:21 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 
 MonitorNcurses::~MonitorNcurses(void) {
 	endwin();
+	delete _modules[0];
+	delete _modules[1];
+	delete _modules[2];
+	delete _modules[3];
+	delete _modules[4];
+	delete _modules[5];
+	delete _modules[6];
 };
 
 /* handler for SIGWINCH */
