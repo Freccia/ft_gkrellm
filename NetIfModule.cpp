@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:27:24 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:39:39 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 #include <QLayout>
 #include <QFrame>
 #include <QLabel>
+#include <QChart>
+#include <QLineSeries>
+#include <QChartView>
 
 #define BUFF 256
 
@@ -33,6 +36,7 @@ std::string c2hex(unsigned char c);
 NetIfModule::NetIfModule(QFrame *fr) :
     MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0, "  Net Interfaces  ")
 {
+     _chart = NULL;
     _frame = fr;
     int i = IFAMAX;
     _frame = fr;
@@ -60,97 +64,98 @@ NetIfModule::~NetIfModule(void) {
 
 
 void		NetIfModule::_updateNetLoad(void) {
-	int		mib[] = {CTL_NET, PF_ROUTE, 0, 0, NET_RT_IFLIST2, 0};
-	size_t	size;
+    int		mib[] = {CTL_NET, PF_ROUTE, 0, 0, NET_RT_IFLIST2, 0};
+    size_t	size;
 
-	if (sysctl(mib, 6, NULL, &size, NULL, 0) < 0) {
-		return;
-	}
-	char	buf[size];
-	if (sysctl(mib, 6, buf, &size, NULL, 0) < 0) {
-		return;
-	}
-	char		*lim = buf + size;
-	char		*next = NULL;
+    if (sysctl(mib, 6, NULL, &size, NULL, 0) < 0) {
+        return;
+    }
+    char	buf[size];
+    if (sysctl(mib, 6, buf, &size, NULL, 0) < 0) {
+        return;
+    }
+    char		*lim = buf + size;
+    char		*next = NULL;
 
-	this->_totBytesIn = 0;
-	this->_totBytesOut = 0;
+    this->_totBytesIn = 0;
+    this->_totBytesOut = 0;
 
-	next = buf;
-	while (next < lim) {
-		struct if_msghdr	*ifm = (struct if_msghdr*)next;
-		next += ifm->ifm_msglen;
-		if (ifm->ifm_type == RTM_IFINFO2) {
-			struct if_msghdr2	*ifm2 = (struct if_msghdr2*)ifm;
-			this->_totBytesIn += ifm2->ifm_data.ifi_ibytes;
-			this->_totBytesOut += ifm2->ifm_data.ifi_obytes;
-		}
-	}
+    next = buf;
+    while (next < lim) {
+        struct if_msghdr	*ifm = (struct if_msghdr*)next;
+        next += ifm->ifm_msglen;
+        if (ifm->ifm_type == RTM_IFINFO2) {
+            struct if_msghdr2	*ifm2 = (struct if_msghdr2*)ifm;
+            this->_totBytesIn += ifm2->ifm_data.ifi_ibytes;
+            this->_totBytesOut += ifm2->ifm_data.ifi_obytes;
+        }
+    }
+
 }
 
 
 void		NetIfModule::_update(void) {
 
-	this->_updateNetLoad();
+    this->_updateNetLoad();
 
-	struct ifaddrs		*ifa;
-	struct ifaddrs		*ptr;
-	int					i = -1;
-	char				*last = NULL;
-	unsigned char		*tmp;
-	void				*tmpIP;
+    struct ifaddrs		*ifa;
+    struct ifaddrs		*ptr;
+    int					i = -1;
+    char				*last = NULL;
+    unsigned char		*tmp;
+    void				*tmpIP;
 
-	if (getifaddrs(&ifa) != 0)
-		return;
-	ptr = ifa;
-	while (ptr != NULL && i < IFAMAX) {
-		if (ptr->ifa_addr)
-		{
-			if (last != ptr->ifa_name) {
-				last = ptr->ifa_name;
-				i++;
-			}
-			/* Interface name */
-			if (this->_interface[i].name.empty())
-				this->_interface[i].name = ptr->ifa_name;
-			/* Link layer interface */
-			if ((ptr->ifa_addr)->sa_family == AF_LINK)
-			{
-				if (ptr->ifa_addr) {
-					this->_interface[i].ether = "";
-					tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
-					for (int k=0; k < 6; k++) {
-						if (k > 0)
-							this->_interface[i].ether += ":";
-						this->_interface[i].ether += c2hex(*(tmp + k));
-					}
-				}
-			}
-			/* IPv4 */
-			else if ((ptr->ifa_addr)->sa_family == AF_INET) {
-				this->_interface[i].ipv4 = "";
-				char	buf[INET_ADDRSTRLEN];
-				tmpIP = &((struct sockaddr_in*)ptr->ifa_addr)->sin_addr;
-				inet_ntop(AF_INET, tmpIP, buf, INET_ADDRSTRLEN);
-				if (this->_interface[i].ipv4.empty() == false)
-					this->_interface[i].ipv4 += "  ";
-				this->_interface[i].ipv4 += buf;
-			}
-			/* IPv6 */
-			else if ((ptr->ifa_addr)->sa_family == AF_INET6) {
-				this->_interface[i].ipv6 = "";
-				char	buf[INET6_ADDRSTRLEN];
-				tmpIP = &((struct sockaddr_in6*)ptr->ifa_addr)->sin6_addr;
-				inet_ntop(AF_INET6, tmpIP, buf, INET6_ADDRSTRLEN);
-				if (this->_interface[i].ipv6.empty() == false)
-					this->_interface[i].ipv6 += "  ";
-				this->_interface[i].ipv6 += buf;
-			}
-		}
-		ptr = ptr->ifa_next;
-	}
-	if (ifa!=NULL)
-		freeifaddrs(ifa);
+    if (getifaddrs(&ifa) != 0)
+        return;
+    ptr = ifa;
+    while (ptr != NULL && i < IFAMAX) {
+        if (ptr->ifa_addr)
+        {
+            if (last != ptr->ifa_name) {
+                last = ptr->ifa_name;
+                i++;
+            }
+            /* Interface name */
+            if (this->_interface[i].name.empty())
+                this->_interface[i].name = ptr->ifa_name;
+            /* Link layer interface */
+            if ((ptr->ifa_addr)->sa_family == AF_LINK)
+            {
+                if (ptr->ifa_addr) {
+                    this->_interface[i].ether = "";
+                    tmp = (unsigned char *)LLADDR((struct sockaddr_dl *)(ptr)->ifa_addr);
+                    for (int k=0; k < 6; k++) {
+                        if (k > 0)
+                            this->_interface[i].ether += ":";
+                        this->_interface[i].ether += c2hex(*(tmp + k));
+                    }
+                }
+            }
+            /* IPv4 */
+            else if ((ptr->ifa_addr)->sa_family == AF_INET) {
+                this->_interface[i].ipv4 = "";
+                char	buf[INET_ADDRSTRLEN];
+                tmpIP = &((struct sockaddr_in*)ptr->ifa_addr)->sin_addr;
+                inet_ntop(AF_INET, tmpIP, buf, INET_ADDRSTRLEN);
+                if (this->_interface[i].ipv4.empty() == false)
+                    this->_interface[i].ipv4 += "  ";
+                this->_interface[i].ipv4 += buf;
+            }
+            /* IPv6 */
+            else if ((ptr->ifa_addr)->sa_family == AF_INET6) {
+                this->_interface[i].ipv6 = "";
+                char	buf[INET6_ADDRSTRLEN];
+                tmpIP = &((struct sockaddr_in6*)ptr->ifa_addr)->sin6_addr;
+                inet_ntop(AF_INET6, tmpIP, buf, INET6_ADDRSTRLEN);
+                if (this->_interface[i].ipv6.empty() == false)
+                    this->_interface[i].ipv6 += "  ";
+                this->_interface[i].ipv6 += buf;
+            }
+        }
+        ptr = ptr->ifa_next;
+    }
+    if (ifa!=NULL)
+        freeifaddrs(ifa);
 }
 
 
@@ -191,9 +196,58 @@ void		NetIfModule::display(void)
 void NetIfModule::displayQT(void)
 {
     this->_update();
-	/*
-    for (int i=0; i < IFAMAX; i++) {
-        _labels[i]->setText(_interface[i].c_str());
+}
+
+void NetIfModule::displayChart(void)
+{
+    if (!_chart)
+    {
+        QLayout * layout =  _frame->layout();
+        _chart = new QChart();
+        _chart->setTitle("Network Usage");
+        _axisX = new QValueAxis;
+        _axisX->setRange(30, 0);
+        _axisY = new QValueAxis;
+        QChartView *chartView = new QChartView(_chart);
+        chartView->setGeometry(20, 300, 600, 600);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        layout->addWidget(chartView);
+    } else
+    {
+        _chart->removeAllSeries();
+        int i = _chartLines.size();
+        while (i --> 0)
+            delete _chartLines[i];
     }
-	*/
+    if (_percentsIn.size() > 30)
+        _percentsIn.pop_front();
+    if (_percentsOut.size() > 30)
+        _percentsOut.pop_front();
+    this->_percentsIn.push_back(_totBytesIn);
+    this->_percentsOut.push_back(_totBytesOut);
+    QtCharts::QLineSeries *l1 = new QtCharts::QLineSeries();
+    QtCharts::QLineSeries *l2 = new QtCharts::QLineSeries();
+    l1->setName("Input");
+    l2->setName("Output");
+    int j;
+    if ((j = _percentsIn.size()) > 1)
+    {
+        int i = 0;
+        j--;
+        while (i++ < j)
+            l1->append(i, _percentsIn[i] - _percentsIn[i - 1]);
+    }
+    if ((j = _percentsOut.size()) > 1)
+    {
+        int i = 0;
+        j--;
+        while (i++ < j)
+            l2->append(i, _percentsOut[i] - _percentsOut[i - 1]);
+    }
+    _chart->addSeries(l1);
+    _chart->addSeries(l2);
+    _chart->createDefaultAxes();
+    _chart->axisX()->setTitleText("Seconds");
+    _chart->axisY()->setTitleText("Data amount");
+    return;
 }

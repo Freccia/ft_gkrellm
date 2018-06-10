@@ -34,6 +34,7 @@ MonitorQT.hpp
 
 QT += widgets
 QT += core
+QT += charts
 
 QMAKE_CXXFLAGS += -std=c++98 -Wall -Werror -Wextra
 

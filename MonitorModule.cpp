@@ -100,3 +100,8 @@ void MonitorModule::_init()
 {
     return;
 }
+
+void MonitorModule::displayChart(void)
+{
+    return;
+}

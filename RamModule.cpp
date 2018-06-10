@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:38:14 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:45:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,6 @@ void		RamModule::display(void) {
 	this->_ramUsageBis += " MB";
 	this->_ramUsageBis = this->_ramUsageBis.substr(0, RAMMOD_X - 2);
 
-	this->_progressRAM = this->_progressBar((_wired + _active + _inactive) / _total * 100);
-
 	this->_ramUsageTer = "In use: ";
 	this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_used));
 	this->_ramUsageTer += " MB  Virtual: ";
@@ -214,6 +212,9 @@ void		RamModule::display(void) {
 		this->_ramSwap += " (encrypted)";
 	this->_ramSwap = this->_ramSwap.substr(0, RAMMOD_X - 2);
 
+	//this->_progressRAM = this->_progressBar((_wired + _active + _inactive) / _total * 100);
+	/* TODO CHECK THIS*/
+	this->_progressRAM = this->_progressBar(_used / _total * 100);
 	this->_progressSWAP = this->_progressBar(_xsu_used / _xsu_total * 100);
 
 	box(this->_subWin, '|', '-');

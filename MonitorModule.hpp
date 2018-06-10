@@ -19,6 +19,11 @@
 #include <iostream>
 #include <QFrame>
 #include <QLabel>
+#include <deque>
+#include <QChart>
+#include <QtCharts>
+#include <QLineSeries>
+
 
 #define C_X 0
 #define C_Y 1
@@ -35,8 +40,17 @@ protected:
     std::vector<int>	_size;
     std::vector<int>	_pos;
     std::vector<QLabel *> _labels;
+    std::deque<double> _percents;
+    std::deque<double> _percentsIn;
+    std::deque<double> _percentsOut;
     clock_t				_lastDisplay;
+    time_t _lastRefresh;
     WINDOW				*_subWin;
+    QtCharts::QChart *_chart;
+    QtCharts::QChartView *_chartView;
+    QValueAxis *_axisX;
+    QValueAxis *_axisY;
+    std::vector<QtCharts::QLineSeries *> _chartLines;
     QFrame *_frame;
     void _init();
 
@@ -57,6 +71,7 @@ public:
     virtual void			display(void);
     //virtual void			update(void);
     virtual void displayQT();
+    virtual void displayChart(void);
 };
 
 #endif

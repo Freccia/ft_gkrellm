@@ -23,11 +23,15 @@
 #include <QIcon>
 
 
-MonitorQT::MonitorQT(void) : QMainWindow(), _timer(new QTimer(this)), _layout(new QGridLayout(this))
+MonitorQT::MonitorQT(void) : QMainWindow(), _timerModules(new QTimer(this)), _timerCharts(new QTimer(this)), _layout(new QGridLayout(this))
 {
-    QObject::connect(_timer, SIGNAL(timeout(void)), this, SLOT(refreshModules()));
+    QObject::connect(_timerModules, SIGNAL(timeout(void)), this, SLOT(refreshModules()));
     QWidget *w = new QWidget(this);
-    _timer->start(250);
+    _timerModules->start(250);
+
+    QObject::connect(_timerCharts, SIGNAL(timeout(void)), this, SLOT(refreshCharts()));
+    _timerCharts->start(1000);
+
     _addRamModule();
     _addOsModule();
     _addSysModule();
@@ -82,6 +86,10 @@ void		MonitorQT::refreshModules(void) {
     for (size_t i=0; i < this->_modules.size(); i++) {
         this->_modules[i]->displayQT();
     }
+}
+
+void		MonitorQT::refreshCharts(void) {
+    _modules[3]->displayChart();
 }
 
 QFrameModule *MonitorQT::_frameBoxedFactory() const

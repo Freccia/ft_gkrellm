@@ -34,7 +34,8 @@ private:
 
     std::vector<MonitorModule*> _modules;
     std::vector<QFrameModule*> _frames;
-    QTimer *_timer;
+    QTimer *_timerModules;
+    QTimer *_timerCharts;
     QGridLayout *_layout;
     QFrameModule *_frameBoxedFactory() const;
 
@@ -54,6 +55,7 @@ public:
 
 public slots:
     void			refreshModules(void);
+    void			refreshCharts(void);
 
 
 };
