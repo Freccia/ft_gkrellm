@@ -5,6 +5,7 @@ tmp*
 ft_gkrellm*
 moc_MainWindow.cpp
 moc_MonitorQT.cpp
+moc_QFrameModule.cpp
 moc_predefs.h
 
 # Compiled Object files

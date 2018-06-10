@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 14:08:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 11:39:47 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 17:48:35 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,17 @@
 #include "MonitorModule.hpp"
 #include <QFrame>
 
-#define NETIFMOD_X 85
-#define NETIFMOD_Y 23
+#define NETIFMOD_X 95
+#define NETIFMOD_Y 15
 
-#define IFAMAX 20
+#define IFAMAX 13 /* max interface represented in module */
+
+struct s_ifa {
+	std::string		name;
+	std::string		ether;
+	std::string		ipv4;
+	std::string		ipv6;
+};
 
 class NetIfModule: public MonitorModule {
 private:
@@ -28,7 +35,7 @@ private:
 	NetIfModule(NetIfModule const &Cc);
 	NetIfModule &operator=(NetIfModule const &Cc);
 	/**/
-	std::string		_interface[IFAMAX];
+	s_ifa			_interface[IFAMAX];
 
 	/**/
 	void		_update(void);
