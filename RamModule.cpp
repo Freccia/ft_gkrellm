@@ -6,23 +6,23 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 11:37:46 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 15:38:02 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RamModule.hpp"
-#include <stdio.h>
+//#include <stdio.h>
+#include <tgmath.h>
 #include <sys/types.h>
 #include <sys/sysctl.h>
 #include <sys/time.h>
+#include <unistd.h>
 #include <mach/host_info.h>
 #include <mach/mach_host.h>
 #include <mach/task_info.h>
 #include <mach/task.h>
 #include <QBoxLayout>
 #include <QRect>
-
-#include <tgmath.h>
 
 
 #define BUFF 256
@@ -68,57 +68,66 @@ RamModule::RamModule(int posx, int posy):
 
 	sysctlbyname("hw.memsize", &ramSize, &sizeBrand, NULL, 0);
 
-	this->_phisicalMem = ramSize;
+	this->_physicalMem = ramSize;
 
-	this->_ramSize =    "RAM:      ";
+	this->_ramSize =    "Physical Memory:      ";
 	this->_ramSize += std::to_string(ramSize / 1000000000);
-	this->_ramSize +=    "GB";
+	this->_ramSize +=    " GB";
 	this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
 }
 
 RamModule::~RamModule(void) {
 }
 
-void		RamModule::_updateRamUsage(void) {
-	//char	buff[BUFF];
-	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
 
-	vm_statistics_data_t vmstat;
+//#define PAGESIZE getpagesize()
+#define PAGESIZE 4096
+#define MEGABYTES 1048576
+
+void		RamModule::_updateRamUsage(void)
+{
+	//natural_t				count = HOST_VM_INFO64_COUNT;
+	//struct vm_statistics64	vmstat;
+	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+	vm_statistics_data_t	vmstat;
+
 	if ( host_statistics(mach_host_self(), HOST_VM_INFO,
 		reinterpret_cast<host_info_t>(&vmstat), &count ) != KERN_SUCCESS) {
 		return;
 	}
 
-	double total = vmstat.wire_count + vmstat.active_count +
-					vmstat.inactive_count + vmstat.free_count;
-	double wired = vmstat.wire_count; //  / total;
-	double active = vmstat.active_count; //  / total;
-	double inactive = vmstat.inactive_count;//  / total;
-	double free = vmstat.free_count ;// / total;
+	double total = (vmstat.wire_count + vmstat.active_count +
+				vmstat.inactive_count + vmstat.free_count) * PAGESIZE / MEGABYTES;
+	double wired = vmstat.wire_count * PAGESIZE / MEGABYTES;
+	double active = vmstat.active_count * PAGESIZE / MEGABYTES;
+	double inactive = vmstat.inactive_count * PAGESIZE / MEGABYTES;
+	double free = vmstat.free_count * PAGESIZE / MEGABYTES;
 
-	//int64_t memUsed = this->_phisicalMem - (vmstat.free_count * 4096);
-	//int64_t virtualMem = this->_phisicalMem - (vmstat.free_count * 4096);
-
-	// TODO CHANGE ME
-	//snprintf(buff, sizeof(buff), "Total: % 3.1f ", total);
 	this->_ramUsage = "Total: ";
 	this->_ramUsage += std::to_string(static_cast<int>(floor(total)));
+	this->_ramUsage += " MB";
 
-	//this->_ramUsage = buff;
-
-	// TODO CHANGE ME
-	//snprintf(buff, sizeof(buff), "Wired: % 3.1f  Active: % 3.1f  Inactive: % 3.1f  Free: % 3.1f", wired, active, inactive, free);
 	this->_ramUsageBis = "Wired: ";
 	this->_ramUsageBis += std::to_string(static_cast<int>(floor(wired)));
-	this->_ramUsageBis += " Active: ";
+	this->_ramUsageBis += " MB  Active: ";
 	this->_ramUsageBis += std::to_string(static_cast<int>(floor(active)));
-	this->_ramUsageBis += " Inactive: ";
+	this->_ramUsageBis += " MB  Inactive: ";
 	this->_ramUsageBis += std::to_string(static_cast<int>(floor(inactive)));
-	this->_ramUsageBis += " Free: ";
+	this->_ramUsageBis += " MB  Free: ";
 	this->_ramUsageBis += std::to_string(static_cast<int>(floor(free)));
+	this->_ramUsageBis += " MB";
 
-	//this->_ramUsageBis = buff;
+	/*
+	int64_t memUsed = this->_physicalMem - (vmstat.free_count * 4096);
+	int64_t virtualMem = this->_physicalMem - (vmstat.free_count * 4096);
+	int64_t appMem = vmstat.
+
+	this->_ramUsageTer = "Physical Mem: ";
+	this->_ramUsageTer += std::to_string(this->_physicalMem);
+	this->_ramUsageTer += std::to_string(this->_physicalMem);
+	*/
 }
+
 
 void		RamModule::_update(void)
 {
@@ -131,11 +140,11 @@ void		RamModule::_update(void)
 
 	this->_ramSwap =  "SWAP:  ";
 	this->_ramSwap += "Total: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_total / 1000000);
+	this->_ramSwap += std::to_string(ramSwap.xsu_total / MEGABYTES);
 	this->_ramSwap += " MB Avail: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_avail / 1000000);
+	this->_ramSwap += std::to_string(ramSwap.xsu_avail / MEGABYTES);
 	this->_ramSwap += " MB Used: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_used / 1000000);
+	this->_ramSwap += std::to_string(ramSwap.xsu_used / MEGABYTES);
 	this->_ramSwap += " MB";
 	if (ramSwap.xsu_encrypted)
 		this->_ramSwap += " (encrypted)";
@@ -147,6 +156,7 @@ void		RamModule::display(void) {
 	mvwprintw(this->_subWin, 1, 1, this->_ramSize.c_str());
 	mvwprintw(this->_subWin, 2, 1, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
+	mvwprintw(this->_subWin, 4, 1, this->_ramUsageTer.c_str());
 	mvwprintw(this->_subWin, 5, 1, this->_ramSwap.c_str());
 }
 

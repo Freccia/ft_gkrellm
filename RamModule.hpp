@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 11:28:47 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 15:07:15 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ private:
 	RamModule(RamModule const &Cc);
 	RamModule &operator=(RamModule const &Cc);
 	/**/
-	int64_t			_phisicalMem;
+	int64_t			_physicalMem;
 	std::string		_ramSize;
 	std::string		_ramSwap;
 	std::string		_ramUsage;
 	std::string		_ramUsageBis;
+	std::string		_ramUsageTer;
 
 	/**/
 	void		_update(void);
