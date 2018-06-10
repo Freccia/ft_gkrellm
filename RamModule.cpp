@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:40:27 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:44:35 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ std::string		RamModule::_progressBar(double percent) {
 		else
 			loadbar += " ";
 	}
-	loadbar += " ]";
+	loadbar += " ] ";
 	loadbar += std::to_string(percent);
 	return loadbar;
 }
@@ -214,14 +214,15 @@ void		RamModule::display(void) {
 
 	this->_progressSWAP = this->_progressBar(_xsu_used / _xsu_total * 100);
 
-	int i = 0;
-	mvwprintw(this->_subWin, ++i, 1, this->_ramSize.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_ramUsage.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_ramUsageBis.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_progressRAM.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_ramUsageTer.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_ramSwap.c_str());
-	mvwprintw(this->_subWin, ++i, 1, this->_progressSWAP.c_str());
+	int x = 2;
+	int y = 0;
+	mvwprintw(this->_subWin, ++y, x, this->_ramSize.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_ramUsage.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_ramUsageBis.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_progressRAM.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_ramUsageTer.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_ramSwap.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_progressSWAP.c_str());
 }
 
 void RamModule::displayQT()

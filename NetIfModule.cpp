@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 18:36:08 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:45:46 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,30 +162,33 @@ void		NetIfModule::_update(void) {
 }
 
 
-void		NetIfModule::display(void) {
-    this->_update();
-    std::string tmp;
-    for (int i=0; i < IFAMAX; i++) {
-        tmp = this->_interface[i].name;
-        if (this->_interface[i].ether.empty() == false) {
-            tmp += "    ether: ";
-            tmp += this->_interface[i].ether;
-        }
-        if (this->_interface[i].ipv4.empty() == false) {
-            tmp += "    ipv4: ";
-            tmp += this->_interface[i].ipv4;
-        }
-        if (this->_interface[i].ipv6.empty() == false) {
-            tmp += "    ipv6: ";
-            tmp += this->_interface[i].ipv6;
-        }
-        mvwprintw(this->_subWin, i + 1, 1, tmp.c_str());
-    }
-    tmp = "totBytesIn: ";
-    tmp += std::to_string(this->_totBytesIn);
-    tmp += "  totBytesOut: ";
-    tmp += std::to_string(this->_totBytesOut);
-    mvwprintw(this->_subWin, 13, 1, tmp.c_str());
+void		NetIfModule::display(void)
+{
+	this->_update();
+
+	std::string		tmp;
+	int				x = 2;
+	for (int i=0; i < IFAMAX; i++) {
+		tmp = this->_interface[i].name;
+		if (this->_interface[i].ether.empty() == false) {
+			tmp += "    ether: ";
+			tmp += this->_interface[i].ether;
+		}
+		if (this->_interface[i].ipv4.empty() == false) {
+			tmp += "    ipv4: ";
+			tmp += this->_interface[i].ipv4;
+		}
+		if (this->_interface[i].ipv6.empty() == false) {
+			tmp += "    ipv6: ";
+			tmp += this->_interface[i].ipv6;
+		}
+		mvwprintw(this->_subWin, i + 1, x, tmp.c_str());
+	}
+	tmp = "totBytesIn: ";
+	tmp += std::to_string(this->_totBytesIn);
+	tmp += "  totBytesOut: ";
+	tmp += std::to_string(this->_totBytesOut);
+	mvwprintw(this->_subWin, 13, x, tmp.c_str());
 }
 
 void NetIfModule::displayQT(void)

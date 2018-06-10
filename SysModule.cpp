@@ -6,14 +6,18 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 09:57:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 11:00:44 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 22:03:34 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SysModule.hpp"
-#include <sys/types.h>
 #include <sys/sysctl.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <mach/mach.h>
+#include <mach/processor_info.h>
+#include <mach/mach_host.h>
+#include <tgmath.h> /* floor() */
 
 #define BUFF 256
 
@@ -94,15 +98,101 @@ void SysModule::_init()
     this->_cpufeatures += cpufeatures;
     this->_cpufeatures = this->_cpufeatures.substr(0, SYSMOD_X - 2);
     this->_cpuclock = this->_cpuclock.substr(0, SYSMOD_X - 2);
+
+	this->_updateCPULoad();
 }
 
+void		SysModule::_updateCPULoad(void) {
+
+	processor_cpu_load_info_t	cpuLoad;
+	mach_msg_type_number_t		processorMsgCount;
+	natural_t					processorCount;
+
+	if (host_processor_info(mach_host_self(), PROCESSOR_CPU_LOAD_INFO, &processorCount, (processor_info_array_t *)&cpuLoad, &processorMsgCount) != KERN_SUCCESS)
+		return;
+
+	this->_NCores = processorCount;
+
+	for (natural_t core = 0; core < processorCount; core++)
+	{
+		// Calc load types and totals, with guards against 32-bit overflow
+		// (values are natural_t)
+		this->_system[core] = cpuLoad[core].cpu_ticks[CPU_STATE_SYSTEM];
+		this->_user[core] = cpuLoad[core].cpu_ticks[CPU_STATE_USER];
+		this->_idle[core] = cpuLoad[core].cpu_ticks[CPU_STATE_IDLE];
+
+		this->_total[core] = this->_system[core] +
+								this->_user[core] + this->_idle[core];
+
+		if (this->_total[core] < 1)
+			this->_total[core] = 1;
+
+		this->_totalCPUTime += this->_total[core];
+		this->_totalSystemTime += this->_system[core];
+		this->_totalUserTime += this->_user[core];
+		this->_totalIdleTime += this->_idle[core];
+	}
+}
+
+
 void		SysModule::display(void) {
-	mvwprintw(this->_subWin, 1, 1, this->_cpubrand.c_str());
-	mvwprintw(this->_subWin, 2, 1, this->_cpuvendor.c_str());
-	mvwprintw(this->_subWin, 3, 1, this->_cpucores.c_str());
-	mvwprintw(this->_subWin, 4, 1, this->_cpuclock.c_str());
-	mvwprintw(this->_subWin, 5, 1, this->_cpufeatures.c_str());
-};
+	this->_updateCPULoad();
+	int		x = 2;
+	int		y = 0;
+	mvwprintw(this->_subWin, ++y, x, this->_cpubrand.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpuvendor.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpucores.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpuclock.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpufeatures.c_str());
+
+	++y;
+	std::string		tmp;
+	tmp = "TOTAL: ";
+	tmp += std::to_string(this->_totalCPUTime).c_str();
+	tmp += "  System: ";
+	tmp += std::to_string(this->_totalSystemTime).c_str();
+	tmp += "  User: ";
+	tmp += std::to_string(this->_totalUserTime).c_str();
+	tmp += "  Idle: ";
+	tmp += std::to_string(this->_totalIdleTime).c_str();
+	mvwprintw(this->_subWin, ++y, x, tmp.c_str());
+
+	/*
+	double sys = static_cast<double>(_totalSystemTime) / static_cast<double>(_totalCPUTime) * 100;
+	double usr = static_cast<double>(_totalUserTime) / static_cast<double>(_totalCPUTime) * 100;
+	double idl = static_cast<double>(_totalIdleTime) / static_cast<double>(_totalCPUTime) * 100;
+
+	tmp = "TOTAL: ";
+	tmp += std::to_string(this->_totalCPUTime).c_str();
+	tmp += "  System: ";
+	tmp += std::to_string(sys).c_str();
+	tmp += "  User: ";
+	tmp += std::to_string(usr).c_str();
+	tmp += "  Idle: ";
+	tmp += std::to_string(idl).c_str();
+	mvwprintw(this->_subWin, ++y, x, tmp.c_str());
+	*/
+
+	for (uint32_t core = 0; core < _NCores; core++) {
+		tmp = std::to_string(core);
+		tmp += ". System: ";
+		tmp += std::to_string(this->_system[core]).c_str();
+		tmp += "  User: ";
+		tmp += std::to_string(this->_user[core]).c_str();
+		tmp += "  Idle: ";
+		tmp += std::to_string(this->_idle[core]).c_str();
+		tmp += "  Total: ";
+		tmp += std::to_string(this->_total[core]).c_str();
+		/*
+		tmp += "  :: ";
+		double		percent = static_cast<double>(_total[core]) /
+								static_cast<double>(_totalSystemTime) * 100;
+		//tmp += std::to_string(static_cast<unsigned int>(floor(percent))).c_str();
+		tmp += std::to_string(floor(percent)).c_str();
+		*/
+		mvwprintw(this->_subWin, ++y, x, tmp.c_str());
+	}
+}
 
 void SysModule::displayQT(void)
 {

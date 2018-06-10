@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 17:42:53 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 14:53:35 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:46:22 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <QBoxLayout>
 #include <QRect>
 
-#define DATEMOD_X 26
+#define DATEMOD_X 28
 #define DATEMOD_Y 3
 
 class DateModule: public MonitorModule {

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 18:46:32 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 14:19:25 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:47:01 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ HostModule::~HostModule(void) {
 };
 
 void		HostModule::display(void) {
-	mvwprintw(this->_subWin, 1, 1, this->_hostname.c_str());
-	mvwprintw(this->_subWin, 2, 1, this->_username.c_str());
+	mvwprintw(this->_subWin, 1, 2, this->_hostname.c_str());
+	mvwprintw(this->_subWin, 2, 2, this->_username.c_str());
 };
 
 void		HostModule::displayQT(void) {
