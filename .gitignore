@@ -2,7 +2,10 @@
 *.d
 .DS_Store
 tmp*
-ft_gkrellm
+ft_gkrellm*
+moc_MainWindow.cpp
+moc_MonitorQT.cpp
+moc_predefs.h
 
 # Compiled Object files
 *.slo
