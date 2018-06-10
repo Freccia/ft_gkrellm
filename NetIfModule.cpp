@@ -38,10 +38,12 @@ NetIfModule::NetIfModule(QFrame *fr) :
 {
      _chart = NULL;
     _frame = fr;
-    int i = IFAMAX;
+    int i = IFAMAX + 1;
     _frame = fr;
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
+    QLabel * title = new QLabel(_name.c_str());
+    layout->addWidget(title);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
     while (i --> 0)
     {
@@ -196,6 +198,31 @@ void		NetIfModule::display(void)
 void NetIfModule::displayQT(void)
 {
     this->_update();
+     std::string		tmp;
+    int i = 0;
+    int j = 0;
+    for (i = 0; i < IFAMAX; i++) {
+        tmp = this->_interface[i].name;
+        if (this->_interface[i].ether.empty() == false) {
+            tmp += "    ether: ";
+            tmp += this->_interface[i].ether;
+        }
+        if (this->_interface[i].ipv4.empty() == false) {
+            tmp += "    ipv4: ";
+            tmp += this->_interface[i].ipv4;
+        }
+        if (this->_interface[i].ipv6.empty() == false) {
+            tmp += "    ipv6: ";
+            tmp += this->_interface[i].ipv6;
+        }
+        _labels[i]->setText(tmp.c_str());
+        j = ++i;
+    }
+    tmp = "Total bytes in: ";
+    tmp += std::to_string(this->_totBytesIn);
+    tmp += " Total bytes out: ";
+    tmp += std::to_string(this->_totBytesOut);
+    _labels[j]->setText(tmp.c_str());
 }
 
 void NetIfModule::displayChart(void)
@@ -206,7 +233,6 @@ void NetIfModule::displayChart(void)
         _chart = new QChart();
         _chart->setTitle("Network Usage");
         _axisX = new QValueAxis;
-        _axisX->setRange(30, 0);
         _axisY = new QValueAxis;
         QChartView *chartView = new QChartView(_chart);
         chartView->setGeometry(20, 300, 600, 600);

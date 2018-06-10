@@ -35,12 +35,11 @@ RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "  RA
 
     sysctlbyname("hw.memsize", &ramSize, &sizeBrand, NULL, 0);
 
-    this->_ramSize =    "RAM:      ";
-    this->_ramSize += std::to_string(ramSize / 1000000000);
-    this->_ramSize +=    "GB";
-    this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
+    this->_physicalMem = ramSize;
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
+    QLabel * title = new QLabel(_name.c_str());
+    layout->addWidget(title);
     layout->setSizeConstraint(QLayout::SetFixedSize);
     QLabel *l1 = new QLabel(_frame);
     QLabel *l2 = new QLabel(_frame);
@@ -233,7 +232,54 @@ void		RamModule::display(void) {
 
 void RamModule::displayQT()
 {
-    _updateRamUsage();
+    this->_updateRamUsage();
+    this->_updateRamUsageBis();
+    this->_updateRamUsageTer();
+
+    this->_ramSize =    "Physical Memory:      ";
+    this->_ramSize += std::to_string(this->_physicalMem / 1000000000);
+    this->_ramSize +=    " GB";
+    this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
+
+    this->_ramUsage = "Total: ";
+    this->_ramUsage += std::to_string(static_cast<int>(floor(this->_total)));
+    this->_ramUsage += " MB";
+    this->_ramUsage = this->_ramUsage.substr(0, RAMMOD_X - 2);
+
+    this->_ramUsageBis = "Wired: ";
+    this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_wired)));
+    this->_ramUsageBis += " MB  Active: ";
+    this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_active)));
+    this->_ramUsageBis += " MB  Inactive: ";
+    this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_inactive)));
+    this->_ramUsageBis += " MB  Free: ";
+    this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_free)));
+    this->_ramUsageBis += " MB";
+    this->_ramUsageBis = this->_ramUsageBis.substr(0, RAMMOD_X - 2);
+
+    this->_ramUsageTer = "In use: ";
+    this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_used));
+    this->_ramUsageTer += " MB  Virtual: ";
+    this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_virtual));
+    this->_ramUsageTer += " MB  App: ";
+    this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_app));
+    this->_ramUsageTer += " MB  Compressed: ";
+    this->_ramUsageTer += std::to_string(static_cast<unsigned int>(this->_compressed));
+    this->_ramUsageTer += " MB";
+    this->_ramUsageTer = this->_ramUsageTer.substr(0, RAMMOD_X - 2);
+
+    this->_ramSwap =  "SWAP:  ";
+    this->_ramSwap += "Total: ";
+    this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_total));
+    this->_ramSwap += " MB Avail: ";
+    this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_avail));
+    this->_ramSwap += " MB Used: ";
+    this->_ramSwap += std::to_string(static_cast<unsigned int>(this->_xsu_used));
+    this->_ramSwap += " MB";
+    if (this->_xsu_encrypted)
+        this->_ramSwap += " (encrypted)";
+    this->_ramSwap = this->_ramSwap.substr(0, RAMMOD_X - 2);
+
     _labels[0]->setText(this->_ramSize.c_str());
     _labels[1]->setText(this->_ramUsage.c_str());
     _labels[2]->setText(this->_ramUsageBis.c_str());
