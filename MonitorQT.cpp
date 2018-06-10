@@ -103,7 +103,7 @@ QFrameModule *MonitorQT::_frameBoxedFactory() const
 void MonitorQT::_addRamModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 0, 0);
+    _layout->addWidget(frame, 0, 0, 2, 2);
     RamModule *ram = new RamModule(frame);
     _modules.push_back(ram);
     _frames.push_back(frame);
@@ -112,7 +112,7 @@ void MonitorQT::_addRamModule()
 void MonitorQT::_addOsModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 1, 0);
+    _layout->addWidget(frame, 2, 0, 2, 2);
     OSModule *os = new OSModule(frame);
     _modules.push_back(os);
     _frames.push_back(frame);
@@ -120,7 +120,7 @@ void MonitorQT::_addOsModule()
 void MonitorQT::_addSysModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 2, 0);
+    _layout->addWidget(frame, 4, 0, 2, 2);
     SysModule *sys = new SysModule(frame);
     _modules.push_back(sys);
     _frames.push_back(frame);
@@ -128,7 +128,7 @@ void MonitorQT::_addSysModule()
 void MonitorQT::_addNetIfModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 0, 1, 5, 1);
+    _layout->addWidget(frame, 0, 3, 10, 2);
     NetIfModule *net = new NetIfModule(frame);
     _modules.push_back(net);
     _frames.push_back(frame);
@@ -136,7 +136,7 @@ void MonitorQT::_addNetIfModule()
 void MonitorQT::_addDateModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 3, 0);
+    _layout->addWidget(frame, 6, 0, 1, 1);
     DateModule *date = new DateModule(frame);
     _modules.push_back(date);
     _frames.push_back(frame);
@@ -144,7 +144,7 @@ void MonitorQT::_addDateModule()
 void MonitorQT::_addHostfModule()
 {
     QFrameModule *frame = _frameBoxedFactory();
-    _layout->addWidget(frame, 4, 0);
+    _layout->addWidget(frame, 6, 1, 1, 1);
     HostModule *host = new HostModule(frame);
     _modules.push_back(host);
     _frames.push_back(frame);
