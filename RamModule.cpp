@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 19:56:33 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:01:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void		RamModule::_updateRamUsage(void)
 	this->_xsu_total = ramSwap.xsu_total / MEGABYTES;
 	this->_xsu_avail = ramSwap.xsu_avail / MEGABYTES;
 	this->_xsu_used = ramSwap.xsu_used / MEGABYTES;
+	this->_xsu_encrypted = ramSwap.xsu_encrypted;
 }
 
 void		RamModule::display(void) {
@@ -198,6 +199,7 @@ void		RamModule::display(void) {
 	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
 	mvwprintw(this->_subWin, 4, 1, this->_ramUsageTer.c_str());
 	mvwprintw(this->_subWin, 5, 1, this->_ramSwap.c_str());
+	
 }
 
 void RamModule::displayQT()
