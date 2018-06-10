@@ -11,6 +11,24 @@
 /* ************************************************************************** */
 
 #include "DateModule.hpp"
+#include <QBoxLayout>
+#include <QRect>
+#include <QFrame>
+
+DateModule::DateModule(QFrame *fr):
+    MonitorModule(DATEMOD_X, DATEMOD_Y, 0, 0)
+{
+    _frame = fr;
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
+    QLabel *l1 = new QLabel(_frame);
+
+    _labels.push_back(l1);
+
+    layout->addWidget(l1);
+    _frame->setLayout(layout);
+}
 
 DateModule::DateModule(int posx, int posy):
 	MonitorModule(DATEMOD_X, DATEMOD_Y, posx, posy) {
@@ -32,4 +50,10 @@ void		DateModule::update(void) {
 void		DateModule::display(void) {
 	this->update();
 	mvwprintw(this->_subWin, 1, 1, this->_date.c_str());
+}
+
+void DateModule::displayQT(void)
+{
+    this->update();
+    this->_labels[0]->setText(_date.c_str());
 }

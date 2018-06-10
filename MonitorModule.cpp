@@ -12,6 +12,7 @@
 
 #include "MonitorModule.hpp"
 #include <unistd.h>
+#include <QFrame>
 
 MonitorModule::MonitorModule(void):
 _size(2, 0), // w=0 h=0
@@ -72,3 +73,14 @@ void			MonitorModule::refresh(void) {
 
 void			MonitorModule::display(void) {
 };
+
+
+void MonitorModule::displayQT()
+{
+    return;
+}
+
+void MonitorModule::_init()
+{
+    return;
+}

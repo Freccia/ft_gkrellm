@@ -50,7 +50,8 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = DateModule.cpp \
+SOURCES       = MonitorQT.cpp \
+		DateModule.cpp \
 		HostModule.cpp \
 		MainWindow.cpp \
 		MonitorModule.cpp \
@@ -60,8 +61,10 @@ SOURCES       = DateModule.cpp \
 		RamModule.cpp \
 		SysModule.cpp \
 		main.cpp \
-		tools.cpp 
-OBJECTS       = DateModule.o \
+		tools.cpp moc_MainWindow.cpp \
+		moc_MonitorQT.cpp
+OBJECTS       = MonitorQT.o \
+		DateModule.o \
 		HostModule.o \
 		MainWindow.o \
 		MonitorModule.o \
@@ -71,7 +74,9 @@ OBJECTS       = DateModule.o \
 		RamModule.o \
 		SysModule.o \
 		main.o \
-		tools.o
+		tools.o \
+		moc_MainWindow.o \
+		moc_MonitorQT.o
 DIST          = /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/spec_pre.prf \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/qdevice.pri \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/device_config.prf \
@@ -242,10 +247,13 @@ DIST          = /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features
 		IMonitorModule.hpp \
 		MonitorModule.hpp \
 		MonitorNcurses.hpp \
+		NetIfModule.hpp \
 		OSModule.hpp \
 		RamModule.hpp \
 		SysModule.hpp \
-		MainWindow.hpp DateModule.cpp \
+		MainWindow.hpp \
+		MonitorQT.hpp MonitorQT.cpp \
+		DateModule.cpp \
 		HostModule.cpp \
 		MainWindow.cpp \
 		MonitorModule.cpp \
@@ -640,8 +648,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents DateModule.hpp HostModule.hpp IMonitorDisplay.hpp IMonitorModule.hpp MonitorModule.hpp MonitorNcurses.hpp OSModule.hpp RamModule.hpp SysModule.hpp MainWindow.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents DateModule.cpp HostModule.cpp MainWindow.cpp MonitorModule.cpp MonitorNcurses.cpp NetIfModule.cpp OSModule.cpp RamModule.cpp SysModule.cpp main.cpp tools.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents DateModule.hpp HostModule.hpp IMonitorDisplay.hpp IMonitorModule.hpp MonitorModule.hpp MonitorNcurses.hpp NetIfModule.hpp OSModule.hpp RamModule.hpp SysModule.hpp MainWindow.hpp MonitorQT.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents MonitorQT.cpp DateModule.cpp HostModule.cpp MainWindow.cpp MonitorModule.cpp MonitorNcurses.cpp NetIfModule.cpp OSModule.cpp RamModule.cpp SysModule.cpp main.cpp tools.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -674,8 +682,55 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -std=c++98 -Wall -Werror -Wextra -O2 -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -dM -E -o moc_predefs.h /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_MainWindow.cpp moc_MonitorQT.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_MainWindow.cpp moc_MonitorQT.cpp
+moc_MainWindow.cpp: /sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLCDNumber \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlcdnumber.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QProgressBar \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressbar.h \
+		MainWindow.hpp \
+		moc_predefs.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/bin/moc
+	/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/macx-clang -I/Users/pmartin/src/piscine_cpp/rush01 -I/Users/pmartin/src/piscine_cpp/rush01 -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtGui.framework/Headers -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib MainWindow.hpp -o moc_MainWindow.cpp
+
+moc_MonitorQT.cpp: IMonitorDisplay.hpp \
+		MonitorModule.hpp \
+		IMonitorModule.hpp \
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLCDNumber \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlcdnumber.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QProgressBar \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGridLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		MonitorQT.hpp \
+		moc_predefs.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/bin/moc
+	/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/mkspecs/macx-clang -I/Users/pmartin/src/piscine_cpp/rush01 -I/Users/pmartin/src/piscine_cpp/rush01 -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtGui.framework/Headers -I/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib MonitorQT.hpp -o moc_MonitorQT.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -695,20 +750,192 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_uic_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
+
+MonitorQT.o: MonitorQT.cpp MonitorQT.hpp \
+		IMonitorDisplay.hpp \
+		MonitorModule.hpp \
+		IMonitorModule.hpp \
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLCDNumber \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlcdnumber.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QProgressBar \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGridLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		OSModule.hpp \
+		DateModule.hpp \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h \
+		HostModule.hpp \
+		SysModule.hpp \
+		NetIfModule.hpp \
+		RamModule.hpp \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QtWidgets \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtwidgetsglobal.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractbutton.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractitemdelegate.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractitemview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractscrollarea.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qabstractspinbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qaccessiblewidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qaction.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qactiongroup.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qbuttongroup.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcalendarwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcheckbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcolordialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcolormap.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcolumnview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcombobox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcommandlinkbutton.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcommonstyle.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qcompleter.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdatawidgetmapper.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdatetimeedit.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdesktopwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdial.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdialogbuttonbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdirmodel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdockwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qdrawutil.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qerrormessage.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfileiconprovider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfilesystemmodel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfocusframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfontcombobox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qfontdialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qformlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgesture.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgesturerecognizer.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsanchorlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicseffect.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsgridlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitem.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsitemanimation.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicslayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicslayoutitem.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicslinearlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsproxywidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsscene.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicssceneevent.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicstransform.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicswidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgroupbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qinputdialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qitemdelegate.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qitemeditorfactory.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qkeyeventtransition.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qkeysequenceedit.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlayoutitem.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlistview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmdiarea.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmdisubwindow.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmenu.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmenubar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qmouseeventtransition.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qopenglwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qplaintextedit.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressdialog.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qproxystyle.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qradiobutton.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qrubberband.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qscrollarea.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qscrollbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qscroller.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qscrollerproperties.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qshortcut.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qsizegrip.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qsizepolicy.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qsplashscreen.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qsplitter.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstackedlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstackedwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstatusbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstyle.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstyleditemdelegate.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstylefactory.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstyleoption.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstylepainter.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qstyleplugin.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qsystemtrayicon.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtabbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtableview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtabwidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtextbrowser.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtoolbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtoolbox.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtoolbutton.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtooltip.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtreeview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtreewidget.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtreewidgetitemiterator.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qundogroup.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qundostack.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qundoview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwhatsthis.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidgetaction.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwizard.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qtwidgetsversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MonitorQT.o MonitorQT.cpp
 
 DateModule.o: DateModule.cpp DateModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DateModule.o DateModule.cpp
 
 HostModule.o: HostModule.cpp HostModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o HostModule.o HostModule.cpp
 
 MainWindow.o: MainWindow.cpp MainWindow.hpp \
@@ -717,12 +944,24 @@ MainWindow.o: MainWindow.cpp MainWindow.hpp \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLCDNumber \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlcdnumber.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QProgressBar \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qtimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o MainWindow.cpp
 
 MonitorModule.o: MonitorModule.cpp MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MonitorModule.o MonitorModule.cpp
 
 MonitorNcurses.o: MonitorNcurses.cpp MonitorNcurses.hpp \
@@ -730,8 +969,16 @@ MonitorNcurses.o: MonitorNcurses.cpp MonitorNcurses.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
 		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
 		OSModule.hpp \
 		DateModule.hpp \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h \
 		HostModule.hpp \
 		SysModule.hpp \
 		NetIfModule.hpp \
@@ -741,25 +988,55 @@ MonitorNcurses.o: MonitorNcurses.cpp MonitorNcurses.hpp \
 NetIfModule.o: NetIfModule.cpp NetIfModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlayout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o NetIfModule.o NetIfModule.cpp
 
 OSModule.o: OSModule.cpp OSModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o OSModule.o OSModule.cpp
 
 RamModule.o: RamModule.cpp RamModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RamModule.o RamModule.cpp
 
 SysModule.o: SysModule.cpp SysModule.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
-		ncurses.h
+		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QBoxLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QRect \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qrect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SysModule.o SysModule.cpp
 
 main.o: main.cpp MonitorNcurses.hpp \
@@ -767,19 +1044,40 @@ main.o: main.cpp MonitorNcurses.hpp \
 		MonitorModule.hpp \
 		IMonitorModule.hpp \
 		ncurses.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QFrame \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qframe.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		MonitorQT.hpp \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
-		MainWindow.hpp \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
 		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGraphicsView \
-		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgraphicsview.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QLCDNumber \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qlcdnumber.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QSlider \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qslider.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QProgressBar \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qprogressbar.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/QTimer \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtCore.framework/Headers/qtimer.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QGridLayout \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/sgoinfre/goinfre/Perso/pmartin/5.10.0/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		MainWindow.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 tools.o: tools.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tools.o tools.cpp
+
+moc_MainWindow.o: moc_MainWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MainWindow.o moc_MainWindow.cpp
+
+moc_MonitorQT.o: moc_MonitorQT.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MonitorQT.o moc_MonitorQT.cpp
 
 ####### Install
 

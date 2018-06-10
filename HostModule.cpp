@@ -15,20 +15,45 @@
 
 #define BUFF 256
 
+
+HostModule::HostModule(QFrame *fr):
+    MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0)
+{
+    _init();
+    _frame = fr;
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
+    QLabel *l1 = new QLabel(_frame);
+    QLabel *l2 = new QLabel(_frame);
+
+
+    _labels.push_back(l1);
+    _labels.push_back(l2);
+
+    layout->addWidget(l1);
+    layout->addWidget(l2);
+    _frame->setLayout(layout);
+}
 HostModule::HostModule(int posx, int posy):
 	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy)
 {
-	char hostname[BUFF];
-	char username[BUFF];
-
-	gethostname(hostname, BUFF);
-	getlogin_r(username, BUFF);
-
-	this->_hostname = hostname;
-	this->_hostname = this->_hostname.substr(0, HOSTMOD_X - 2); /* truncate */
-	this->_username = username;
-	this->_username = this->_username.substr(0, HOSTMOD_X - 2);
+    _init();
 };
+
+void HostModule::_init()
+{
+    char hostname[BUFF];
+    char username[BUFF];
+
+    gethostname(hostname, BUFF);
+    getlogin_r(username, BUFF);
+
+    this->_hostname = hostname;
+    this->_hostname = this->_hostname.substr(0, HOSTMOD_X - 2); /* truncate */
+    this->_username = username;
+    this->_username = this->_username.substr(0, HOSTMOD_X - 2);
+}
 
 HostModule::~HostModule(void) {
 };
@@ -36,4 +61,9 @@ HostModule::~HostModule(void) {
 void		HostModule::display(void) {
 	mvwprintw(this->_subWin, 1, 1, this->_hostname.c_str());
 	mvwprintw(this->_subWin, 2, 1, this->_username.c_str());
+};
+
+void		HostModule::displayQT(void) {
+    _labels[0]->setText(this->_hostname.c_str());
+    _labels[1]->setText(this->_username.c_str());
 };

@@ -14,6 +14,7 @@
 #define NetIfModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
 
 #define NETIFMOD_X 45
 #define NETIFMOD_Y 23
@@ -34,10 +35,12 @@ private:
 
 public:
 	NetIfModule(int posx, int posy);
+    NetIfModule(QFrame *);
 	~NetIfModule(void);
 
 	/**/
 	void		display(void);
+     void displayQT(void);
 };
 
 #endif

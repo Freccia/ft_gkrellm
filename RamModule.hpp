@@ -14,6 +14,7 @@
 #define RamModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
 
 #define RAMMOD_X 84
 #define RAMMOD_Y 7
@@ -36,10 +37,12 @@ private:
 
 public:
 	RamModule(int posx, int posy);
+    RamModule(QFrame *);
 	~RamModule(void);
 
 	/**/
 	void		display(void);
+    void displayQT(void);
 };
 
 #endif

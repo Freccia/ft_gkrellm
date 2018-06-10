@@ -19,8 +19,44 @@
 #include <mach/mach_host.h>
 #include <mach/task_info.h>
 #include <mach/task.h>
+#include <QBoxLayout>
+#include <QRect>
+
 
 #define BUFF 256
+
+RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0)
+{
+    _frame = fr;
+    int64_t			ramSize;
+    size_t			sizeBrand = sizeof(ramSize);
+
+    sysctlbyname("hw.memsize", &ramSize, &sizeBrand, NULL, 0);
+
+    this->_ramSize =    "RAM:      ";
+    this->_ramSize += std::to_string(ramSize / 1000000000);
+    this->_ramSize +=    "GB";
+    this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    QLabel *l1 = new QLabel(_frame);
+    QLabel *l2 = new QLabel(_frame);
+    QLabel *l3 = new QLabel(_frame);
+    QLabel *l4 = new QLabel(_frame);
+    l1->setText(_ramSize.c_str());
+
+    _labels.push_back(l1);
+    _labels.push_back(l2);
+    _labels.push_back(l3);
+    _labels.push_back(l4);
+
+    layout->addWidget(l1);
+    layout->addWidget(l2);
+    layout->addWidget(l3);
+    layout->addWidget(l4);
+    _frame->setLayout(layout);
+}
 
 RamModule::RamModule(int posx, int posy):
 	MonitorModule(RAMMOD_X, RAMMOD_Y, posx, posy)
@@ -121,4 +157,13 @@ void		RamModule::display(void) {
 	mvwprintw(this->_subWin, 2, 1, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
 	mvwprintw(this->_subWin, 5, 1, this->_ramSwap.c_str());
+}
+
+void RamModule::displayQT()
+{
+    _update();
+    _labels[0]->setText(this->_ramSize.c_str());
+    _labels[1]->setText(this->_ramUsage.c_str());
+    _labels[2]->setText(this->_ramUsageBis.c_str());
+    _labels[3]->setText(this->_ramSwap.c_str());
 }

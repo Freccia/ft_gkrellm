@@ -14,6 +14,9 @@
 #define SysModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
+#include <QBoxLayout>
+#include <QRect>
 
 #define SYSMOD_X 60
 #define SYSMOD_Y 7
@@ -31,13 +34,17 @@ private:
 	std::string		_cpucores;
 	std::string		_cpuclock;
 
+    void _init();
+
 public:
 	//SysModule(int width, int height, int x, int y);
 	SysModule(int posx, int posy);
+    SysModule(QFrame *fr);
 	~SysModule(void);
 
 	/**/
 	void		display(void);
+    void displayQT(void);
 };
 
 #endif

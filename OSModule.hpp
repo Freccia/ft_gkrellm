@@ -14,6 +14,7 @@
 #define OSModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
 
 #define OSMOD_X 62
 #define OSMOD_Y 7
@@ -32,14 +33,17 @@ private:
 	std::string		_release;
 	std::string		_version;
 	std::string		_machine;
+    void _init();
 
 public:
 	//OSModule(int width, int height, int x, int y);
 	OSModule(int posx, int posy);
+    OSModule(QFrame *);
 	~OSModule(void);
 
 	/**/
 	void		display(void);
+    void displayQT(void);
 };
 
 #endif

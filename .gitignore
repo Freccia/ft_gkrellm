@@ -33,3 +33,5 @@ ft_gkrellm
 *.exe
 *.out
 *.app
+
+.vscode

@@ -15,6 +15,9 @@
 #include <sys/socket.h>
 #include <net/if_dl.h>
 #include <ifaddrs.h>
+#include <QLayout>
+#include <QFrame>
+#include <QLabel>
 
 #define BUFF 256
 
@@ -25,6 +28,24 @@ std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1);
 //template< typename T >
 std::string nToHex( unsigned char i );
 
+
+NetIfModule::NetIfModule(QFrame *fr) :
+    MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0)
+{
+    _frame = fr;
+    int i = IFAMAX;
+    _frame = fr;
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
+    while (i --> 0)
+    {
+        QLabel *l = new QLabel(_frame);
+        layout->addWidget(l);
+        _labels.push_back(l);
+    }
+    _frame->setLayout(layout);
+}
 
 NetIfModule::NetIfModule(int posx, int posy):
 	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy)
@@ -89,4 +110,12 @@ void		NetIfModule::display(void) {
 	for (int i=0; i < IFAMAX; i++) {
 		mvwprintw(this->_subWin, i + 1, 1, this->_interface[i].c_str());
 	}
-};
+}
+
+void NetIfModule::displayQT(void)
+{
+    this->_update();
+    for (int i=0; i < IFAMAX; i++) {
+        _labels[i]->setText(_interface[i].c_str());
+    }
+}

@@ -12,8 +12,11 @@
 
 #include <iostream>
 #include "MonitorNcurses.hpp"
+#include "MonitorQT.hpp"
 #include <QApplication>
 #include <QPushButton>
+#include <QGridLayout>
+#include <QProgressBar>
 #include "MainWindow.hpp"
 
 int main(int ac, char **av)
@@ -35,9 +38,8 @@ int main(int ac, char **av)
 	{
 		QApplication app(ac, av);
 
-        MainWindow test;
-
-        test.show();
+        MonitorQT mon;
+        mon.show();
 		return app.exec();
 	}
 	return 0;

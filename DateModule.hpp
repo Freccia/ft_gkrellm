@@ -14,6 +14,9 @@
 #define DateModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
+#include <QBoxLayout>
+#include <QRect>
 
 #define DATEMOD_X 25
 #define DATEMOD_Y 3
@@ -28,11 +31,13 @@ private:
 
 public:
 	DateModule(int posx, int posy);
+    DateModule(QFrame *);
 	~DateModule(void);
 
 	/**/
 	void			display(void);
 	void			update(void);
+    void displayQT(void);
 
 };
 

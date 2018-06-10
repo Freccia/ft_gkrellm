@@ -17,6 +17,8 @@
 #include <ncurses.h>
 #include <vector>
 #include <iostream>
+#include <QFrame>
+#include <QLabel>
 
 #define C_X 0
 #define C_Y 1
@@ -26,29 +28,33 @@
 
 class MonitorModule: public IMonitorModule {
 protected:
-	MonitorModule(void);
+    MonitorModule(void);
 
-	/*				*/
-	std::vector<int>	_size;
-	std::vector<int>	_pos;
-	clock_t				_lastDisplay;
-	WINDOW				*_subWin;
+    /*				*/
+    std::vector<int>	_size;
+    std::vector<int>	_pos;
+    std::vector<QLabel *> _labels;
+    clock_t				_lastDisplay;
+    WINDOW				*_subWin;
+    QFrame *_frame;
+    void _init();
 
 public:
-	MonitorModule(int width, int height, int x, int y);
-	MonitorModule(MonitorModule const &Cc);
-	virtual ~MonitorModule(void);
-	MonitorModule &operator=(MonitorModule const &Cc);
+    MonitorModule(int width, int height, int x, int y);
+    MonitorModule(MonitorModule const &Cc);
+    virtual ~MonitorModule(void);
+    MonitorModule &operator=(MonitorModule const &Cc);
 
-	/*				*/
-	std::vector<int>		getSize(void);
-	std::vector<int>		getPos(void);
-	void					deleteMe(void);
-	void					writeMe(int x, int y, std::string str);
-	void					refresh(void);
-	/*				*/
-	virtual void			display(void);
-	//virtual void			update(void);
+    /*				*/
+    std::vector<int>		getSize(void);
+    std::vector<int>		getPos(void);
+    void					deleteMe(void);
+    void					writeMe(int x, int y, std::string str);
+    void					refresh(void);
+    /*				*/
+    virtual void			display(void);
+    //virtual void			update(void);
+    virtual void displayQT();
 };
 
 #endif

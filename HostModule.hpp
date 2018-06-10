@@ -14,6 +14,9 @@
 #define HostModule_hpp
 
 #include "MonitorModule.hpp"
+#include <QFrame>
+#include <QBoxLayout>
+#include <QRect>
 
 #define HOSTMOD_X 15
 #define HOSTMOD_Y 4
@@ -27,14 +30,17 @@ private:
 	/**/
 	std::string		_hostname;
 	std::string		_username;
+    void _init();
 
 public:
 	//HostModule(int width, int height, int x, int y);
 	HostModule(int posx, int posy);
+    HostModule(QFrame *fr);
 	~HostModule(void);
 
 	/**/
 	void		display(void);
+    void displayQT(void);
 };
 
 #endif
