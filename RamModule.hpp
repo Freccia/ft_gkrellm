@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 10:59:40 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 20:38:59 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:57:52 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "MonitorModule.hpp"
 #include <QFrame>
 
-#define RAMMOD_X 100
+#define RAMMOD_X 80
 #define RAMMOD_Y 9
 
 //#define PAGESIZE getpagesize()

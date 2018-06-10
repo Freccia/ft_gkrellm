@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:34:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:53:40 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:48:00 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,13 @@ void OSModule::_init()
 }
 
 void		OSModule::display(void) {
-	mvwprintw(this->_subWin, 1, 1, this->_sysname.c_str());
-	mvwprintw(this->_subWin, 2, 1, this->_nodename.c_str());
-	mvwprintw(this->_subWin, 3, 1, this->_release.c_str());
-	mvwprintw(this->_subWin, 4, 1, this->_version.c_str());
-	mvwprintw(this->_subWin, 5, 1, this->_machine.c_str());
+	int		x = 2;
+	int		y = 0;
+	mvwprintw(this->_subWin, ++y, x, this->_sysname.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_nodename.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_release.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_version.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_machine.c_str());
 };
 
 void OSModule::displayQT(void)

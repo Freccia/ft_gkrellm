@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 18:17:07 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:53:03 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:55:42 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <QBoxLayout>
 #include <QRect>
 
-#define HOSTMOD_X 15
+#define HOSTMOD_X 17
 #define HOSTMOD_Y 4
 
 class HostModule: public MonitorModule {

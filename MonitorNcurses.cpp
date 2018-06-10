@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 14:44:50 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:58:21 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	this->_modules.push_back(mod1);
 	this->_nextY = mod1->getSize()[C_Y] + mod1->getPos()[C_Y];
 
-	this->addModule("host");
 	this->addModule("sys");
-	this->addModule("date");
+	this->addModule("host");
 	this->addModule("net");
 	this->addModule("ram");
+	this->addModule("date");
 	//this->addModule("os");
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
@@ -86,7 +86,7 @@ void		MonitorNcurses::addModule(std::string type) {
 	pos[C_Y] = (lpos[C_Y]);
 	pos[C_X] = (lpos[C_X] + lsiz[C_X]);
 
-	if (this->_totX + pos[C_X] >= WCOLS - 1) { /* go to next line */
+	if (this->_totX + pos[C_X] >= WCOLS - 1 + 20) { /* go to next line */
 		pos[C_X] = 0;
 		if (this->_nextY > pos[C_Y])
 			pos[C_Y] = this->_nextY;
@@ -127,13 +127,7 @@ void		MonitorNcurses::addModule(std::string type) {
 void		MonitorNcurses::getKey(void) {
 	this->_ch = getch();
 
-	if (this->_ch == 't') {
-		this->_modules[0]->writeMe(3, 3, "LOL");
-	} else if (this->_ch == 'c') {
-		this->_modules[0]->deleteMe();
-		wclear(this->_win);
-		clear();
-	} else if (this->_ch == 'h') {
+	if (this->_ch == 'h') {
 		this->addModule("host");
 	} else if (this->_ch == 'o') {
 		this->addModule("os");
@@ -147,7 +141,11 @@ void		MonitorNcurses::getKey(void) {
 		this->addModule("date");
 	} else if (this->_ch == '+') {
 		this->addModule("standard");
-	}
+	}/* else if (this->_ch == 'c') {
+		this->_modules[0]->deleteMe();
+		wclear(this->_win);
+		clear();
+	}*/
 
 	if (this->_ch == 'W' || this->_ch == 'w') {
 		int c = getchar();
@@ -157,6 +155,7 @@ void		MonitorNcurses::getKey(void) {
 	}
 
 	/* DEBUG */
+	/*
 	std::string str = "LINES: ";
 	str.append(std::to_string(WLINES));
 	str.append(" Y: ");
@@ -174,6 +173,7 @@ void		MonitorNcurses::getKey(void) {
 	str.append("        h:host  o:os  r:ram  s:sys  n:net  d:date  +:void");
 	str.append(std::to_string(this->_nextY));
 	mvprintw(0, 0 , str.c_str());
+	*/
 }
 
 

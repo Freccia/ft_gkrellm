@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 09:57:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/09 11:00:44 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:48:42 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,13 @@ void SysModule::_init()
 }
 
 void		SysModule::display(void) {
-	mvwprintw(this->_subWin, 1, 1, this->_cpubrand.c_str());
-	mvwprintw(this->_subWin, 2, 1, this->_cpuvendor.c_str());
-	mvwprintw(this->_subWin, 3, 1, this->_cpucores.c_str());
-	mvwprintw(this->_subWin, 4, 1, this->_cpuclock.c_str());
-	mvwprintw(this->_subWin, 5, 1, this->_cpufeatures.c_str());
+	int		x = 2;
+	int		y = 0;
+	mvwprintw(this->_subWin, ++y, x, this->_cpubrand.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpuvendor.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpucores.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpuclock.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_cpufeatures.c_str());
 };
 
 void SysModule::displayQT(void)

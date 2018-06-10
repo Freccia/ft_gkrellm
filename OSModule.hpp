@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:32:15 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:53:30 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 20:51:10 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "MonitorModule.hpp"
 #include <QFrame>
 
-#define OSMOD_X 62
+#define OSMOD_X 102
 #define OSMOD_Y 7
 
 #define MAXHOSTNAME 256
