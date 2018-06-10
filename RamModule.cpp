@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 16:29:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 19:56:33 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,6 @@ RamModule::RamModule(int posx, int posy):
 	sysctlbyname("hw.memsize", &ramSize, &sizeBrand, NULL, 0);
 
 	this->_physicalMem = ramSize;
-
-	this->_ramSize =    "Physical Memory:      ";
-	this->_ramSize += std::to_string(ramSize / 1000000000);
-	this->_ramSize +=    " GB";
-	this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
 }
 
 RamModule::~RamModule(void) {
@@ -112,21 +107,10 @@ void		RamModule::_updateRamUsageTer(void)
 			vmstat.compressor_page_count
 			);
 
-	 uint64_t		usedMem = (this->_physicalMem - (vmstat.free_count * PAGESIZE)) / MEGABYTES;
-	 uint64_t		virtualMem = (this->_physicalMem - (vmstat.compressor_page_count * PAGESIZE)) / MEGABYTES;
-	 //uint64_t		appMem = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
-	 unsigned long long		appMem = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
-	 uint64_t		compressed = (vmstat.compressions * PAGESIZE) / MEGABYTES;
-
-	this->_ramUsageTer = "In use: ";
-	this->_ramUsageTer += std::to_string(usedMem);
-	this->_ramUsageTer += " MB  Virtual: ";
-	this->_ramUsageTer += std::to_string(virtualMem);
-	this->_ramUsageTer += " MB  App: ";
-	this->_ramUsageTer += std::to_string(static_cast<unsigned long long>(appMem));
-	this->_ramUsageTer += " MB  Compressed: ";
-	this->_ramUsageTer += std::to_string(compressed);
-	this->_ramUsageTer += " MB";
+	 this->_used = (this->_physicalMem - (vmstat.free_count * PAGESIZE)) / MEGABYTES;
+	 this->_virtual = (this->_physicalMem - (vmstat.compressor_page_count * PAGESIZE)) / MEGABYTES;
+	 this->_app = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
+	 this->_compressed = (vmstat.compressions * PAGESIZE) / MEGABYTES;
 }
 
 void		RamModule::_updateRamUsageBis(void)
@@ -139,54 +123,76 @@ void		RamModule::_updateRamUsageBis(void)
 		return;
 	}
 
-	double total = ((vmstat.wire_count + vmstat.active_count +
+	this->_total = ((vmstat.wire_count + vmstat.active_count +
 				vmstat.inactive_count + vmstat.free_count) * PAGESIZE) / MEGABYTES;
-	double wired = (vmstat.wire_count * PAGESIZE) / MEGABYTES;
-	double active = (vmstat.active_count * PAGESIZE) / MEGABYTES;
-	double inactive = (vmstat.inactive_count * PAGESIZE) / MEGABYTES;
-	double free = (vmstat.free_count * PAGESIZE) / MEGABYTES;
-
-	this->_ramUsage = "Total: ";
-	this->_ramUsage += std::to_string(static_cast<int>(floor(total)));
-	this->_ramUsage += " MB";
-
-	this->_ramUsageBis = "Wired: ";
-	this->_ramUsageBis += std::to_string(static_cast<int>(floor(wired)));
-	this->_ramUsageBis += " MB  Active: ";
-	this->_ramUsageBis += std::to_string(static_cast<int>(floor(active)));
-	this->_ramUsageBis += " MB  Inactive: ";
-	this->_ramUsageBis += std::to_string(static_cast<int>(floor(inactive)));
-	this->_ramUsageBis += " MB  Free: ";
-	this->_ramUsageBis += std::to_string(static_cast<int>(floor(free)));
-	this->_ramUsageBis += " MB";
+	this->_wired = (vmstat.wire_count * PAGESIZE) / MEGABYTES;
+	this->_active = (vmstat.active_count * PAGESIZE) / MEGABYTES;
+	this->_inactive = (vmstat.inactive_count * PAGESIZE) / MEGABYTES;
+	this->_free = (vmstat.free_count * PAGESIZE) / MEGABYTES;
 }
 
 
 void		RamModule::_updateRamUsage(void)
 {
-	this->_updateRamUsageBis();
-	this->_updateRamUsageTer();
-
 	struct xsw_usage ramSwap;
 	size_t			sizeUsage = sizeof(ramSwap);
 
 	sysctlbyname("vm.swapusage", &ramSwap, &sizeUsage, NULL, 0);
 
-	this->_ramSwap =  "SWAP:  ";
-	this->_ramSwap += "Total: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_total / MEGABYTES);
-	this->_ramSwap += " MB Avail: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_avail / MEGABYTES);
-	this->_ramSwap += " MB Used: ";
-	this->_ramSwap += std::to_string(ramSwap.xsu_used / MEGABYTES);
-	this->_ramSwap += " MB";
-	if (ramSwap.xsu_encrypted)
-		this->_ramSwap += " (encrypted)";
-	this->_ramSwap = this->_ramSwap.substr(0, RAMMOD_X - 2);
+	this->_xsu_total = ramSwap.xsu_total / MEGABYTES;
+	this->_xsu_avail = ramSwap.xsu_avail / MEGABYTES;
+	this->_xsu_used = ramSwap.xsu_used / MEGABYTES;
 }
 
 void		RamModule::display(void) {
 	this->_updateRamUsage();
+	this->_updateRamUsageBis();
+	this->_updateRamUsageTer();
+
+	this->_ramSize =    "Physical Memory:      ";
+	this->_ramSize += std::to_string(this->_physicalMem / 1000000000);
+	this->_ramSize +=    " GB";
+	this->_ramSize = this->_ramSize.substr(0, RAMMOD_X - 2);
+
+	this->_ramUsage = "Total: ";
+	this->_ramUsage += std::to_string(static_cast<int>(floor(this->_total)));
+	this->_ramUsage += " MB";
+	this->_ramUsage = this->_ramUsage.substr(0, RAMMOD_X - 2);
+
+	this->_ramUsageBis = "Wired: ";
+	this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_wired)));
+	this->_ramUsageBis += " MB  Active: ";
+	this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_active)));
+	this->_ramUsageBis += " MB  Inactive: ";
+	this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_inactive)));
+	this->_ramUsageBis += " MB  Free: ";
+	this->_ramUsageBis += std::to_string(static_cast<int>(floor(this->_free)));
+	this->_ramUsageBis += " MB";
+	this->_ramUsageBis = this->_ramUsageBis.substr(0, RAMMOD_X - 2);
+
+	this->_ramUsageTer = "In use: ";
+	this->_ramUsageTer += std::to_string(this->_used);
+	this->_ramUsageTer += " MB  Virtual: ";
+	this->_ramUsageTer += std::to_string(this->_virtual);
+	this->_ramUsageTer += " MB  App: ";
+	this->_ramUsageTer += std::to_string(static_cast<unsigned long long>(this->_app));
+	this->_ramUsageTer += " MB  Compressed: ";
+	this->_ramUsageTer += std::to_string(this->_compressed);
+	this->_ramUsageTer += " MB";
+	this->_ramUsageTer = this->_ramUsageTer.substr(0, RAMMOD_X - 2);
+
+	this->_ramSwap =  "SWAP:  ";
+	this->_ramSwap += "Total: ";
+	this->_ramSwap += std::to_string(this->_xsu_total);
+	this->_ramSwap += " MB Avail: ";
+	this->_ramSwap += std::to_string(this->_xsu_avail);
+	this->_ramSwap += " MB Used: ";
+	this->_ramSwap += std::to_string(this->_xsu_used);
+	this->_ramSwap += " MB";
+	if (this->_xsu_encrypted)
+		this->_ramSwap += " (encrypted)";
+	this->_ramSwap = this->_ramSwap.substr(0, RAMMOD_X - 2);
+
 	mvwprintw(this->_subWin, 1, 1, this->_ramSize.c_str());
 	mvwprintw(this->_subWin, 2, 1, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
