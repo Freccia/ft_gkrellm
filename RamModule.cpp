@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 15:38:02 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 16:29:54 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,57 @@ RamModule::~RamModule(void) {
 }
 
 
-//#define PAGESIZE getpagesize()
-#define PAGESIZE 4096
-#define MEGABYTES 1048576
-
-void		RamModule::_updateRamUsage(void)
+void		RamModule::_updateRamUsageTer(void)
 {
-	//natural_t				count = HOST_VM_INFO64_COUNT;
-	//struct vm_statistics64	vmstat;
+	struct vm_statistics64 vmstat;
+	mach_port_t		host    = mach_host_self();
+	natural_t		count   = HOST_VM_INFO64_COUNT;
+	natural_t		missing = 0;
+	kern_return_t	ret;
+	int				mib[2];
+	long			ram;
+	natural_t		pages;
+	size_t			length;
+
+	mib[0] = CTL_HW;
+	mib[1] = HW_MEMSIZE;
+	length = sizeof(long);
+	sysctl(mib, 2, &ram, &length, NULL, 0);
+	pages  = ram / getpagesize();
+
+	if ((ret = host_statistics64(host, HOST_VM_INFO64,
+					(host_info64_t)&vmstat, &count)) != KERN_SUCCESS) {
+		return;
+	}
+
+	/* updated for 10.9 */
+	missing = pages - (
+			vmstat.free_count     +
+			vmstat.active_count   +
+			vmstat.inactive_count +
+			vmstat.wire_count     +
+			vmstat.compressor_page_count
+			);
+
+	 uint64_t		usedMem = (this->_physicalMem - (vmstat.free_count * PAGESIZE)) / MEGABYTES;
+	 uint64_t		virtualMem = (this->_physicalMem - (vmstat.compressor_page_count * PAGESIZE)) / MEGABYTES;
+	 //uint64_t		appMem = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
+	 unsigned long long		appMem = (vmstat.internal_page_count * PAGESIZE) / MEGABYTES;
+	 uint64_t		compressed = (vmstat.compressions * PAGESIZE) / MEGABYTES;
+
+	this->_ramUsageTer = "In use: ";
+	this->_ramUsageTer += std::to_string(usedMem);
+	this->_ramUsageTer += " MB  Virtual: ";
+	this->_ramUsageTer += std::to_string(virtualMem);
+	this->_ramUsageTer += " MB  App: ";
+	this->_ramUsageTer += std::to_string(static_cast<unsigned long long>(appMem));
+	this->_ramUsageTer += " MB  Compressed: ";
+	this->_ramUsageTer += std::to_string(compressed);
+	this->_ramUsageTer += " MB";
+}
+
+void		RamModule::_updateRamUsageBis(void)
+{
 	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
 	vm_statistics_data_t	vmstat;
 
@@ -96,12 +139,12 @@ void		RamModule::_updateRamUsage(void)
 		return;
 	}
 
-	double total = (vmstat.wire_count + vmstat.active_count +
-				vmstat.inactive_count + vmstat.free_count) * PAGESIZE / MEGABYTES;
-	double wired = vmstat.wire_count * PAGESIZE / MEGABYTES;
-	double active = vmstat.active_count * PAGESIZE / MEGABYTES;
-	double inactive = vmstat.inactive_count * PAGESIZE / MEGABYTES;
-	double free = vmstat.free_count * PAGESIZE / MEGABYTES;
+	double total = ((vmstat.wire_count + vmstat.active_count +
+				vmstat.inactive_count + vmstat.free_count) * PAGESIZE) / MEGABYTES;
+	double wired = (vmstat.wire_count * PAGESIZE) / MEGABYTES;
+	double active = (vmstat.active_count * PAGESIZE) / MEGABYTES;
+	double inactive = (vmstat.inactive_count * PAGESIZE) / MEGABYTES;
+	double free = (vmstat.free_count * PAGESIZE) / MEGABYTES;
 
 	this->_ramUsage = "Total: ";
 	this->_ramUsage += std::to_string(static_cast<int>(floor(total)));
@@ -116,22 +159,13 @@ void		RamModule::_updateRamUsage(void)
 	this->_ramUsageBis += " MB  Free: ";
 	this->_ramUsageBis += std::to_string(static_cast<int>(floor(free)));
 	this->_ramUsageBis += " MB";
-
-	/*
-	int64_t memUsed = this->_physicalMem - (vmstat.free_count * 4096);
-	int64_t virtualMem = this->_physicalMem - (vmstat.free_count * 4096);
-	int64_t appMem = vmstat.
-
-	this->_ramUsageTer = "Physical Mem: ";
-	this->_ramUsageTer += std::to_string(this->_physicalMem);
-	this->_ramUsageTer += std::to_string(this->_physicalMem);
-	*/
 }
 
 
-void		RamModule::_update(void)
+void		RamModule::_updateRamUsage(void)
 {
-	this->_updateRamUsage();
+	this->_updateRamUsageBis();
+	this->_updateRamUsageTer();
 
 	struct xsw_usage ramSwap;
 	size_t			sizeUsage = sizeof(ramSwap);
@@ -152,7 +186,7 @@ void		RamModule::_update(void)
 }
 
 void		RamModule::display(void) {
-	this->_update();
+	this->_updateRamUsage();
 	mvwprintw(this->_subWin, 1, 1, this->_ramSize.c_str());
 	mvwprintw(this->_subWin, 2, 1, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, 3, 1, this->_ramUsageBis.c_str());
@@ -162,7 +196,7 @@ void		RamModule::display(void) {
 
 void RamModule::displayQT()
 {
-    _update();
+    _updateRamUsage();
     _labels[0]->setText(this->_ramSize.c_str());
     _labels[1]->setText(this->_ramUsage.c_str());
     _labels[2]->setText(this->_ramUsageBis.c_str());
