@@ -6,17 +6,20 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 17:48:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/10 18:36:08 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "NetIfModule.hpp"
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <net/if_dl.h>
-#include <ifaddrs.h>
-#include <netinet/in.h> 
+#include <sys/sysctl.h>
 #include <arpa/inet.h>
+#include <netinet/in.h> 
+#include <net/route.h>
+#include <net/if_dl.h>
+#include <net/if.h>
+#include <ifaddrs.h>
 #include <QLayout>
 #include <QFrame>
 #include <QLabel>
@@ -59,7 +62,40 @@ NetIfModule::~NetIfModule(void) {
 }
 
 
+void		NetIfModule::_updateNetLoad(void) {
+	int		mib[] = {CTL_NET, PF_ROUTE, 0, 0, NET_RT_IFLIST2, 0};
+	size_t	size;
+
+	if (sysctl(mib, 6, NULL, &size, NULL, 0) < 0) {
+		return;
+	}
+	char	buf[size];
+	if (sysctl(mib, 6, buf, &size, NULL, 0) < 0) {
+		return;
+	}
+	char		*lim = buf + size;
+	char		*next = NULL;
+
+	this->_totBytesIn = 0;
+	this->_totBytesOut = 0;
+
+	next = buf;
+	while (next < lim) {
+		struct if_msghdr	*ifm = (struct if_msghdr*)next;
+		next += ifm->ifm_msglen;
+		if (ifm->ifm_type == RTM_IFINFO2) {
+			struct if_msghdr2	*ifm2 = (struct if_msghdr2*)ifm;
+			this->_totBytesIn += ifm2->ifm_data.ifi_ibytes;
+			this->_totBytesOut += ifm2->ifm_data.ifi_obytes;
+		}
+	}
+}
+
+
 void		NetIfModule::_update(void) {
+
+	this->_updateNetLoad();
+
 	struct ifaddrs		*ifa;
 	struct ifaddrs		*ptr;
 	int					i = -1;
@@ -123,8 +159,8 @@ void		NetIfModule::_update(void) {
 
 void		NetIfModule::display(void) {
 	this->_update();
+	std::string tmp;
 	for (int i=0; i < IFAMAX; i++) {
-		std::string tmp;
 		tmp = this->_interface[i].name;
 		if (this->_interface[i].ether.empty() == false) {
 			tmp += "    ether: ";
@@ -140,6 +176,11 @@ void		NetIfModule::display(void) {
 		}
 		mvwprintw(this->_subWin, i + 1, 1, tmp.c_str());
 	}
+	tmp = "totBytesIn: ";
+	tmp += std::to_string(this->_totBytesIn);
+	tmp += "  totBytesOut: ";
+	tmp += std::to_string(this->_totBytesOut);
+	mvwprintw(this->_subWin, 13, 1, tmp.c_str());
 }
 
 void NetIfModule::displayQT(void)
