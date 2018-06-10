@@ -24,21 +24,20 @@ HEADERS += DateModule.hpp \
            IMonitorModule.hpp \
            MonitorModule.hpp \
            MonitorNcurses.hpp \
-NetIfModule.hpp \
+           QFrameModule.hpp \
+           NetIfModule.hpp \
            OSModule.hpp \
            RamModule.hpp \
            SysModule.hpp \
            MainWindow.hpp \
 MonitorQT.hpp
 
-NOPE_FORMS += mainwindow.ui
-
 QT += widgets
 QT += core
 
 QMAKE_CXXFLAGS += -std=c++98 -Wall -Werror -Wextra
 
-SOURCES += MonitorQT.cpp DateModule.cpp HostModule.cpp MainWindow.cpp MonitorModule.cpp MonitorNcurses.cpp NetIfModule.cpp OSModule.cpp RamModule.cpp SysModule.cpp main.cpp tools.cpp
+SOURCES += MonitorQT.cpp DateModule.cpp HostModule.cpp MainWindow.cpp MonitorModule.cpp MonitorNcurses.cpp NetIfModule.cpp OSModule.cpp RamModule.cpp SysModule.cpp main.cpp tools.cpp QFrameModule.cpp
 
 
 LIBS += -L. -lncurses
