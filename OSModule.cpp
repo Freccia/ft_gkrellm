@@ -30,6 +30,8 @@ OSModule::OSModule(QFrame *fr):
     _frame = fr;
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
+    QLabel * title = new QLabel(_name.c_str());
+    layout->addWidget(title);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
     QLabel *l1 = new QLabel(_frame);
     QLabel *l2 = new QLabel(_frame);

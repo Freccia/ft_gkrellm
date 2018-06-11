@@ -29,24 +29,37 @@ SysModule::SysModule(QFrame *fr):
     _frame = fr;
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
+    QLabel * title = new QLabel(_name.c_str());
+    layout->addWidget(title);
     layout->setSizeConstraint(QLayout::SetMinimumSize);
     QLabel *l1 = new QLabel(_frame);
     QLabel *l2 = new QLabel(_frame);
     QLabel *l3 = new QLabel(_frame);
     QLabel *l4 = new QLabel(_frame);
     QLabel *l5 = new QLabel(_frame);
+    QLabel *l6 = new QLabel(_frame);
+    QLabel *l7 = new QLabel(_frame);
+    QLabel *l8 = new QLabel(_frame);
+
 
     _labels.push_back(l1);
     _labels.push_back(l2);
     _labels.push_back(l3);
     _labels.push_back(l4);
     _labels.push_back(l5);
+    _labels.push_back(l6);
+    _labels.push_back(l7);
+    _labels.push_back(l8);
+
 
     layout->addWidget(l1);
     layout->addWidget(l2);
     layout->addWidget(l3);
     layout->addWidget(l4);
     layout->addWidget(l5);
+    layout->addWidget(l6);
+    layout->addWidget(l7);
+    layout->addWidget(l8);
     _frame->setLayout(layout);
 };
 
@@ -200,9 +213,21 @@ void		SysModule::display(void) {
 
 void SysModule::displayQT(void)
 {
+    this->_updateCPULoad();
+    std::string		tmp;
+    tmp = "TOTAL: ";
+    tmp += std::to_string(this->_totalCPUTime).c_str();
+    tmp += "  System: ";
+    tmp += std::to_string(this->_totalSystemTime).c_str();
+    tmp += "  User: ";
+    tmp += std::to_string(this->_totalUserTime).c_str();
+    tmp += "  Idle: ";
+    tmp += std::to_string(this->_totalIdleTime).c_str();
+
     _labels[0]->setText(_cpubrand.c_str());
     _labels[1]->setText(_cpuvendor.c_str());
     _labels[2]->setText(_cpucores.c_str());
     _labels[3]->setText(_cpuclock.c_str());
     _labels[4]->setText(_cpufeatures.c_str());
+    _labels[5]->setText(tmp.c_str());
 }

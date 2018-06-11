@@ -71,6 +71,7 @@ public:
 	/**/
 	void		display(void);
     void displayQT(void);
+    void displayChart(void);
 };
 
 #endif
