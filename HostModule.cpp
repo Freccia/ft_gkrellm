@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 18:46:32 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:29:14 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:08:36 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 
 HostModule::HostModule(QFrame *fr):
-    MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0, "  Host  ")
+    MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0, "host", "  Host  ")
 {
     _init();
     _frame = fr;
@@ -38,7 +38,7 @@ HostModule::HostModule(QFrame *fr):
     _frame->setLayout(layout);
 }
 HostModule::HostModule(int posx, int posy):
-	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy, "  Host  ")
+	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy, "host", "  Host  ")
 {
     _init();
 };
@@ -52,21 +52,28 @@ void HostModule::_init()
     getlogin_r(username, BUFF);
 
     this->_hostname = hostname;
-    this->_hostname = this->_hostname.substr(0, HOSTMOD_X - 2); /* truncate */
     this->_username = username;
-    this->_username = this->_username.substr(0, HOSTMOD_X - 2);
 }
 
 HostModule::~HostModule(void) {
 };
 
 void		HostModule::display(void) {
+	std::string		title;
+	std::string		hostname;
+	std::string		username;
 	int x = 2;
 	int y = -1;
+
+	/* truncate */
+	title = this->_title.substr(0, HOSTMOD_X - 3);
+	hostname = this->_hostname.substr(0, HOSTMOD_X - 3);
+	username = this->_username.substr(0, HOSTMOD_X - 3);
+	/* display */
 	box(this->_subWin, '|', '-');
-	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_hostname.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_username.c_str());
+	mvwprintw(this->_subWin, ++y, x, title.c_str());
+	mvwprintw(this->_subWin, ++y, x, hostname.c_str());
+	mvwprintw(this->_subWin, ++y, x, username.c_str());
 };
 
 void		HostModule::displayQT(void) {

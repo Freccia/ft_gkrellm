@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:21:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:21:59 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:06:43 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ _lastDisplay(0) {
 
 MonitorModule::MonitorModule(int width, int height, int x, int y):
 _name("standard"),
+_title(" Standard "),
 _size(2),
 _pos(2),
 _lastDisplay(clock())
@@ -33,12 +34,29 @@ _lastDisplay(clock())
 	this->_subWin = newwin(height, width, y, x);
 }
 
-MonitorModule::MonitorModule(int width, int height, int x, int y, std::string name):
+MonitorModule::MonitorModule(int width, int height, int x, int y,
+								std::string name):
 _size(2),
 _pos(2),
 _lastDisplay(clock())
 {
 	this->_name = name;
+	this->_title = "  "; this->_title += name; this->_title += "  ";
+	this->_size[C_X] = width;
+	this->_size[C_Y] = height;
+	this->_pos[C_X] = x;
+	this->_pos[C_Y] = y;
+	this->_subWin = newwin(height, width, y, x);
+}
+
+MonitorModule::MonitorModule(int width, int height, int x, int y,
+								std::string name, std::string title):
+_size(2),
+_pos(2),
+_lastDisplay(clock())
+{
+	this->_name = name;
+	this->_title += title;
 	this->_size[C_X] = width;
 	this->_size[C_Y] = height;
 	this->_pos[C_X] = x;
@@ -64,6 +82,9 @@ MonitorModule	&MonitorModule::operator=(MonitorModule const &Cc) {
 }
 
 
+std::string		MonitorModule::getName(void) {
+	return this->_name;
+}
 
 std::vector<int> MonitorModule::getSize(void) {
 	return this->_size;
@@ -73,13 +94,20 @@ std::vector<int> MonitorModule::getPos(void) {
 	return this->_pos;
 }
 
+bool			MonitorModule::setPos(int x, int y) {
+	if ((x + this->_size[C_X]) < COLS && (y + this->_size[C_Y]) < LINES) {
+		this->_pos[C_X] = x;
+		this->_pos[C_Y] = y;
+		mvwin(this->_subWin, y, 0);
+		wrefresh(this->_subWin);
+		return true;
+	}
+	return false;
+}
+
 void			MonitorModule::deleteMe(void) {
 	werase(this->_subWin);
 	wclear(this->_subWin);
-}
-
-void			MonitorModule::writeMe(int x, int y, std::string str) {
-	mvwprintw(this->_subWin, y, x, str.c_str());
 }
 
 void			MonitorModule::refresh(void) {
@@ -88,6 +116,13 @@ void			MonitorModule::refresh(void) {
 
 void			MonitorModule::display(void) {
 	box(this->_subWin, '|', '-');
+}
+
+void			MonitorModule::update(void) {
+}
+
+void			MonitorModule::debug(int x, int y, std::string msg) {
+	mvwprintw(this->_subWin, y, x, msg.c_str());
 }
 
 

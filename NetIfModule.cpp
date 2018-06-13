@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 11:37:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:55:06 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:09:05 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string c2hex(unsigned char c);
 
 
 NetIfModule::NetIfModule(QFrame *fr) :
-    MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0, "  Net Interfaces  ")
+    MonitorModule(NETIFMOD_X, NETIFMOD_Y, 0, 0, "net", "  Net Interfaces  ")
 {
      _chart = NULL;
     _frame = fr;
@@ -56,7 +56,8 @@ NetIfModule::NetIfModule(QFrame *fr) :
 
 
 NetIfModule::NetIfModule(int posx, int posy):
-	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy, "  Net Interfaces  ")
+	MonitorModule(NETIFMOD_X, NETIFMOD_Y, posx, posy, "net",
+					"  Net Interfaces  ")
 {
 }
 
@@ -168,7 +169,7 @@ void		NetIfModule::display(void)
 	box(this->_subWin, '|', '-');
 	int x = 2;
 	int y = -1;
-	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_title.c_str());
 
 	std::string		tmp;
 	for (int i=0; i < IFAMAX; i++) {

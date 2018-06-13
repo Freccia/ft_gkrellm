@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:48:08 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 23:40:21 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:07:22 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 #include <iostream>
 #include <signal.h>
 
+typedef std::vector<MonitorModule*>::iterator	vectIter;
+
+
+/* Default Constructor */
 MonitorNcurses::MonitorNcurses(void) :
 _winX(COLS), _winY(LINES),
 _totX(0), _totY(3), _nextY(0),
@@ -43,10 +47,6 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	/* this->window is by default standard screen */
 	this->_win = stdscr;
 
-	/* initialize */
-	this->_totX = 0;
-	this->_totY = 3;
-
 	/* generate one OSModule by default */
 	MonitorModule *mod1 = new OSModule(0, 3);
 	this->_modules.push_back(mod1);
@@ -57,20 +57,17 @@ _ch(0), _beginTime(clock()), _lastDisplay(0)
 	this->addModule("net");
 	this->addModule("ram");
 	this->addModule("date");
-	//this->addModule("os");
 
 	signal(SIGWINCH, &MonitorNcurses::resizeHandler);
 };
 
+/* Default Destructor */
 MonitorNcurses::~MonitorNcurses(void) {
+	for (vectIter it = _modules.begin(); it != _modules.end(); ++it) {
+		delete *it;
+	}
+	_modules.clear();
 	endwin();
-	delete _modules[0];
-	delete _modules[1];
-	delete _modules[2];
-	delete _modules[3];
-	delete _modules[4];
-	delete _modules[5];
-	delete _modules[6];
 };
 
 /* handler for SIGWINCH */
@@ -90,18 +87,9 @@ void		MonitorNcurses::addModule(std::string type) {
 	std::vector<int>	lpos = last->getPos();
 	std::vector<int>	lsiz = last->getSize();
 	std::vector<int>	pos(2);
-	pos[C_Y] = (lpos[C_Y]);
-	pos[C_X] = (lpos[C_X] + lsiz[C_X]);
+	pos[C_Y] = (lpos[C_Y] + lsiz[C_Y]);
+	pos[C_X] = 0;
 
-	if (this->_totX + pos[C_X] >= WCOLS - 1 + 20) { /* go to next line */
-		pos[C_X] = 0;
-		if (this->_nextY > pos[C_Y])
-			pos[C_Y] = this->_nextY;
-		else
-			pos[C_Y] += lsiz[C_Y];
-		this->_totY += pos[C_Y];
-		this->_totX = 0;
-	}
 	if (this->_totY + pos[C_Y] >= WLINES - 1) {
 		return;
 	}
@@ -124,45 +112,57 @@ void		MonitorNcurses::addModule(std::string type) {
 	}
 
 	/* update */
-	if (this->_nextY < mod->getSize()[C_Y] + mod->getPos()[C_Y])
-		this->_nextY = mod->getSize()[C_Y] + mod->getPos()[C_Y];
 	this->_modules.push_back(mod);
-	this->_totX += pos[C_X];
+	this->_totY += pos[C_Y];
+}
+
+#include <stdio.h>
+/* Remove module of type = type from vector */
+void		MonitorNcurses::removeModule(std::string type)
+{
+	for (vectIter it = _modules.begin(); it != _modules.end(); ++it) {
+		if ((*it)->getName() == type) {
+			this->_totY -= (*it)->getPos()[C_Y];
+			(*it)->deleteMe();
+			this->_modules.erase(it);
+			break;
+		}
+	}
+	vectIter prev;
+	for (vectIter it = _modules.begin(); it != _modules.end(); ++it) {
+		if (it != _modules.begin()) {
+			std::vector<int> posPrev = (*prev)->getPos();
+			std::vector<int> sizePrev = (*prev)->getSize();
+			(*it)->setPos(posPrev[C_X] + sizePrev[C_X], posPrev[C_Y] + sizePrev[C_Y]);
+			prev = it;
+		} else {
+			prev = _modules.begin();
+		}
+	}
 }
 
 /* get key and do action (add/delete module) */
-void		MonitorNcurses::getKey(void) {
+void		MonitorNcurses::getKey(void)
+{
+	std::vector<std::string> modules = {"date", "host", "net", "os", "ram", "sys"};
+
 	this->_ch = getch();
 
-	if (this->_ch == 'h') {
-		this->addModule("host");
-	} else if (this->_ch == 'o') {
-		this->addModule("os");
-	} else if (this->_ch == 'r') {
-		this->addModule("ram");
-	} else if (this->_ch == 's') {
-		this->addModule("sys");
-	} else if (this->_ch == 'n') {
-		this->addModule("net");
-	} else if (this->_ch == 'd') {
-		this->addModule("date");
-	} else if (this->_ch == '+') {
-		this->addModule("standard");
-	}/* else if (this->_ch == 'c') {
-		this->_modules[0]->deleteMe();
+	for (size_t i=0; i < modules.size(); i++) {
+		if (this->_ch == modules[i][0])
+			this->addModule(modules[i]);
+	}
+	if (this->_ch == 'c') {
+			char mod = getchar();
+			for (size_t i=0; i < modules.size(); i++) {
+				if (mod == modules[i][0])
+					this->removeModule(modules[i]);
+			}
 		wclear(this->_win);
 		clear();
-	}*/
-
-	if (this->_ch == 'W' || this->_ch == 'w') {
-		int c = getchar();
-		if ((c >= '0' && c <= '9') &&
-			(c - '0' >= 0 && c - '0' < static_cast<int>(this->_modules.size())))
-			this->_modules[c - '0']->deleteMe();
 	}
 
 	/* DEBUG */
-	/*
 	std::string str = "LINES: ";
 	str.append(std::to_string(WLINES));
 	str.append(" Y: ");
@@ -179,8 +179,9 @@ void		MonitorNcurses::getKey(void) {
 	str.append(std::to_string(this->_nextY));
 	str.append("        h:host  o:os  r:ram  s:sys  n:net  d:date  +:void");
 	str.append(std::to_string(this->_nextY));
+	str.append("    ");
+	str.append(this->_debug.c_str());
 	mvprintw(0, 0 , str.c_str());
-	*/
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 11:00:47 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:53:22 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:09:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 
 #define BUFF 256
 
-RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "  RAM  ")
+RamModule::RamModule(QFrame *fr) :
+	MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "ram", "  RAM  ")
 {
     _frame = fr;
     int64_t			ramSize;
@@ -69,7 +70,7 @@ RamModule::RamModule(QFrame *fr) : MonitorModule(RAMMOD_X, RAMMOD_Y, 0, 0, "  RA
 }
 
 RamModule::RamModule(int posx, int posy):
-	MonitorModule(RAMMOD_X, RAMMOD_Y, posx, posy, "  RAM  ")
+	MonitorModule(RAMMOD_X, RAMMOD_Y, posx, posy, "ram", "  RAM  ")
 {
 	int64_t			ramSize;
 	size_t			sizeBrand = sizeof(ramSize);
@@ -228,7 +229,7 @@ void		RamModule::display(void) {
 	box(this->_subWin, '|', '-');
 	int x = 2;
 	int y = -1;
-	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_title.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramSize.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramUsage.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_ramUsageBis.c_str());

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 17:44:59 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:28:34 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:08:10 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <QFrame>
 
 DateModule::DateModule(QFrame *fr):
-    MonitorModule(DATEMOD_X, DATEMOD_Y, 0, 0, "  Date  ")
+    MonitorModule(DATEMOD_X, DATEMOD_Y, 0, 0, "date", "  Date  ")
 {
     _frame = fr;
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
@@ -33,7 +33,7 @@ DateModule::DateModule(QFrame *fr):
 }
 
 DateModule::DateModule(int posx, int posy):
-	MonitorModule(DATEMOD_X, DATEMOD_Y, posx, posy, "  Date  ") {
+	MonitorModule(DATEMOD_X, DATEMOD_Y, posx, posy, "date", "  Date  ") {
 }
 
 DateModule::~DateModule(void) {
@@ -55,7 +55,7 @@ void		DateModule::display(void) {
 	int x = 2;
 	int y = -1;
 	box(this->_subWin, '|', '-');
-	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
+	mvwprintw(this->_subWin, ++y, x, this->_title.c_str());
 	mvwprintw(this->_subWin, ++y, x, this->_date.c_str());
 }
 

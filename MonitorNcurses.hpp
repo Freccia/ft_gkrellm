@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:43:18 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/08 18:03:25 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 18:48:47 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ private:
 	clock_t		_lastDisplay;
 	std::vector<MonitorModule*> _modules;
 
+	std::string	_debug;
+
 	/*				*/
 	void			_displayModule(size_t n);
 
@@ -53,6 +55,7 @@ public:
 	void			getKey(void);
 	int				getCharacter(void);
 	void			addModule(std::string type);
+	void			removeModule(std::string type);
 	void			refreshWindow(void);
 	static void		resizeHandler(int sig);
 

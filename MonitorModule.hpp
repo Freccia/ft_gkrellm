@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 11:16:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:16:51 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 18:53:47 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ protected:
 
     /*				*/
 	std::string			_name;
+	std::string			_title;
     std::vector<int>	_size;
     std::vector<int>	_pos;
     std::vector<QLabel *> _labels;
@@ -57,21 +58,26 @@ protected:
 public:
     MonitorModule(int width, int height, int x, int y);
     MonitorModule(int width, int height, int x, int y, std::string name);
+    MonitorModule(int width, int height, int x, int y, std::string name,
+														std::string title);
     MonitorModule(MonitorModule const &Cc);
     virtual ~MonitorModule(void);
     MonitorModule &operator=(MonitorModule const &Cc);
 
     /*				*/
+	std::string				getName(void);
     std::vector<int>		getSize(void);
     std::vector<int>		getPos(void);
+	bool					setPos(int x, int y);
     void					deleteMe(void);
-    void					writeMe(int x, int y, std::string str);
     void					refresh(void);
+	/*				*/
+	void					debug(int x, int y, std::string msg);
     /*				*/
     virtual void			display(void);
-    //virtual void			update(void);
-    virtual void displayQT();
-    virtual void displayChart(void);
+    virtual void			update(void);
+    virtual void			displayQT();
+    virtual void			displayChart(void);
 };
 
 #endif

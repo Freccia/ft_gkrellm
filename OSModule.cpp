@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 16:34:56 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 23:44:21 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/13 19:10:29 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 #include <QFrame>
 
 OSModule::OSModule(int posx, int posy):
-	MonitorModule(OSMOD_X, OSMOD_Y, posx, posy, "  OS Info  ")
+	MonitorModule(OSMOD_X, OSMOD_Y, posx, posy, "os", "  OS Info  ")
 {
     _init();
 }
 
 OSModule::OSModule(QFrame *fr):
-    MonitorModule(OSMOD_X, OSMOD_Y, 0, 0, "  OS Info  ")
+    MonitorModule(OSMOD_X, OSMOD_Y, 0, 0, "os", "  OS Info  ")
 {
     _init();
     _frame = fr;
@@ -72,25 +72,28 @@ void OSModule::_init()
         this->_release = name->release;
         this->_version = name->version;
         this->_machine = name->machine;
-        this->_sysname = this->_sysname.substr(0, OSMOD_X - 2);
-        this->_nodename = this->_nodename.substr(0, OSMOD_X - 2);
-        this->_release = this->_release.substr(0, OSMOD_X - 2);
-        this->_version = this->_version.substr(0, OSMOD_X - 2);
-        this->_machine = this->_machine.substr(0, OSMOD_X - 2);
     }
 	delete name;
 }
 
 void		OSModule::display(void) {
+	/* truncate */
+	std::string title = this->_title.substr(0, OSMOD_X - 2);
+	std::string sysname = this->_sysname.substr(0, OSMOD_X - 2);
+	std::string nodename = this->_nodename.substr(0, OSMOD_X - 2);
+	std::string release = this->_release.substr(0, OSMOD_X - 2);
+	std::string version = this->_version.substr(0, OSMOD_X - 2);
+	std::string machine = this->_machine.substr(0, OSMOD_X - 2);
 	int x = 2;
 	int y = -1;
+	/* display */
 	box(this->_subWin, '|', '-');
-	mvwprintw(this->_subWin, ++y, x, this->_name.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_sysname.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_nodename.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_release.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_version.c_str());
-	mvwprintw(this->_subWin, ++y, x, this->_machine.c_str());
+	mvwprintw(this->_subWin, ++y, x, title.c_str());
+	mvwprintw(this->_subWin, ++y, x, sysname.c_str());
+	mvwprintw(this->_subWin, ++y, x, nodename.c_str());
+	mvwprintw(this->_subWin, ++y, x, release.c_str());
+	mvwprintw(this->_subWin, ++y, x, version.c_str());
+	mvwprintw(this->_subWin, ++y, x, machine.c_str());
 };
 
 void OSModule::displayQT(void)
