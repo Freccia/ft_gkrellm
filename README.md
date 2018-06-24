@@ -1,5 +1,5 @@
 # ft_gkrellm
-##rush01 Piscine CPP @42born2code
+## rush01 Piscine CPP @42born2code
 
 Still an embrion a lot of TODOs.
 
