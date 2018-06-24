@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 17:44:59 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/13 19:08:10 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/24 23:22:27 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,25 @@
 #include <QRect>
 #include <QFrame>
 
+/* Qt constructor */
 DateModule::DateModule(QFrame *fr):
-    MonitorModule(DATEMOD_X, DATEMOD_Y, 0, 0, "date", "  Date  ")
+	MonitorModule(DATEMOD_X, DATEMOD_Y, 0, 0, "date", "  Date  ")
 {
-    _frame = fr;
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+	_frame = fr;
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
-    QLabel * title = new QLabel(_name.c_str());
-    layout->addWidget(title);
-    layout->setSizeConstraint(QLayout::SetMinimumSize);
-    QLabel *l1 = new QLabel(_frame);
+	QLabel * title = new QLabel(_name.c_str());
+	layout->addWidget(title);
+	layout->setSizeConstraint(QLayout::SetMinimumSize);
+	QLabel *l1 = new QLabel(_frame);
 
-    _labels.push_back(l1);
+	_labels.push_back(l1);
 
-    layout->addWidget(l1);
-    _frame->setLayout(layout);
+	layout->addWidget(l1);
+	_frame->setLayout(layout);
 }
 
+/* Default Ncurses constructor */
 DateModule::DateModule(int posx, int posy):
 	MonitorModule(DATEMOD_X, DATEMOD_Y, posx, posy, "date", "  Date  ") {
 }

@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 18:46:32 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/13 19:08:36 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/24 23:23:27 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define BUFF 256
 
 
+/* Qt constructor */
 HostModule::HostModule(QFrame *fr):
     MonitorModule(HOSTMOD_X, HOSTMOD_Y, 0, 0, "host", "  Host  ")
 {
@@ -37,6 +38,8 @@ HostModule::HostModule(QFrame *fr):
     layout->addWidget(l2);
     _frame->setLayout(layout);
 }
+
+/* Default ncurses cosntructor */
 HostModule::HostModule(int posx, int posy):
 	MonitorModule(HOSTMOD_X, HOSTMOD_Y, posx, posy, "host", "  Host  ")
 {

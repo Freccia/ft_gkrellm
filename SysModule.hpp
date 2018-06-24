@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 09:55:45 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:03:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/24 23:46:57 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 #define SYSMOD_X 92
 #define SYSMOD_Y 14
 
-/* TODO  for now this just do the trick */
+/* TODO  for now this just do the trick, later find a method to discover
+ *			how many cores the machine has */
 #define CORES 16
 
 class SysModule: public MonitorModule {
@@ -47,7 +48,7 @@ private:
 	uint64_t		_totalUserTime;
 	uint64_t		_totalIdleTime;
 
-	/* MEMBER FUNCTIONS */
+	/* Members */
 	void			_updateCPULoad(void);
 	void			_init(void);
 
@@ -57,9 +58,9 @@ public:
 	SysModule(QFrame *fr);
 	~SysModule(void);
 
-	/**/
+	/* Members */
 	void		display(void);
-    void displayQT(void);
+    void		displayQT(void);
 };
 
 #endif

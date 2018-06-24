@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 09:57:22 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/13 19:09:54 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/24 23:52:06 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,99 +21,98 @@
 
 #define BUFF 256
 
+void		SysModule::_init()
+{
+	char			cpubrand[BUFF];
+	size_t			sizeBrand = BUFF;
+	char			cpuvendor[BUFF];
+	size_t			sizeVend = BUFF;
+	int32_t			cpucores;
+	size_t			sizeCore = sizeof(cpucores);
+	struct clockinfo cpuclock;
+	size_t			sizeClock = sizeof(cpuclock);
+	char			cpufeatures[BUFF];
+	size_t			sizeFeat = BUFF;
+
+	sysctlbyname("machdep.cpu.brand_string", &cpubrand, &sizeBrand, NULL, 0);
+	sysctlbyname("machdep.cpu.vendor", &cpuvendor, &sizeVend, NULL, 0);
+	sysctlbyname("machdep.cpu.cores_per_package", &cpucores, &sizeCore, NULL,0);
+	sysctlbyname("kern.clockrate", &cpuclock, &sizeClock, NULL, 0);
+	sysctlbyname("machdep.cpu.extfeatures", &cpufeatures, &sizeFeat, NULL, 0);
+
+	this->_cpubrand =    "CPU:      ";
+	this->_cpubrand += cpubrand;
+	this->_cpubrand = this->_cpubrand.substr(0, SYSMOD_X - 2);
+
+	this->_cpuvendor =   "Vendor:   ";
+	this->_cpuvendor += cpuvendor;
+	this->_cpuvendor = this->_cpuvendor.substr(0, SYSMOD_X - 2);
+
+	this->_cpucores =    "Cores:    ";
+	this->_cpucores += std::to_string(cpucores);
+	this->_cpucores = this->_cpucores.substr(0, SYSMOD_X - 2);
+
+	this->_cpuclock =    "Clock:    ";
+	this->_cpuclock += std::to_string(cpuclock.hz);
+	this->_cpuclock += "Hz";
+
+	this->_cpufeatures = "Features: ";
+	this->_cpufeatures += cpufeatures;
+	this->_cpufeatures = this->_cpufeatures.substr(0, SYSMOD_X - 2);
+	this->_cpuclock = this->_cpuclock.substr(0, SYSMOD_X - 2);
+
+	this->_updateCPULoad();
+}
 
 SysModule::SysModule(QFrame *fr):
-    MonitorModule(SYSMOD_X, SYSMOD_Y, 0, 0, "sys", "  System Info  ")
+	MonitorModule(SYSMOD_X, SYSMOD_Y, 0, 0, "sys", "  System Info  ")
 {
-    _init();
-    _frame = fr;
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
+	_init();
+	_frame = fr;
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, _frame);
 
-    QLabel * title = new QLabel(_name.c_str());
-    layout->addWidget(title);
-    layout->setSizeConstraint(QLayout::SetMinimumSize);
-    QLabel *l1 = new QLabel(_frame);
-    QLabel *l2 = new QLabel(_frame);
-    QLabel *l3 = new QLabel(_frame);
-    QLabel *l4 = new QLabel(_frame);
-    QLabel *l5 = new QLabel(_frame);
-    QLabel *l6 = new QLabel(_frame);
-    QLabel *l7 = new QLabel(_frame);
-    QLabel *l8 = new QLabel(_frame);
+	QLabel * title = new QLabel(_name.c_str());
+	layout->addWidget(title);
+	layout->setSizeConstraint(QLayout::SetMinimumSize);
+	QLabel *l1 = new QLabel(_frame);
+	QLabel *l2 = new QLabel(_frame);
+	QLabel *l3 = new QLabel(_frame);
+	QLabel *l4 = new QLabel(_frame);
+	QLabel *l5 = new QLabel(_frame);
+	QLabel *l6 = new QLabel(_frame);
+	QLabel *l7 = new QLabel(_frame);
+	QLabel *l8 = new QLabel(_frame);
 
+	_labels.push_back(l1);
+	_labels.push_back(l2);
+	_labels.push_back(l3);
+	_labels.push_back(l4);
+	_labels.push_back(l5);
+	_labels.push_back(l6);
+	_labels.push_back(l7);
+	_labels.push_back(l8);
 
-    _labels.push_back(l1);
-    _labels.push_back(l2);
-    _labels.push_back(l3);
-    _labels.push_back(l4);
-    _labels.push_back(l5);
-    _labels.push_back(l6);
-    _labels.push_back(l7);
-    _labels.push_back(l8);
-
-
-    layout->addWidget(l1);
-    layout->addWidget(l2);
-    layout->addWidget(l3);
-    layout->addWidget(l4);
-    layout->addWidget(l5);
-    layout->addWidget(l6);
-    layout->addWidget(l7);
-    layout->addWidget(l8);
-    _frame->setLayout(layout);
+	layout->addWidget(l1);
+	layout->addWidget(l2);
+	layout->addWidget(l3);
+	layout->addWidget(l4);
+	layout->addWidget(l5);
+	layout->addWidget(l6);
+	layout->addWidget(l7);
+	layout->addWidget(l8);
+	_frame->setLayout(layout);
 };
 
 SysModule::SysModule(int posx, int posy):
 	MonitorModule(SYSMOD_X, SYSMOD_Y, posx, posy, "sys", "  System Info  ")
 {
-    _init();
+	_init();
 };
 
 SysModule::~SysModule(void) {
 };
 
-void SysModule::_init()
-{
-    char			cpubrand[BUFF];
-    size_t			sizeBrand = BUFF;
-    char			cpuvendor[BUFF];
-    size_t			sizeVend = BUFF;
-    int32_t			cpucores;
-    size_t			sizeCore = sizeof(cpucores);
-    struct clockinfo cpuclock;
-    size_t			sizeClock = sizeof(cpuclock);
-    char			cpufeatures[BUFF];
-    size_t			sizeFeat = BUFF;
 
-    sysctlbyname("machdep.cpu.brand_string", &cpubrand, &sizeBrand, NULL, 0);
-    sysctlbyname("machdep.cpu.vendor", &cpuvendor, &sizeVend, NULL, 0);
-    sysctlbyname("machdep.cpu.cores_per_package", &cpucores, &sizeCore, NULL, 0);
-    sysctlbyname("kern.clockrate", &cpuclock, &sizeClock, NULL, 0);
-    sysctlbyname("machdep.cpu.extfeatures", &cpufeatures, &sizeFeat, NULL, 0);
-
-    this->_cpubrand =    "CPU:      ";
-    this->_cpubrand += cpubrand;
-    this->_cpubrand = this->_cpubrand.substr(0, SYSMOD_X - 2);
-
-    this->_cpuvendor =   "Vendor:   ";
-    this->_cpuvendor += cpuvendor;
-    this->_cpuvendor = this->_cpuvendor.substr(0, SYSMOD_X - 2);
-
-    this->_cpucores =    "Cores:    ";
-    this->_cpucores += std::to_string(cpucores);
-    this->_cpucores = this->_cpucores.substr(0, SYSMOD_X - 2);
-
-    this->_cpuclock =    "Clock:    ";
-    this->_cpuclock += std::to_string(cpuclock.hz);
-    this->_cpuclock += "Hz";
-
-    this->_cpufeatures = "Features: ";
-    this->_cpufeatures += cpufeatures;
-    this->_cpufeatures = this->_cpufeatures.substr(0, SYSMOD_X - 2);
-    this->_cpuclock = this->_cpuclock.substr(0, SYSMOD_X - 2);
-
-	this->_updateCPULoad();
-}
 
 void		SysModule::_updateCPULoad(void) {
 
@@ -121,7 +120,9 @@ void		SysModule::_updateCPULoad(void) {
 	mach_msg_type_number_t		processorMsgCount;
 	natural_t					processorCount;
 
-	if (host_processor_info(mach_host_self(), PROCESSOR_CPU_LOAD_INFO, &processorCount, (processor_info_array_t *)&cpuLoad, &processorMsgCount) != KERN_SUCCESS)
+	if (host_processor_info(mach_host_self(), PROCESSOR_CPU_LOAD_INFO,
+			&processorCount, (processor_info_array_t *)&cpuLoad,
+			&processorMsgCount) != KERN_SUCCESS)
 		return;
 
 	this->_NCores = processorCount;
@@ -174,10 +175,13 @@ void		SysModule::display(void) {
 	tmp += std::to_string(this->_totalIdleTime).c_str();
 	mvwprintw(this->_subWin, ++y, x, tmp.c_str());
 
-	/*
-	double sys = static_cast<double>(_totalSystemTime) / static_cast<double>(_totalCPUTime) * 100;
-	double usr = static_cast<double>(_totalUserTime) / static_cast<double>(_totalCPUTime) * 100;
-	double idl = static_cast<double>(_totalIdleTime) / static_cast<double>(_totalCPUTime) * 100;
+/*
+	double sys = static_cast<double>(_totalSystemTime) /
+									static_cast<double>(_totalCPUTime) * 100;
+	double usr = static_cast<double>(_totalUserTime) /
+									static_cast<double>(_totalCPUTime) * 100;
+	double idl = static_cast<double>(_totalIdleTime) /
+									static_cast<double>(_totalCPUTime) * 100;
 
 	tmp = "TOTAL: ";
 	tmp += std::to_string(this->_totalCPUTime).c_str();
@@ -188,7 +192,7 @@ void		SysModule::display(void) {
 	tmp += "  Idle: ";
 	tmp += std::to_string(idl).c_str();
 	mvwprintw(this->_subWin, ++y, x, tmp.c_str());
-	*/
+*/
 
 	for (uint32_t core = 0; core < _NCores; core++) {
 		tmp = std::to_string(core);
@@ -213,21 +217,21 @@ void		SysModule::display(void) {
 
 void SysModule::displayQT(void)
 {
-    this->_updateCPULoad();
-    std::string		tmp;
-    tmp = "TOTAL: ";
-    tmp += std::to_string(this->_totalCPUTime).c_str();
-    tmp += "  System: ";
-    tmp += std::to_string(this->_totalSystemTime).c_str();
-    tmp += "  User: ";
-    tmp += std::to_string(this->_totalUserTime).c_str();
-    tmp += "  Idle: ";
-    tmp += std::to_string(this->_totalIdleTime).c_str();
+	this->_updateCPULoad();
+	std::string		tmp;
+	tmp = "TOTAL: ";
+	tmp += std::to_string(this->_totalCPUTime).c_str();
+	tmp += "  System: ";
+	tmp += std::to_string(this->_totalSystemTime).c_str();
+	tmp += "  User: ";
+	tmp += std::to_string(this->_totalUserTime).c_str();
+	tmp += "  Idle: ";
+	tmp += std::to_string(this->_totalIdleTime).c_str();
 
-    _labels[0]->setText(_cpubrand.c_str());
-    _labels[1]->setText(_cpuvendor.c_str());
-    _labels[2]->setText(_cpucores.c_str());
-    _labels[3]->setText(_cpuclock.c_str());
-    _labels[4]->setText(_cpufeatures.c_str());
-    _labels[5]->setText(tmp.c_str());
+	_labels[0]->setText(_cpubrand.c_str());
+	_labels[1]->setText(_cpuvendor.c_str());
+	_labels[2]->setText(_cpucores.c_str());
+	_labels[3]->setText(_cpuclock.c_str());
+	_labels[4]->setText(_cpufeatures.c_str());
+	_labels[5]->setText(tmp.c_str());
 }

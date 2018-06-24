@@ -6,7 +6,7 @@
 /*   By: lfabbro <>                                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 14:08:19 by lfabbro           #+#    #+#             */
-/*   Updated: 2018/06/10 22:53:52 by lfabbro          ###   ########.fr       */
+/*   Updated: 2018/06/24 23:45:36 by lfabbro          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 #define IFAMAX 13 /* max interface represented in module */
 
+/* network interface structure */
 struct s_ifa {
 	std::string		name;
 	std::string		ether;
@@ -34,25 +35,25 @@ private:
 	NetIfModule(void);
 	NetIfModule(NetIfModule const &Cc);
 	NetIfModule &operator=(NetIfModule const &Cc);
-	/**/
-	s_ifa		_interface[IFAMAX];
 
-	uint64_t	_totBytesIn;
-	uint64_t	_totBytesOut;
-
-	/**/
+	/* Methods */
 	void		_update(void);
 	void		_updateNetLoad(void);
+
+	/* Attributes */
+	s_ifa		_interface[IFAMAX];
+	uint64_t	_totBytesIn;
+	uint64_t	_totBytesOut;
 
 public:
 	NetIfModule(int posx, int posy);
     NetIfModule(QFrame *);
     virtual ~NetIfModule(void);
 
-	/**/
+	/* Methods */
 	void		display(void);
-     void displayQT(void);
-     void displayChart(void);
+	void		displayQT(void);
+	void		displayChart(void);
 };
 
 #endif
